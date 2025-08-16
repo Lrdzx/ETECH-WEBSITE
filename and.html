@@ -1,235 +1,318 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>"AND" Operator</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>"AND" Operator</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
     body {
-        margin: 0;
-        font-family: 'Inter', 'Roboto', Arial, sans-serif;
-        background: #181818;
-        color: white;
-        min-height: 100vh;
-        padding-top: 80px;
+      margin: 0;
+      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      background: #181818;
+      color: white;
+      min-height: 100vh;
+      padding-top: 80px;
     }
 
-    /* ====== NAVBAR ====== */
+    /* ================= NAVBAR ================= */
     nav {
-        width: 100%;
-        background: #000000e6;
-        position: fixed;
-        top: 0;
-        left: 0;
-        z-index: 1000;
-        border-bottom: 1px solid white;
+      width: 100%;
+      background: #000000e6;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 900;
+      border-bottom: 1px solid white;
+      transition: transform 0.3s ease-in-out;
+    }
+
+    nav.hidden {
+      transform: translateY(-100%);
     }
 
     .nav-container {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        max-width: 1200px;
-        margin: 0 auto;
-        width: 100%;
-        padding: 0 2rem;
-        height: 80px;
-        flex-wrap: wrap;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 2rem;
+      height: 80px;
+      flex-wrap: wrap;
     }
 
     .logo {
-        display: flex;
-        align-items: center;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     .logo img {
-        height: 50px;
-        margin-right: 10px;
+      height: 50px;
     }
 
     .nav-center {
-        flex: 1;
-        display: flex;
-        justify-content: flex-end;
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
     }
 
     .nav-center ul {
-        list-style: none;
-        display: flex;
-        gap: 1.5rem;
-        margin: 0;
-        padding: 0;
-        align-items: center;
-        flex-wrap: wrap;
+      list-style: none;
+      display: flex;
+      gap: 1.5rem;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+      flex-wrap: wrap;
     }
 
     .nav-center ul li a {
-        text-decoration: none;
-        color: white;
-        font-weight: 500;
-        letter-spacing: 1px;
-        padding: 8px 18px;
-        border-radius: 50px;
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        transition: all 0.3s ease;
-        background: linear-gradient(135deg, #232526, #414345);
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 8px 18px;
+      border-radius: 50px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.3s ease;
+      background: linear-gradient(135deg, #232526, #414345);
     }
 
     .nav-center ul li a i {
-        font-size: 1.1em;
+      font-size: 1.1em;
     }
 
     .nav-center ul li a:hover {
-        background: linear-gradient(135deg, #00bfff, #87cefa);
-        color: #222;
-        transform: scale(1.1);
-        box-shadow: 0 4px 16px rgba(0,191,255,0.18);
+      background: linear-gradient(135deg, #00bfff, #87cefa);
+      color: #222;
+      transform: scale(1.1);
+      box-shadow: 0 4px 16px rgba(0,191,255,0.18);
     }
 
-    /* ====== RESPONSIVE NAVBAR ====== */
-    @media (max-width: 900px) {
-        .nav-container {
-            flex-direction: column;
-            height: auto;
-            padding: 1rem;
-        }
-
-        .nav-center {
-            justify-content: center;
-            width: 100%;
-            margin-top: 10px;
-        }
-
-        .nav-center ul {
-            flex-direction: column;
-            gap: 1rem;
-            width: 100%;
-        }
-
-        .nav-center ul li a {
-            justify-content: center;
-            width: 100%;
-        }
+    /* Hamburger Button - stays fixed */
+    .hamburger {
+      font-size: 1.8rem;
+      color: #00bfff;
+      cursor: pointer;
+      background: #000000cc;
+      border: none;
+      outline: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      z-index: 1001; /* above navbar */
+      padding: 8px 12px;
+      border-radius: 8px;
     }
 
-    /* ====== SECTIONS ====== */
-    .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
+    .hamburger:hover {
+      transform: scale(1.2);
+      color: #87cefa;
+    }
+
+    /* ================= SECTIONS ================= */
+    .sections {
+      padding: 4rem 10%;
+      display: flex;
+      flex-direction: column;
+      gap: 4rem;
+    }
 
     .section {
-        display: flex;
-        gap: 2rem;
-        align-items: center;
-        flex-wrap: wrap;
-        border: 1px solid white;
-        padding: 2rem;
-        border-radius: 10px;
-        background: rgba(20, 20, 30, 0.7);
-        opacity: 0;
-        transform: translateY(20px);
-        transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid white;
+      padding: 2rem;
+      border-radius: 10px;
+      background: rgba(20, 20, 30, 0.7);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
 
-    .section.visible { opacity: 1; transform: translateY(0); }
+    .section.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-    .section img { width: 220px; border-radius: 10px; border:1px solid #00bfff; }
+    .section img {
+      max-width: 220px;
+      width: 100%;
+      height: auto;
+      border-radius: 10px;
+      border: 1px solid #00bfff;
+    }
 
-    .section .text { max-width: 600px; }
+    .section .text {
+      max-width: 600px;
+    }
 
-    .section h2 { margin-bottom: 1rem; font-size: 1.8rem; color: #00bfff; letter-spacing: 1px; }
+    .section h2 {
+      margin-bottom: 1rem;
+      font-size: 1.8rem;
+      color: #00bfff;
+      letter-spacing: 1px;
+    }
 
-    .section p { line-height: 1.6; color: #e0e0e0; }
+    .section p {
+      line-height: 1.6;
+      color: #e0e0e0;
+    }
 
-    .section:nth-child(even) { flex-direction: row-reverse; }
+    .section:nth-child(even) {
+      flex-direction: row-reverse;
+    }
 
     @media (max-width: 900px) {
-        .section { flex-direction: column !important; text-align: center; }
-        .section img { width: 100%; }
-        .sections { padding: 2rem 5%; }
+      .nav-container {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .nav-center {
+        display: none;
+        width: 100%;
+        margin-top: 10px;
+      }
+
+      .nav-center.active {
+        display: flex;
+        justify-content: center;
+      }
+
+      .nav-center ul {
+        flex-direction: column;
+        gap: 1rem;
+        width: 100%;
+      }
+
+      .nav-center ul li a {
+        justify-content: center;
+        width: 100%;
+      }
+
+      .section {
+        flex-direction: column !important;
+        text-align: center;
+      }
+      .section img {
+        max-width: 100%;
+      }
+      .sections {
+        padding: 2rem 5%;
+      }
     }
-</style>
+  </style>
 </head>
 <body>
-
-<!-- Navbar -->
-<nav>
-  <div class="nav-container">
-    <div class="logo">
-      <img src="deped.png" alt="DepEd Logo">
-      <img src="logo.png" alt="Logo">
+  <!-- NAVBAR -->
+  <nav id="navbar">
+    <div class="nav-container">
+      <div class="logo">
+        <img src="deped.png" alt="DepEd Logo">
+        <img src="logo.png" alt="Site Logo">
+      </div>
+      <div class="nav-center" id="nav-links">
+        <ul>
+          <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
+          <li><a href="And.html"><i class="fa-solid fa-link"></i>AND</a></li>
+          <li><a href="Or.html"><i class="fa-solid fa-code-branch"></i>OR</a></li>
+          <li><a href="Not.html"><i class="fa-solid fa-ban"></i>NOT</a></li>
+        </ul>
+      </div>
     </div>
-    <div class="nav-center">
-      <ul>
-        <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-        <li><a href="and.html"><i class="fa-solid fa-link"></i>AND</a></li>
-        <li><a href="or.html"><i class="fa-solid fa-code-branch"></i>OR</a></li>
-        <li><a href="not.html"><i class="fa-solid fa-ban"></i>NOT</a></li>
-      </ul>
-    </div>
-  </div>
-</nav>
+  </nav>
 
-<!-- Content Sections -->
-<div class="sections">
-    <!-- Standalone video section -->
+  <!-- Hamburger always visible -->
+  <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+
+  <!-- CONTENT -->
+  <div class="sections">
     <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-        <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
-        <p style="text-align:center;">
-            <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=16s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:16–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
-        </p>
-        <div style="width:100%; display:flex; justify-content:center;">
-            <div style="max-width:560px; width:100%;">
-                <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=16&end=30&autoplay=0" title="Boolean AND Operator Example" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="margin-top:1rem;border-radius:10px;border:1px solid #00bfff;"></iframe>
-            </div>
+      <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
+      <p style="text-align:center;">
+        <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=16s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:16–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
+      </p>
+      <div style="width:100%; display:flex; justify-content:center;">
+        <div style="max-width:560px; width:100%;">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=16" title="Boolean AND Operator Example" frameborder="0" allowfullscreen style="margin-top:1rem;border-radius:10px;border:1px solid #00bfff;"></iframe>
         </div>
+      </div>
     </section>
 
-    <!-- Other AND sections -->
     <div class="section">
-        <img src="and-logic.png" alt="AND Logic Diagram">
-        <div class="text">
-            <h2>What is the "AND" Operator?</h2>
-            <p>The "AND" operator is a logical operator used to combine two or more conditions, returning true only if all conditions are true.</p>
-        </div>
+      <img src="and-logic.png" alt="AND Logic Diagram">
+      <div class="text">
+        <h2>What is the "AND" Operator?</h2>
+        <p>The "AND" operator is a logical operator used to combine two or more conditions, returning true only if all conditions are true.</p>
+      </div>
     </div>
 
     <div class="section">
-        <img src="filter.png" alt="Filter Illustration">
-        <div class="text">
-            <h2>Purpose of "AND" Operator</h2>
-            <p>The AND operator is used to combine two or more logical conditions, requiring all of them to be met for the overall condition to be considered true.</p>
-        </div>
+      <img src="filter.png" alt="Filter Illustration">
+      <div class="text">
+        <h2>Purpose of "AND" Operator</h2>
+        <p>The AND operator is used to combine two or more logical conditions, requiring all of them to be met for the overall condition to be considered true.</p>
+      </div>
     </div>
 
     <div class="section">
-        <img src="search-example.png" alt="Search Example">
-        <div class="text">
-            <h2>Examples</h2>
-            <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both the words cats and dogs.</p>
-            <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true because both statements are true.</p>
-            <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects only records where both conditions are met.</p>
-        </div>
+      <img src="search-example.png" alt="Search Example">
+      <div class="text">
+        <h2>Examples</h2>
+        <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both the words cats and dogs.</p>
+        <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true because both statements are true.</p>
+        <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects only records where both conditions are met.</p>
+      </div>
     </div>
-</div>
+  </div>
 
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll('.section');
-    const observer = new IntersectionObserver(entries => {
+  <script>
+    // Fade-in effect
+    document.addEventListener("DOMContentLoaded", function () {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver(entries => {
         entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
-                observer.unobserve(entry.target);
-            }
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
         });
-    }, { threshold: 0.15 });
-    sections.forEach(section => observer.observe(section));
-});
-</script>
+      }, { threshold: 0.15 });
+      sections.forEach(section => observer.observe(section));
+    });
 
+    // Hamburger toggle
+    const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("navbar");
+
+    hamburger.addEventListener("click", () => {
+      nav.classList.toggle("hidden");
+
+      // toggle icon
+      const icon = hamburger.querySelector("i");
+      if (nav.classList.contains("hidden")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+      } else {
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+  </script>
 </body>
 </html>
-
