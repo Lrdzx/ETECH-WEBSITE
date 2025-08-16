@@ -27,11 +27,6 @@
       left: 0;
       z-index: 900;
       border-bottom: 1px solid white;
-      transition: transform 0.3s ease-in-out;
-    }
-
-    nav.hidden {
-      transform: translateY(-100%);
     }
 
     .nav-container {
@@ -97,7 +92,7 @@
       box-shadow: 0 4px 16px rgba(0,191,255,0.18);
     }
 
-    /* Hamburger Button - stays fixed */
+    /* Hamburger Button */
     .hamburger {
       font-size: 1.8rem;
       color: #00bfff;
@@ -120,6 +115,12 @@
     .hamburger:hover {
       transform: scale(1.2);
       color: #87cefa;
+    }
+
+    @media (min-width: 901px) {
+      .hamburger {
+        display: none;
+      }
     }
 
     /* ================= SECTIONS ================= */
@@ -237,7 +238,7 @@
     </div>
   </nav>
 
-  <!-- Hamburger always visible -->
+  <!-- Hamburger always visible on mobile -->
   <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
 
   <!-- CONTENT -->
@@ -296,16 +297,15 @@
       sections.forEach(section => observer.observe(section));
     });
 
-    // Hamburger toggle
+    // Hamburger toggle (mobile)
     const hamburger = document.getElementById("hamburger");
-    const nav = document.getElementById("navbar");
+    const navLinks = document.getElementById("nav-links");
 
     hamburger.addEventListener("click", () => {
-      nav.classList.toggle("hidden");
+      navLinks.classList.toggle("active");
 
-      // toggle icon
       const icon = hamburger.querySelector("i");
-      if (nav.classList.contains("hidden")) {
+      if (navLinks.classList.contains("active")) {
         icon.classList.remove("fa-bars");
         icon.classList.add("fa-xmark");
       } else {
@@ -316,4 +316,6 @@
   </script>
 </body>
 </html>
+
+
 
