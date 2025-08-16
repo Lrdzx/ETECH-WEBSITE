@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hide Navbar on Scroll</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      height: 2000px; /* just to allow scrolling */
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background-color: #333;
+      color: white;
+      padding: 15px;
+      text-align: center;
+      transition: top 0.3s ease;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <nav id="navbar">
+    My Navbar
+  </nav>
+
+  <script>
+    let lastScrollY = window.scrollY;
+    const navbar = document.getElementById("navbar");
+
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > lastScrollY) {
+        // Scrolling down
+        navbar.style.top = "-70px"; // hides navbar
+      } else {
+        // Scrolling up
+        navbar.style.top = "0";
+      }
+      lastScrollY = window.scrollY;
+    });
+  </script>
+
+</body>
+</html>
