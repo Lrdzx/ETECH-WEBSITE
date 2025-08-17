@@ -12,12 +12,13 @@
     /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #000;
-      color: white;
+       font-family: 'Inter','Roboto',Arial,sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
       padding-top: 80px;
+      color: white;
+      background: url('black-white-photo-black-white-ab.jpg') no-repeat center center fixed; /* change background.jpg to your image */
+      background-size: cover; /* ensures the image covers the whole viewport */
       transition: transform 0.3s ease;
     }
 
@@ -346,3 +347,4 @@
     lastScrollY = window.scrollY;
   });
 </script>
+
