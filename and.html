@@ -1,274 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>"AND" Operator</title>
-  <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <!-- Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
-  <style>
-    /* ===== RESET ===== */
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #000; /* overall black background */
-      color: white;
-      min-height: 100vh;
-      overflow-x: hidden;
-      padding-top: 80px;
-      transition: transform 0.3s ease;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"AND" Operator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter','Roboto',Arial,sans-serif; background:#000; color:white; min-height:100vh; overflow-x:hidden; padding-top:80px; transition:transform 0.3s ease; }
 
-    /* ===== NAVBAR ===== */
-    nav {
-      width: 100%;
-      background: #000000e6;
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 900;
-      border-bottom: 1px solid white;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      height: 80px;
-      padding: 0 2rem;
-    }
-    .logo { display: flex; align-items: center; gap: 10px; }
-    .logo img { height: 50px; }
+  nav { width:100%; background:#000000e6; position:fixed; top:0; left:0; z-index:900; border-bottom:1px solid white; display:flex; justify-content:space-between; align-items:center; height:80px; padding:0 2rem; }
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo img { height:50px; }
 
-    /* ===== MENU BUTTON ===== */
-    .hamburger {
-      font-size: 1rem;
-      color: white;
-      cursor: pointer;
-      background: #222;
-      border: none;
-      outline: none;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      justify-content: center;
-      transition: background 0.3s, transform 0.1s;
-      padding: 10px 16px;
-      border-radius: 8px;
-      z-index: 1001;
-    }
-    .hamburger i { font-size: 1.4rem; color: #00bfff; }
-    .hamburger span { font-weight: 600; letter-spacing: 1px; }
-    .hamburger:hover { background: #444; }
-    .hamburger:active { transform: scale(0.95); }
+  .hamburger { font-size:1rem; color:white; cursor:pointer; background:#222; border:none; outline:none; display:flex; align-items:center; gap:8px; justify-content:center; transition: background 0.3s, transform 0.1s; padding:10px 16px; border-radius:8px; z-index:1001; }
+  .hamburger i { font-size:1.4rem; color:#00bfff; }
+  .hamburger span { font-weight:600; letter-spacing:1px; }
+  .hamburger:hover { background:#444; }
+  .hamburger:active { transform:scale(0.95); }
 
-    /* ===== SIDE MENU ===== */
-    .side-menu {
-      position: fixed;
-      top: 0;
-      right: -250px;
-      width: 250px;
-      height: 100%;
-      background: #111;
-      display: flex;
-      flex-direction: column;
-      padding: 2rem;
-      transition: right 0.3s ease;
-      z-index: 1000;
-      overflow-y: auto;
-    }
-    .side-menu.active { right: 0; }
-    .side-menu a {
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      letter-spacing: 1px;
-      padding: 12px 18px;
-      border-radius: 8px;
-      margin: 5px 0;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #232526, #414345);
-      transition: all 0.3s ease;
-    }
-    .side-menu a:hover {
-      background: linear-gradient(135deg,#00bfff,#87cefa);
-      color: #222;
-      transform: scale(1.05);
-      box-shadow: 0 4px 16px rgba(0,191,255,0.18);
-    }
+  .side-menu { position:fixed; top:0; right:-250px; width:250px; height:100%; background:#111; display:flex; flex-direction:column; padding:2rem; transition:right 0.3s ease; z-index:1000; overflow-y:auto; }
+  .side-menu.active { right:0; }
+  .side-menu a { text-decoration:none; color:white; font-weight:500; letter-spacing:1px; padding:12px 18px; border-radius:8px; margin:5px 0; display:flex; align-items:center; gap:8px; background:linear-gradient(135deg,#232526,#414345); transition:all 0.3s ease; }
+  .side-menu a:hover { background:linear-gradient(135deg,#00bfff,#87cefa); color:#222; transform:scale(1.05); box-shadow:0 4px 16px rgba(0,191,255,0.18); }
 
-    /* ===== CLASSIFICATION INSIDE MENU ===== */
-    .classification {
-      margin-top: 2rem;
-      border-top: 1px solid #444;
-      padding-top: 1rem;
-    }
-    .classification h3 {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 0.8rem;
-      color: #00bfff;
-    }
-    .classification p {
-      font-size: 0.9rem;
-      margin-bottom: 0.5rem;
-    }
+  .classification { margin-top:2rem; border-top:1px solid #444; padding-top:1rem; }
+  .classification h3 { font-size:1rem; font-weight:700; margin-bottom:0.8rem; color:#00bfff; }
+  .classification p { font-size:0.9rem; margin-bottom:0.5rem; }
 
-    /* ===== OVERLAY ===== */
-    .overlay {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0,0,0,0.5);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease;
-      z-index: 999;
-    }
-    .overlay.active {
-      opacity: 1;
-      visibility: visible;
-    }
+  .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); opacity:0; visibility:hidden; transition:opacity 0.3s ease; z-index:999; }
+  .overlay.active { opacity:1; visibility:visible; }
 
-    /* ===== PAGE WRAPPER ===== */
-    .page-wrapper { transition: margin-right 0.3s ease; }
-    .page-wrapper.shifted { margin-right: 250px; }
+  .page-wrapper { transition: margin-right 0.3s ease; }
+  .page-wrapper.shifted { margin-right:250px; }
 
-    /* ===== SECTIONS ===== */
-    .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
-    .section {
-      display: flex;
-      gap: 2rem;
-      align-items: center;
-      flex-wrap: wrap;
-      border: 1px solid #ffffff33;
-      padding: 2rem;
-      border-radius: 10px;
-      background: rgba(255,255,255,0.05);
-      backdrop-filter: blur(8px);
-      opacity: 0;
-      transform: translateY(20px);
-      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .section.visible { opacity: 1; transform: translateY(0); }
-    .section img { width: 300px; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,191,255,0.2); }
-    .section .text { max-width: 600px; }
-    .section h2 {
-      font-size: 1.8rem;
-      font-weight: 700;
-      background: linear-gradient(135deg,#00bfff,#87cefa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      margin-bottom: 1rem;
-    }
-    .section p { line-height: 1.6; color: #e0e0e0; }
-    .section:nth-child(even) { flex-direction: row-reverse; }
+  .sections { padding:4rem 10%; display:flex; flex-direction:column; gap:4rem; }
+  .section { display:flex; gap:2rem; align-items:center; flex-wrap:wrap; border:1px solid #ffffff33; padding:2rem; border-radius:10px; background:rgba(255,255,255,0.05); backdrop-filter:blur(8px); opacity:0; transform:translateY(20px); transition:opacity 0.6s ease-out, transform 0.6s ease-out; }
+  .section.visible { opacity:1; transform:translateY(0); }
+  .section img { width:300px; border-radius:10px; box-shadow:0 4px 16px rgba(0,191,255,0.2); }
+  .section .text { max-width:600px; }
+  .section h2 { font-size:1.8rem; font-weight:700; background:linear-gradient(135deg,#00bfff,#87cefa); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:1rem; }
+  .section p { line-height:1.6; color:#e0e0e0; }
+  .section:nth-child(even) { flex-direction:row-reverse; }
 
-    @media (max-width: 900px) {
-      .sections { padding: 2rem 5%; }
-      .section { flex-direction: column !important; text-align: center; }
-      .section img { width: 100%; }
-    }
-  </style>
+  @media(max-width:900px) { .sections { padding:2rem 5%; } .section { flex-direction:column !important; text-align:center; } .section img { width:100%; } }
+</style>
 </head>
 <body>
-  <!-- ===== NAVBAR ===== -->
-  <nav>
-    <div class="logo">
-      <img src="deped.png" alt="DepEd Logo">
-      <img src="logo.png" alt="Logo">
-    </div>
-    <button class="hamburger" id="hamburger">
-      <i class="fa-solid fa-bars"></i>
-      <span>Menu</span>
-    </button>
-  </nav>
-
-  <!-- ===== SIDE MENU ===== -->
-  <div class="side-menu" id="sideMenu">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-
-    <div class="classification">
-      <h3>Classification</h3>
-      <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
-      <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
-      <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
-    </div>
+<nav>
+  <div class="logo">
+    <img src="deped.png" alt="DepEd Logo">
+    <img src="logo.png" alt="Logo">
   </div>
+  <button class="hamburger" id="hamburger">
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
+  </button>
+</nav>
 
-  <!-- Overlay -->
-  <div class="overlay" id="overlay"></div>
+<div class="side-menu" id="sideMenu">
+  <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+  <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+  <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
 
-  <!-- Page Wrapper -->
-  <div class="page-wrapper" id="pageWrapper">
+  <div class="classification">
+    <h3>Classification</h3>
+    <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+    <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+    <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
+  </div>
+</div>
 
-    <!-- ===== CONTENT SECTIONS ===== -->
-    <div class="sections">
-      <!-- YouTube Video Demo -->
-      <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-        <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
-        <p style="text-align:center;">
-          <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
-        </p>
-        <div style="width:100%; display:flex; justify-content:center;">
-          <div style="max-width:560px; width:100%;">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-          </div>
-        </div>
-      </section>
+<div class="overlay" id="overlay"></div>
 
-      <!-- What is AND -->
-      <div class="section">
-        <img src="and-logic.png" alt="AND Logic Diagram">
-        <div class="text">
-          <h2>What is the "AND" Operator?</h2>
-          <p>The "AND" operator is a logical operator used to combine two or more conditions, returning true only if all conditions are true.</p>
-        </div>
+<div class="page-wrapper" id="pageWrapper">
+  <div class="sections">
+    <!-- Video Demo -->
+    <div class="section" style="flex-direction:column; align-items:center; background:rgba(20,20,30,0.7); border:1px solid #00bfff; border-radius:14px; box-shadow:0 4px 32px rgba(0,191,255,0.10);">
+      <h2 style="color:white;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
+      <p style="text-align:center;">
+        <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demo</a>
+      </p>
+      <div style="width:100%; max-width:560px; margin-top:1rem;">
+        <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" frameborder="0" allowfullscreen style="border-radius:10px; border:1px solid #00bfff;"></iframe>
       </div>
+    </div>
 
-      <!-- Purpose -->
-      <div class="section">
-        <img src="filter.png" alt="Filter Illustration">
-        <div class="text">
-          <h2>Purpose of "AND" Operator</h2>
-          <p>The AND operator is used to combine two or more logical conditions, requiring all of them to be met for the overall condition to be considered true.</p>
-        </div>
+    <!-- What is AND -->
+    <div class="section">
+      <img src="and-logic.png" alt="AND Logic Diagram">
+      <div class="text">
+        <h2>What is the "AND" Operator?</h2>
+        <p>The "AND" operator is used to combine multiple conditions, returning true only if all are true.</p>
       </div>
+    </div>
 
-      <!-- Examples -->
-      <div class="section">
-        <img src="search-example.png" alt="Search Example">
-        <div class="text">
-          <h2>Examples</h2>
-          <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both the words cats and dogs.</p>
-          <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true because both statements are true.</p>
-          <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects only records where both conditions are met.</p>
-        </div>
+    <!-- Purpose -->
+    <div class="section">
+      <img src="filter.png" alt="Filter Illustration">
+      <div class="text">
+        <h2>Purpose of "AND" Operator</h2>
+        <p>Ensures multiple conditions must all be met to satisfy the overall statement, filtering results precisely.</p>
+      </div>
+    </div>
+
+    <!-- Examples -->
+    <div class="section">
+      <img src="search-example.png" alt="Search Example">
+      <div class="text">
+        <h2>Examples</h2>
+        <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both words.</p>
+        <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true as both statements are true.</p>
+        <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects records meeting both criteria.</p>
       </div>
     </div>
   </div>
+</div>
 
-  <!-- ===== JS ===== -->
 <script>
-  // ===================== FADE-IN SECTIONS =====================
-  document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll('.section');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    sections.forEach(section => observer.observe(section));
-  });
+document.addEventListener("DOMContentLoaded", function() {
+  // FADE-IN SECTIONS
+  const sections = document.querySelectorAll('.section');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting) {
+        entry.target.classList.add('visible');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15});
+  sections.forEach(section => observer.observe(section));
 
-  // ===================== MENU TOGGLE LOGIC =====================
+  // MENU TOGGLE
   const hamburger = document.getElementById("hamburger");
   const sideMenu = document.getElementById("sideMenu");
   const pageWrapper = document.getElementById("pageWrapper");
@@ -279,8 +144,7 @@
     pageWrapper.classList.remove("shifted");
     overlay.classList.remove("active");
     const icon = hamburger.querySelector("i");
-    icon.classList.remove("fa-xmark");
-    icon.classList.add("fa-bars");
+    icon.classList.remove("fa-xmark"); icon.classList.add("fa-bars");
   }
 
   hamburger.addEventListener("click", () => {
@@ -288,31 +152,24 @@
     pageWrapper.classList.toggle("shifted");
     overlay.classList.toggle("active");
     const icon = hamburger.querySelector("i");
-    if (sideMenu.classList.contains("active")) {
-      icon.classList.remove("fa-bars");
-      icon.classList.add("fa-xmark");
-    } else {
-      icon.classList.remove("fa-xmark");
-      icon.classList.add("fa-bars");
-    }
+    if(sideMenu.classList.contains("active")) { icon.classList.remove("fa-bars"); icon.classList.add("fa-xmark"); }
+    else { icon.classList.remove("fa-xmark"); icon.classList.add("fa-bars"); }
   });
 
   overlay.addEventListener("click", closeMenu);
   document.querySelectorAll(".side-menu a").forEach(link => link.addEventListener("click", closeMenu));
 
-  // ===================== NAVBAR SCROLL HIDE/SHOW =====================
+  // NAVBAR SCROLL HIDE/SHOW
   const navbar = document.querySelector("nav");
-  navbar.style.transition = "top 0.3s"; // smooth transition
+  navbar.style.transition = "top 0.3s";
   let lastScrollY = window.scrollY;
-
   window.addEventListener("scroll", () => {
-    if (window.scrollY > lastScrollY) {
-      navbar.style.top = "-80px"; // hide navbar
-    } else {
-      navbar.style.top = "0"; // show navbar
-    }
+    if(window.scrollY > lastScrollY) navbar.style.top = "-80px";
+    else navbar.style.top = "0";
     lastScrollY = window.scrollY;
   });
+});
 </script>
 </body>
 </html>
+
