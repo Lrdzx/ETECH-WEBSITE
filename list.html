@@ -66,28 +66,46 @@
   .page-wrapper.shifted { margin-right:250px; } /* same as side menu width */
 
   /* ===== MEMBER ROULETTE ===== */
-  .members-container {
-    position:fixed; top:80px; bottom:0; left:0; right:0;
-    overflow-y:scroll; display:flex; flex-direction:column; align-items:center;
-    padding:2rem 0; gap:2rem; perspective:1000px;
-  }
-  .members-container::-webkit-scrollbar { display:none; }
-  .member-title { font-size:3rem; font-weight:700; margin-bottom:2rem; text-align:center; color:#00bfff; }
-  .member {
-    width: 90%;               /* ensures the member div is centered in the container */
-    max-width: 1200px;        /* optional, prevents stretching on huge screens */
-    font-size: 8vw;
-    font-weight: 700;
-    text-align: center;
-    white-space: nowrap;
-    padding: 1rem 2rem;
-    border-radius: 20px;
-    backdrop-filter: blur(8px);
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(0,191,255,0.2);
-    transition: transform 0.2s, opacity 0.2s;
-    margin: 0 auto;           /* ensures horizontal centering */
-   }
+.members-container {
+  position:fixed;
+  top:80px; bottom:0; left:0; right:0;
+  overflow-y:scroll;
+  display:flex;
+  flex-direction:column;
+  align-items:center;          /* center horizontally */
+  padding:2rem 1rem;          /* reduce horizontal padding */
+  gap:2rem;
+  perspective:1000px;
+  width: 100%;                /* ensures container spans viewport */
+  box-sizing: border-box;
+}
+
+.member-title {
+  font-size:3rem;
+  font-weight:700;
+  margin-bottom:2rem;
+  text-align:center;
+  color:#00bfff;
+}
+
+.member {
+  width: 100%;                /* span full container width */
+  max-width: 1200px;          /* prevent over-expanding on huge screens */
+  font-size:8vw;
+  font-weight:700;
+  text-align:center;
+  white-space: nowrap;
+  padding:1rem 2rem;
+  border-radius:20px;
+  backdrop-filter:blur(8px);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(0,191,255,0.2);
+  transition: transform 0.2s, opacity 0.2s;
+  box-sizing: border-box;
+  margin: 0 auto;             /* horizontal centering */
+  overflow: hidden;           /* prevents scaling from overflowing */
+}
+
 
 </style>
 </head>
@@ -195,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
