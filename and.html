@@ -135,32 +135,6 @@
     .page-wrapper { transition: margin-right 0.3s ease; }
     .page-wrapper.shifted { margin-right: 250px; }
 
-    /* ===== HERO / VIDEO ===== */
-    .hero {
-      position: relative;
-      height: 50vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
-      border-bottom: 1px solid white;
-      margin-bottom: 2rem;
-    }
-    .hero video {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      filter: grayscale(100%) brightness(0.55);
-      z-index: -1;
-    }
-    .hero-content { z-index: 1; padding: 2rem; }
-    .hero-content p { font-size: 1.2rem; color: #00bfff; letter-spacing: 2px; }
-    .hero-content h1 { font-size: 3rem; font-weight: 700; letter-spacing: 2px; }
-
     /* ===== SECTIONS ===== */
     .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
@@ -231,17 +205,6 @@
 
   <!-- Page Wrapper -->
   <div class="page-wrapper" id="pageWrapper">
-
-    <!-- Hero / Video Section -->
-    <section class="hero">
-      <video autoplay muted loop>
-        <source src="tech.mp4" type="video/mp4">
-      </video>
-      <div class="hero-content">
-        <p>EMPOWERMENT TECHNOLOGY</p>
-        <h1>BOOLEAN AND OPERATOR</h1>
-      </div>
-    </section>
 
     <!-- ===== CONTENT SECTIONS ===== -->
     <div class="sections">
@@ -342,6 +305,3 @@
   </script>
 </body>
 </html>
-
-
-
