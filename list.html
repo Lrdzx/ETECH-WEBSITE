@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>"OR" Operator</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter','Roboto',Arial,sans-serif; background:#000; color:white; min-height:100vh; overflow-x:hidden; padding-top:80px; }
+
+  /* ===== NAVBAR ===== */
+  nav {
+    width:100%; position:fixed; top:0; left:0; z-index:900;
+    background:rgba(0,0,0,0.9); border-bottom:1px solid #ffffff;
+    display:flex; justify-content:space-between; align-items:center; height:80px; padding:0 2rem;
+    transition:top 0.3s;
+  }
+  .logo { display:flex; align-items:center; gap:10px; }
+  .logo img { height:50px; }
+  .hamburger {
+    font-size:1rem; color:white; cursor:pointer; background:#222; border:none; outline:none;
+    display:flex; align-items:center; gap:8px; justify-content:center; padding:10px 16px; border-radius:8px;
+    transition:background 0.3s, transform 0.1s; z-index:1001;
+  }
+  .hamburger i { font-size:1.4rem; color:#00bfff; }
+  .hamburger span { font-weight:600; letter-spacing:1px; }
+  .hamburger:hover { background:#444; }
+  .hamburger:active { transform:scale(0.95); }
+
+  /* ===== SIDE MENU ===== */
+  .side-menu {
+    position:fixed; top:0; right:-250px; width:250px; height:100%; background:#111;
+    display:flex; flex-direction:column; padding:2rem; transition:right 0.3s ease; z-index:1000; overflow-y:auto;
+  }
+  .side-menu.active { right:0; }
+  .side-menu a {
+    text-decoration:none; color:white; font-weight:500; letter-spacing:1px;
+    padding:12px 18px; border-radius:8px; margin:5px 0; display:flex; align-items:center; gap:8px;
+    background:linear-gradient(135deg,#232526,#414345); transition:all 0.3s ease;
+  }
+  .side-menu a:hover {
+    background:linear-gradient(135deg,#00bfff,#87cefa); color:#222; transform:scale(1.05); 
+    box-shadow:0 4px 16px rgba(0,191,255,0.18);
+  }
+  .classification { margin-top:2rem; border-top:1px solid #444; padding-top:1rem; }
+  .classification h3 { font-size:1rem; font-weight:700; margin-bottom:0.8rem; color:#00bfff; }
+  .classification p { font-size:0.9rem; margin-bottom:0.5rem; }
+
+  /* ===== OVERLAY ===== */
+  .overlay { position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); opacity:0; visibility:hidden; transition:opacity 0.3s ease; z-index:999; }
+  .overlay.active { opacity:1; visibility:visible; }
+
+  /* Shift page wrapper when menu opens */
+  .page-wrapper { transition:margin-right 0.3s ease; }
+  .page-wrapper.shifted { margin-right:250px; } /* same as side menu width */
+
+  /* ===== MEMBER ROULETTE ===== */
+  .members-container {
+    position:fixed; top:80px; bottom:0; left:0; right:0;
+    overflow-y:scroll; display:flex; flex-direction:column; align-items:center;
+    padding:2rem 0; gap:2rem; perspective:1000px;
+  }
+  .members-container::-webkit-scrollbar { display:none; }
+  .member-title { font-size:3rem; font-weight:700; margin-bottom:2rem; text-align:center; color:#00bfff; }
+  .member {
+    font-size:8vw; font-weight:700; text-align:center; white-space:nowrap;
+    max-width:90%; padding:1rem 2rem; border-radius:20px; backdrop-filter:blur(8px);
+    background:rgba(255,255,255,0.05); border:1px solid rgba(0,191,255,0.2);
+    transition: transform 0.2s, opacity 0.2s;
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">
+    <img src="deped.png" alt="DepEd Logo">
+    <img src="logo.png" alt="Logo">
+  </div>
+  <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i><span>Menu</span></button>
+</nav>
+
+<div class="side-menu" id="sideMenu">
+  <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="And.html"><i class="fa-solid fa-link"></i> AND</a>
+  <a href="Or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+  <a href="Not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+  <a href="list.html"><i class="fa-solid fa-list"></i> Members</a>
+
+  <div class="classification">
+    <h3>Classification</h3>
+    <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+    <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+    <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"></div>
+
+<div class="page-wrapper" id="pageWrapper">
+  <div class="members-container" id="membersContainer">
+    <div class="member-title">MEMBER LIST</div>
+    <div class="member">Member 1</div>
+    <div class="member">Member 2</div>
+    <div class="member">Member 3</div>
+    <div class="member">Member 4</div>
+    <div class="member">Member 5</div>
+    <div class="member">Member 6</div>
+    <div class="member">Member 7</div>
+    <div class="member">Member 8</div>
+    <div class="member">Member 9</div>
+    <div class="member">Member 10</div>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+  const hamburger = document.getElementById("hamburger");
+  const sideMenu = document.getElementById("sideMenu");
+  const pageWrapper = document.getElementById("pageWrapper");
+  const overlay = document.getElementById("overlay");
+  const membersContainer = document.getElementById('membersContainer');
+
+  // Hamburger toggle
+  hamburger.addEventListener("click", () => {
+    sideMenu.classList.toggle("active");
+    pageWrapper.classList.toggle("shifted");
+    overlay.classList.toggle("active");
+    const icon = hamburger.querySelector("i");
+    icon.classList.toggle("fa-bars");
+    icon.classList.toggle("fa-xmark");
+  });
+
+  overlay.addEventListener("click", () => {
+    sideMenu.classList.remove("active");
+    pageWrapper.classList.remove("shifted");
+    overlay.classList.remove("active");
+    hamburger.querySelector("i").classList.remove("fa-xmark");
+    hamburger.querySelector("i").classList.add("fa-bars");
+  });
+
+  // Navbar hide on scroll inside members container
+  const navbar = document.querySelector("nav");
+  let lastScroll = membersContainer.scrollTop;
+  membersContainer.addEventListener('scroll', () => {
+    if(membersContainer.scrollTop > lastScroll) navbar.style.top="-80px";
+    else navbar.style.top="0";
+    lastScroll = membersContainer.scrollTop;
+  });
+
+  // Member roulette effect
+  const members = document.querySelectorAll('.member');
+  function updateRoulette(){
+    const containerRect = membersContainer.getBoundingClientRect();
+    const centerY = (containerRect.top + containerRect.bottom)/2;
+    const maxDist = containerRect.height/2;
+
+    members.forEach(member=>{
+      const rect = member.getBoundingClientRect();
+      const memberCenter = (rect.top + rect.bottom)/2;
+      const dist = Math.abs(centerY - memberCenter)/maxDist;
+      const scale = 0.5 + 0.5*Math.cos(dist*Math.PI/2);
+      const opacity = 0.3 + 0.7*Math.cos(dist*Math.PI/2);
+      member.style.transform = `scale(${scale})`;
+      member.style.opacity = opacity;
+    });
+  }
+
+  updateRoulette();
+  membersContainer.addEventListener('scroll', updateRoulette);
+  window.addEventListener('resize', updateRoulette);
+});
+</script>
+
+</body>
+</html>
