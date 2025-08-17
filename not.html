@@ -9,11 +9,10 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
-    /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #181818;
+      background: #000;
       color: white;
       min-height: 100vh;
       overflow-x: hidden;
@@ -116,7 +115,7 @@
     .page-wrapper { transition: margin-right 0.3s ease; }
     .page-wrapper.shifted { margin-right: 250px; }
 
-    /* ===== SECTIONS ===== */
+    /* ===== CONTENT ===== */
     .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
       display: flex; gap: 2rem; align-items: center;
@@ -131,7 +130,8 @@
     }
     .section.visible { opacity: 1; transform: translateY(0); }
     .section img {
-      width: 300px;
+      max-width: 280px;
+      width: 100%;
       border-radius: 10px;
       box-shadow: 0 4px 16px rgba(0,191,255,0.2);
     }
@@ -148,20 +148,25 @@
     .section ul { padding-left: 1.2rem; }
     .section:nth-child(even) { flex-direction: row-reverse; }
 
-    /* CODE STYLING */
+    @media (max-width: 900px) {
+      .sections { padding: 2rem 5%; }
+      .section { flex-direction: column !important; text-align: center; }
+      .section img { max-width: 100%; }
+    }
+
     code { color: #00bfff; background: #222; padding: 2px 4px; border-radius: 4px; }
+
+    /* ===== FIX PRE BLOCK ===== */
     pre {
       background: #111;
       padding: 1rem;
       border-radius: 8px;
       overflow-x: auto;
-      border: 1px solid #00bfff33;
-    }
-
-    @media (max-width: 900px) {
-      .sections { padding: 2rem 5%; }
-      .section { flex-direction: column !important; text-align: center; }
-      .section img { width: 100%; }
+      white-space: pre-wrap;
+      word-break: break-word;
+      color: #e0e0e0;
+      font-size: 0.9rem;
+      line-height: 1.4;
     }
   </style>
 </head>
@@ -199,8 +204,8 @@
   <!-- ===== PAGE WRAPPER ===== -->
   <div class="page-wrapper" id="pageWrapper">
 
-    <!-- Video Section -->
-    <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
+    <!-- Video Section (FIXED) -->
+    <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
         <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">NOT</span> Operator in Action</h2>
         <p style="text-align:center;">
             <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=68s" target="_blank" style="color:#00bfff; text-decoration:underline;">
