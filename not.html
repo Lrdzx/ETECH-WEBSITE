@@ -9,13 +9,15 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
       font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #181818;
+      background: #000;
       color: white;
       min-height: 100vh;
+      overflow-x: hidden;
       padding-top: 80px;
+      transition: transform 0.3s ease;
     }
 
     /* ===== NAVBAR ===== */
@@ -26,256 +28,273 @@
       top: 0; left: 0;
       z-index: 900;
       border-bottom: 1px solid white;
-      transition: transform 0.3s ease-in-out;
-    }
-    nav.hidden { transform: translateY(-100%); }
-
-    .nav-container {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
+      align-items: center;
       height: 80px;
-      flex-wrap: wrap;
+      padding: 0 2rem;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo img { height: 50px; }
 
-    .nav-center { flex: 1; display: flex; justify-content: flex-end; }
-    .nav-center ul {
-      list-style: none;
+    /* ===== HAMBURGER ===== */
+    .hamburger {
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      background: #222;
+      border: none;
+      outline: none;
       display: flex;
-      gap: 1.5rem;
-      margin: 0; padding: 0;
       align-items: center;
-      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      transition: background 0.3s, transform 0.1s;
+      padding: 10px 16px;
+      border-radius: 8px;
+      z-index: 1001;
     }
-    .nav-center ul li { position: relative; }
+    .hamburger i { font-size: 1.4rem; color: #00bfff; }
+    .hamburger span { font-weight: 600; letter-spacing: 1px; }
+    .hamburger:hover { background: #444; }
+    .hamburger:active { transform: scale(0.95); }
 
-    .nav-center ul li a {
+    /* ===== SIDE MENU ===== */
+    .side-menu {
+      position: fixed;
+      top: 0; right: -250px;
+      width: 250px; height: 100%;
+      background: #111;
+      display: flex; flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    .side-menu.active { right: 0; }
+    .side-menu a {
       text-decoration: none;
       color: white;
       font-weight: 500;
       letter-spacing: 1px;
-      padding: 8px 18px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 5px 0;
+      display: flex; align-items: center; gap: 8px;
       background: linear-gradient(135deg, #232526, #414345);
+      transition: all 0.3s ease;
     }
-    .nav-center ul li a i { font-size: 1.1em; }
-    .nav-center ul li a:hover {
+    .side-menu a:hover {
       background: linear-gradient(135deg,#00bfff,#87cefa);
       color: #222;
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 4px 16px rgba(0,191,255,0.18);
     }
 
-    /* ===== DROPDOWN ===== */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 110%;
-      left: 0;
-      background: #111;
-      border: 1px solid #ffffff33;
-      border-radius: 8px;
-      flex-direction: column;
-      min-width: 180px;
-      z-index: 1000;
+    /* ===== CLASSIFICATION ===== */
+    .classification {
+      margin-top: 2rem;
+      border-top: 1px solid #444;
+      padding-top: 1rem;
     }
-    .dropdown-menu a {
-      border-radius: 0;
-      margin: 3px;
-    }
-    .nav-center ul li:hover .dropdown-menu {
-      display: flex;
-    }
+    .classification h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: #00bfff; }
+    .classification p { font-size: 0.9rem; margin-bottom: 0.5rem; }
 
-    /* Hamburger */
-    .hamburger {
-      font-size: 1.8rem;
-      color: #00bfff;
-      cursor: pointer;
-      background: #000000cc;
-      border: none; outline: none;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s;
-      position: fixed; top: 20px; right: 20px;
-      z-index: 1001;
-      padding: 8px 12px; border-radius: 8px;
+    /* ===== OVERLAY ===== */
+    .overlay {
+      position: fixed; top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0; visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 999;
     }
-    .hamburger:hover { transform: scale(1.2); color: #87cefa; }
+    .overlay.active { opacity: 1; visibility: visible; }
 
-    @media (max-width: 900px) {
-      .nav-container { flex-direction: row; justify-content: space-between; }
-      .nav-center { display: none; width: 100%; margin-top: 10px; }
-      .nav-center.active { display: flex; justify-content: center; }
-      .nav-center ul { flex-direction: column; gap: 1rem; width: 100%; }
-      .nav-center ul li a { justify-content: center; width: 100%; }
-      .dropdown-menu {
-        position: static;
-        border: none;
-        background: transparent;
-      }
-      .dropdown-menu a { width: 100%; justify-content: center; }
-    }
+    /* ===== PAGE WRAPPER ===== */
+    .page-wrapper { transition: margin-right 0.3s ease; }
+    .page-wrapper.shifted { margin-right: 250px; }
 
-    /* ===== CONTENT SECTIONS ===== */
+    /* ===== CONTENT ===== */
     .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
       display: flex; gap: 2rem; align-items: center;
       flex-wrap: wrap;
-      border: 1px solid white;
+      border: 1px solid #ffffff33;
       padding: 2rem;
       border-radius: 10px;
-      background: rgba(20, 20, 30, 0.7);
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
       opacity: 0; transform: translateY(20px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
     .section.visible { opacity: 1; transform: translateY(0); }
     .section img {
-      max-width: 220px;
+      max-width: 280px;
       width: 100%;
       border-radius: 10px;
-      border:1px solid #00bfff;
+      box-shadow: 0 4px 16px rgba(0,191,255,0.2);
     }
     .section .text { max-width: 600px; }
-    .section h2 { margin-bottom: 1rem; font-size: 1.8rem; color: #00bfff; letter-spacing: 1px; }
+    .section h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg,#00bfff,#87cefa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
     .section p, .section li { line-height: 1.6; color: #e0e0e0; }
     .section ul { padding-left: 1.2rem; }
     .section:nth-child(even) { flex-direction: row-reverse; }
 
     @media (max-width: 900px) {
+      .sections { padding: 2rem 5%; }
       .section { flex-direction: column !important; text-align: center; }
       .section img { max-width: 100%; }
-      .sections { padding: 2rem 5%; }
     }
 
     code { color: #00bfff; background: #222; padding: 2px 4px; border-radius: 4px; }
   </style>
 </head>
 <body>
-
-<!-- ===== NAVBAR ===== -->
-<nav id="navbar">
-  <div class="nav-container">
+  <!-- ===== NAVBAR ===== -->
+  <nav>
     <div class="logo">
       <img src="deped.png" alt="DepEd Logo">
       <img src="logo.png" alt="Logo">
     </div>
-    <div class="nav-center" id="nav-links">
-      <ul>
-        <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-        <li>
-          <a href="#"><i class="fa-solid fa-list"></i>Operators <i class="fa-solid fa-caret-down"></i></a>
-          <div class="dropdown-menu">
-            <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-            <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-            <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-          </div>
-        </li>
-      </ul>
+    <button class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- ===== SIDE MENU ===== -->
+  <div class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+
+    <div class="classification">
+      <h3>Classification</h3>
+      <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+      <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+      <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
     </div>
   </div>
-</nav>
 
-<!-- Hamburger always visible -->
-<button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
 
-<!-- ===== MAIN CONTENT ===== -->
-<div class="sections">
+  <!-- ===== PAGE WRAPPER ===== -->
+  <div class="page-wrapper" id="pageWrapper">
 
-  <!-- Video Section -->
-  <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-    <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">NOT</span> Operator in Action</h2>
-    <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=30s" target="_blank" style="color:#00bfff;text-decoration:underline;">
-      ▶️ Watch 1:08–1:37 – Boolean <strong>NOT</strong> demonstration on YouTube
-    </a>
-    <div style="width:100%; display:flex; justify-content:center; margin-top:1rem;">
-      <div style="max-width:560px; width:100%;">
-        <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=68" title="YouTube video player" frameborder="0" allowfullscreen style="border-radius:10px;border:1px solid #00bfff;"></iframe>
+    <!-- Video Section -->
+    <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
+      <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">NOT</span> Operator in Action</h2>
+      <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=30s" target="_blank" style="color:#00bfff;text-decoration:underline;">
+        ▶️ Watch 1:08–1:37 – Boolean <strong>NOT</strong> demonstration on YouTube
+      </a>
+      <div style="width:100%; display:flex; justify-content:center; margin-top:1rem;">
+        <div style="max-width:560px; width:100%;">
+          <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=68" title="YouTube video player" frameborder="0" allowfullscreen style="border-radius:10px;border:1px solid #00bfff;"></iframe>
+        </div>
       </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Explanation Sections -->
-  <div class="section">
-    <img src="not-logic.png" alt="NOT Logic Diagram">
-    <div class="text">
-      <h2>What is the "NOT" Operator?</h2>
-      <p>The "NOT" operator is a logical operator that reverses the truth value of a condition or statement. If the condition is true, applying NOT makes it false, and if it is false, it becomes true.</p>
-      <p>It is commonly used in programming and Boolean logic to exclude specific results or conditions.</p>
-    </div>
-  </div>
+    <!-- Explanation Sections -->
+    <div class="sections">
+      <div class="section">
+        <img src="not-logic.png" alt="NOT Logic Diagram">
+        <div class="text">
+          <h2>What is the "NOT" Operator?</h2>
+          <p>The "NOT" operator is a logical operator that reverses the truth value of a condition or statement. If the condition is true, applying NOT makes it false, and if it is false, it becomes true.</p>
+          <p>It is commonly used in programming and Boolean logic to exclude specific results or conditions.</p>
+        </div>
+      </div>
 
-  <div class="section">
-    <img src="not-purpose.png" alt="Purpose Illustration">
-    <div class="text">
-      <h2>Purpose of the "NOT" Operator</h2>
-      <p>The purpose of the NOT operator is to negate or invert a condition’s truth value. It helps in filtering out unwanted results or ensuring that certain conditions are explicitly not true.</p>
-      <p>In logic and programming, it is useful for creating precise conditions by excluding specific cases.</p>
-    </div>
-  </div>
+      <div class="section">
+        <img src="not-purpose.png" alt="Purpose Illustration">
+        <div class="text">
+          <h2>Purpose of the "NOT" Operator</h2>
+          <p>The purpose of the NOT operator is to negate or invert a condition’s truth value. It helps in filtering out unwanted results or ensuring that certain conditions are explicitly not true.</p>
+          <p>In logic and programming, it is useful for creating precise conditions by excluding specific cases.</p>
+        </div>
+      </div>
 
-  <div class="section">
-    <img src="not-examples.png" alt="Examples Illustration">
-    <div class="text">
-      <h2>Examples</h2>
-      <ul>
-        <li><strong>Boolean logic:</strong> Condition: True → NOT True = False</li>
-        <li>Condition: False → NOT False = True</li>
-      </ul>
-      <p><strong>Programming example (Python):</strong></p>
-      <pre style="color:#e0e0e0;">
+      <div class="section">
+        <img src="not-examples.png" alt="Examples Illustration">
+        <div class="text">
+          <h2>Examples</h2>
+          <ul>
+            <li><strong>Boolean logic:</strong> Condition: True → NOT True = False</li>
+            <li>Condition: False → NOT False = True</li>
+          </ul>
+          <p><strong>Programming example (Python):</strong></p>
+          <pre style="color:#e0e0e0;">
 x = 5
 if not (x > 10):
     print("x is NOT greater than 10")  # Output: x is NOT greater than 10
-      </pre>
-      <p><strong>Search query example:</strong> Searching for <code>cats NOT dogs</code> will show results about cats but exclude any that mention dogs.</p>
+          </pre>
+          <p><strong>Search query example:</strong> Searching for <code>cats NOT dogs</code> will show results about cats but exclude any that mention dogs.</p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- ===== SCRIPTS ===== -->
-<script>
-  // Fade-in effect
-  document.addEventListener("DOMContentLoaded", function () {
-    const sections = document.querySelectorAll('.section');
-    const observer = new IntersectionObserver(entries => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('visible');
-          observer.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.15 });
-    sections.forEach(section => observer.observe(section));
-  });
+  <!-- ===== SCRIPTS ===== -->
+  <script>
+    // Fade-in sections
+    document.addEventListener("DOMContentLoaded", function () {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      sections.forEach(section => observer.observe(section));
+    });
 
-  // Hamburger toggle
-  const hamburger = document.getElementById("hamburger");
-  const nav = document.getElementById("navbar");
-  const navLinks = document.getElementById("nav-links");
+    // Menu toggle
+    const hamburger = document.getElementById("hamburger");
+    const sideMenu = document.getElementById("sideMenu");
+    const pageWrapper = document.getElementById("pageWrapper");
+    const overlay = document.getElementById("overlay");
 
-  hamburger.addEventListener("click", () => {
-    nav.classList.toggle("hidden");
-    navLinks.classList.toggle("active");
-    const icon = hamburger.querySelector("i");
-    if (nav.classList.contains("hidden")) {
-      icon.classList.remove("fa-bars");
-      icon.classList.add("fa-xmark");
-    } else {
+    function closeMenu() {
+      sideMenu.classList.remove("active");
+      pageWrapper.classList.remove("shifted");
+      overlay.classList.remove("active");
+      const icon = hamburger.querySelector("i");
       icon.classList.remove("fa-xmark");
       icon.classList.add("fa-bars");
     }
-  });
-</script>
 
+    hamburger.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+      pageWrapper.classList.toggle("shifted");
+      overlay.classList.toggle("active");
+
+      const icon = hamburger.querySelector("i");
+      if (sideMenu.classList.contains("active")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+      } else {
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
+
+    // Close menu when overlay or link clicked
+    overlay.addEventListener("click", closeMenu);
+    document.querySelectorAll(".side-menu a").forEach(link => {
+      link.addEventListener("click", closeMenu);
+    });
+  </script>
 </body>
 </html>
