@@ -74,11 +74,21 @@
   .members-container::-webkit-scrollbar { display:none; }
   .member-title { font-size:3rem; font-weight:700; margin-bottom:2rem; text-align:center; color:#00bfff; }
   .member {
-    font-size:8vw; font-weight:700; text-align:center; white-space:nowrap;
-    max-width:90%; padding:1rem 2rem; border-radius:20px; backdrop-filter:blur(8px);
-    background:rgba(255,255,255,0.05); border:1px solid rgba(0,191,255,0.2);
+    width: 90%;               /* ensures the member div is centered in the container */
+    max-width: 1200px;        /* optional, prevents stretching on huge screens */
+    font-size: 8vw;
+    font-weight: 700;
+    text-align: center;
+    white-space: nowrap;
+    padding: 1rem 2rem;
+    border-radius: 20px;
+    backdrop-filter: blur(8px);
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(0,191,255,0.2);
     transition: transform 0.2s, opacity 0.2s;
-  }
+    margin: 0 auto;           /* ensures horizontal centering */
+   }
+
 </style>
 </head>
 <body>
@@ -185,6 +195,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
