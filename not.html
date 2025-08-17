@@ -9,10 +9,11 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
   <style>
+    /* ===== RESET ===== */
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #000;
+      background: #181818;
       color: white;
       min-height: 100vh;
       overflow-x: hidden;
@@ -115,7 +116,7 @@
     .page-wrapper { transition: margin-right 0.3s ease; }
     .page-wrapper.shifted { margin-right: 250px; }
 
-    /* ===== CONTENT ===== */
+    /* ===== SECTIONS ===== */
     .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
       display: flex; gap: 2rem; align-items: center;
@@ -130,8 +131,7 @@
     }
     .section.visible { opacity: 1; transform: translateY(0); }
     .section img {
-      max-width: 280px;
-      width: 100%;
+      width: 300px;
       border-radius: 10px;
       box-shadow: 0 4px 16px rgba(0,191,255,0.2);
     }
@@ -148,13 +148,21 @@
     .section ul { padding-left: 1.2rem; }
     .section:nth-child(even) { flex-direction: row-reverse; }
 
+    /* CODE STYLING */
+    code { color: #00bfff; background: #222; padding: 2px 4px; border-radius: 4px; }
+    pre {
+      background: #111;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #00bfff33;
+    }
+
     @media (max-width: 900px) {
       .sections { padding: 2rem 5%; }
       .section { flex-direction: column !important; text-align: center; }
-      .section img { max-width: 100%; }
+      .section img { width: 100%; }
     }
-
-    code { color: #00bfff; background: #222; padding: 2px 4px; border-radius: 4px; }
   </style>
 </head>
 <body>
@@ -193,15 +201,17 @@
 
     <!-- Video Section -->
     <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-      <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">NOT</span> Operator in Action</h2>
-      <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=30s" target="_blank" style="color:#00bfff;text-decoration:underline;">
-        ▶️ Watch 1:08–1:37 – Boolean <strong>NOT</strong> demonstration on YouTube
-      </a>
-      <div style="width:100%; display:flex; justify-content:center; margin-top:1rem;">
-        <div style="max-width:560px; width:100%;">
-          <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=68" title="YouTube video player" frameborder="0" allowfullscreen style="border-radius:10px;border:1px solid #00bfff;"></iframe>
+        <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">NOT</span> Operator in Action</h2>
+        <p style="text-align:center;">
+            <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=68s" target="_blank" style="color:#00bfff; text-decoration:underline;">
+                ▶️ Watch 1:08–1:37 – Boolean <strong>NOT</strong> demonstration on YouTube
+            </a>
+        </p>
+        <div style="width:100%; display:flex; justify-content:center;">
+            <div style="max-width:560px; width:100%;">
+                <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=68&end=97" title="Boolean NOT Operator Example" frameborder="0" allowfullscreen style="margin-top:1rem; border-radius:10px; border:1px solid #00bfff;"></iframe>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- Explanation Sections -->
@@ -233,7 +243,7 @@
             <li>Condition: False → NOT False = True</li>
           </ul>
           <p><strong>Programming example (Python):</strong></p>
-          <pre style="color:#e0e0e0;">
+          <pre>
 x = 5
 if not (x > 10):
     print("x is NOT greater than 10")  # Output: x is NOT greater than 10
