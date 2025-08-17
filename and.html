@@ -13,7 +13,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
       font-family: 'Inter','Roboto',Arial,sans-serif;
-      background: #000000;
+      background: #000; /* overall black background */
       color: white;
       min-height: 100vh;
       overflow-x: hidden;
@@ -68,7 +68,7 @@
       right: -250px;
       width: 250px;
       height: 100%;
-      background: #000000;
+      background: #111;
       display: flex;
       flex-direction: column;
       padding: 2rem;
@@ -88,7 +88,7 @@
       display: flex;
       align-items: center;
       gap: 8px;
-      background: #111; /* black-ish */
+      background: linear-gradient(135deg, #232526, #414345);
       transition: all 0.3s ease;
     }
     .side-menu a:hover {
@@ -104,8 +104,16 @@
       border-top: 1px solid #444;
       padding-top: 1rem;
     }
-    .classification h3 { font-size: 1rem; font-weight: 700; margin-bottom: 0.8rem; color: #00bfff; }
-    .classification p { font-size: 0.9rem; margin-bottom: 0.5rem; }
+    .classification h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #00bfff;
+    }
+    .classification p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
 
     /* ===== OVERLAY ===== */
     .overlay {
@@ -118,7 +126,10 @@
       transition: opacity 0.3s ease;
       z-index: 999;
     }
-    .overlay.active { opacity: 1; visibility: visible; }
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
 
     /* ===== PAGE WRAPPER ===== */
     .page-wrapper { transition: margin-right 0.3s ease; }
@@ -126,7 +137,6 @@
 
     /* ===== SECTIONS ===== */
     .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
-
     .section {
       display: flex;
       gap: 2rem;
@@ -135,7 +145,7 @@
       border: 1px solid #ffffff33;
       padding: 2rem;
       border-radius: 10px;
-      background: #000000; /* black */
+      background: rgba(255,255,255,0.05);
       backdrop-filter: blur(8px);
       opacity: 0;
       transform: translateY(20px);
@@ -154,22 +164,6 @@
     }
     .section p { line-height: 1.6; color: #e0e0e0; }
     .section:nth-child(even) { flex-direction: row-reverse; }
-
-    /* ===== VIDEO SECTION ===== */
-    .video-section {
-      flex-direction: column;
-      align-items: center;
-      background: #000000; /* black */
-      border: 1px solid #00bfff;
-      border-radius: 14px;
-      padding: 2rem;
-      box-shadow: 0 4px 32px rgba(0,191,255,0.1);
-      text-align: center;
-    }
-    .video-section h2 span { color: #00bfff; }
-    .video-section a { color: #00bfff; text-decoration: underline; }
-    .video-wrapper { max-width: 560px; width: 100%; margin-top: 1rem; }
-    .video-wrapper iframe { width: 100%; border-radius: 10px; border: 1px solid #00bfff; }
 
     @media (max-width: 900px) {
       .sections { padding: 2rem 5%; }
@@ -211,19 +205,21 @@
 
   <!-- Page Wrapper -->
   <div class="page-wrapper" id="pageWrapper">
+
+    <!-- ===== CONTENT SECTIONS ===== -->
     <div class="sections">
-      <!-- Video Section -->
-      <div class="section video-section">
-        <h2>Watch: Boolean <span>AND</span> Operator in Action</h2>
-        <p>
-          <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank">
-            ▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demonstration on YouTube
-          </a>
+      <!-- YouTube Video Demo -->
+      <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
+        <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
+        <p style="text-align:center;">
+          <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
         </p>
-        <div class="video-wrapper">
-          <iframe src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
+        <div style="width:100%; display:flex; justify-content:center;">
+          <div style="max-width:560px; width:100%;">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
         </div>
-      </div>
+      </section>
 
       <!-- What is AND -->
       <div class="section">
@@ -257,59 +253,66 @@
   </div>
 
   <!-- ===== JS ===== -->
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const sections = document.querySelectorAll('.section');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      sections.forEach(section => observer.observe(section));
-    });
+<script>
+  // ===================== FADE-IN SECTIONS =====================
+  document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    sections.forEach(section => observer.observe(section));
+  });
 
-    const hamburger = document.getElementById("hamburger");
-    const sideMenu = document.getElementById("sideMenu");
-    const pageWrapper = document.getElementById("pageWrapper");
-    const overlay = document.getElementById("overlay");
+  // ===================== MENU TOGGLE LOGIC =====================
+  const hamburger = document.getElementById("hamburger");
+  const sideMenu = document.getElementById("sideMenu");
+  const pageWrapper = document.getElementById("pageWrapper");
+  const overlay = document.getElementById("overlay");
 
-    function closeMenu() {
-      sideMenu.classList.remove("active");
-      pageWrapper.classList.remove("shifted");
-      overlay.classList.remove("active");
-      const icon = hamburger.querySelector("i");
+  function closeMenu() {
+    sideMenu.classList.remove("active");
+    pageWrapper.classList.remove("shifted");
+    overlay.classList.remove("active");
+    const icon = hamburger.querySelector("i");
+    icon.classList.remove("fa-xmark");
+    icon.classList.add("fa-bars");
+  }
+
+  hamburger.addEventListener("click", () => {
+    sideMenu.classList.toggle("active");
+    pageWrapper.classList.toggle("shifted");
+    overlay.classList.toggle("active");
+    const icon = hamburger.querySelector("i");
+    if (sideMenu.classList.contains("active")) {
+      icon.classList.remove("fa-bars");
+      icon.classList.add("fa-xmark");
+    } else {
       icon.classList.remove("fa-xmark");
       icon.classList.add("fa-bars");
     }
+  });
 
-    hamburger.addEventListener("click", () => {
-      sideMenu.classList.toggle("active");
-      pageWrapper.classList.toggle("shifted");
-      overlay.classList.toggle("active");
-      const icon = hamburger.querySelector("i");
-      if (sideMenu.classList.contains("active")) {
-        icon.classList.remove("fa-bars");
-        icon.classList.add("fa-xmark");
-      } else {
-        icon.classList.remove("fa-xmark");
-        icon.classList.add("fa-bars");
-      }
-    });
+  overlay.addEventListener("click", closeMenu);
+  document.querySelectorAll(".side-menu a").forEach(link => link.addEventListener("click", closeMenu));
 
-    overlay.addEventListener("click", closeMenu);
-    document.querySelectorAll(".side-menu a").forEach(link => link.addEventListener("click", closeMenu));
+  // ===================== NAVBAR SCROLL HIDE/SHOW =====================
+  const navbar = document.querySelector("nav");
+  navbar.style.transition = "top 0.3s"; // smooth transition
+  let lastScrollY = window.scrollY;
 
-    const navbar = document.querySelector("nav");
-    navbar.style.transition = "top 0.3s";
-    let lastScrollY = window.scrollY;
-    window.addEventListener("scroll", () => {
-      if (window.scrollY > lastScrollY) { navbar.style.top = "-80px"; } 
-      else { navbar.style.top = "0"; }
-      lastScrollY = window.scrollY;
-    });
-  </script>
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > lastScrollY) {
+      navbar.style.top = "-80px"; // hide navbar
+    } else {
+      navbar.style.top = "0"; // show navbar
+    }
+    lastScrollY = window.scrollY;
+  });
+</script>
 </body>
 </html>
