@@ -9,16 +9,18 @@
   <!-- Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <style>
+    /* ===== RESET ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
     body {
-      margin: 0;
-      font-family: 'Inter', 'Roboto', Arial, sans-serif;
+      font-family: 'Inter','Roboto',Arial,sans-serif;
       background: #181818;
       color: white;
       min-height: 100vh;
+      overflow-x: hidden;
       padding-top: 80px;
     }
 
-    /* ================= NAVBAR ================= */
+    /* ===== NAVBAR ===== */
     nav {
       width: 100%;
       background: #000000e6;
@@ -27,8 +29,9 @@
       left: 0;
       z-index: 900;
       border-bottom: 1px solid white;
+      transition: transform 0.3s ease-in-out;
     }
-
+    nav.hidden { transform: translateY(-100%); }
     .nav-container {
       display: flex;
       align-items: center;
@@ -40,23 +43,10 @@
       height: 80px;
       flex-wrap: wrap;
     }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { height: 50px; }
 
-    .logo {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .logo img {
-      height: 50px;
-    }
-
-    .nav-center {
-      flex: 1;
-      display: flex;
-      justify-content: flex-end;
-    }
-
+    .nav-center { flex: 1; display: flex; justify-content: flex-end; }
     .nav-center ul {
       list-style: none;
       display: flex;
@@ -66,7 +56,7 @@
       align-items: center;
       flex-wrap: wrap;
     }
-
+    .nav-center ul li { position: relative; }
     .nav-center ul li a {
       text-decoration: none;
       color: white;
@@ -80,19 +70,31 @@
       transition: all 0.3s ease;
       background: linear-gradient(135deg, #232526, #414345);
     }
-
-    .nav-center ul li a i {
-      font-size: 1.1em;
-    }
-
+    .nav-center ul li a i { font-size: 1.1em; }
     .nav-center ul li a:hover {
-      background: linear-gradient(135deg, #00bfff, #87cefa);
+      background: linear-gradient(135deg,#00bfff,#87cefa);
       color: #222;
       transform: scale(1.1);
       box-shadow: 0 4px 16px rgba(0,191,255,0.18);
     }
 
-    /* Hamburger Button */
+    /* ===== DROPDOWN ===== */
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 110%;
+      left: 0;
+      background: #111;
+      border: 1px solid #ffffff33;
+      border-radius: 8px;
+      flex-direction: column;
+      min-width: 180px;
+      z-index: 1000;
+    }
+    .dropdown-menu a { border-radius: 0; margin: 3px; }
+    .nav-center ul li:hover .dropdown-menu { display: flex; }
+
+    /* Hamburger */
     .hamburger {
       font-size: 1.8rem;
       color: #00bfff;
@@ -107,30 +109,29 @@
       position: fixed;
       top: 20px;
       right: 20px;
-      z-index: 1001; /* above navbar */
+      z-index: 1001;
       padding: 8px 12px;
       border-radius: 8px;
     }
+    .hamburger:hover { transform: scale(1.2); color: #87cefa; }
 
-    .hamburger:hover {
-      transform: scale(1.2);
-      color: #87cefa;
+    @media (max-width: 900px) {
+      .nav-container { flex-direction: row; justify-content: space-between; }
+      .nav-center { display: none; width: 100%; margin-top: 10px; }
+      .nav-center.active { display: flex; justify-content: center; }
+      .nav-center ul { flex-direction: column; gap: 1rem; width: 100%; }
+      .nav-center ul li a { justify-content: center; width: 100%; }
+      .dropdown-menu { position: static; border: none; background: transparent; }
+      .dropdown-menu a { width: 100%; justify-content: center; }
     }
 
-    @media (min-width: 901px) {
-      .hamburger {
-        display: none;
-      }
-    }
-
-    /* ================= SECTIONS ================= */
+    /* ===== SECTIONS ===== */
     .sections {
       padding: 4rem 10%;
       display: flex;
       flex-direction: column;
       gap: 4rem;
     }
-
     .section {
       display: flex;
       gap: 2rem;
@@ -139,83 +140,27 @@
       border: 1px solid white;
       padding: 2rem;
       border-radius: 10px;
-      background: rgba(20, 20, 30, 0.7);
+      background: rgba(20,20,30,0.7);
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
-
-    .section.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
+    .section.visible { opacity: 1; transform: translateY(0); }
     .section img {
       max-width: 220px;
       width: 100%;
-      height: auto;
       border-radius: 10px;
       border: 1px solid #00bfff;
     }
-
-    .section .text {
-      max-width: 600px;
-    }
-
-    .section h2 {
-      margin-bottom: 1rem;
-      font-size: 1.8rem;
-      color: #00bfff;
-      letter-spacing: 1px;
-    }
-
-    .section p {
-      line-height: 1.6;
-      color: #e0e0e0;
-    }
-
-    .section:nth-child(even) {
-      flex-direction: row-reverse;
-    }
+    .section .text { max-width: 600px; }
+    .section h2 { margin-bottom: 1rem; font-size: 1.8rem; color: #00bfff; }
+    .section p { line-height: 1.6; color: #e0e0e0; }
+    .section:nth-child(even) { flex-direction: row-reverse; }
 
     @media (max-width: 900px) {
-      .nav-container {
-        flex-direction: row;
-        justify-content: space-between;
-      }
-
-      .nav-center {
-        display: none;
-        width: 100%;
-        margin-top: 10px;
-      }
-
-      .nav-center.active {
-        display: flex;
-        justify-content: center;
-      }
-
-      .nav-center ul {
-        flex-direction: column;
-        gap: 1rem;
-        width: 100%;
-      }
-
-      .nav-center ul li a {
-        justify-content: center;
-        width: 100%;
-      }
-
-      .section {
-        flex-direction: column !important;
-        text-align: center;
-      }
-      .section img {
-        max-width: 100%;
-      }
-      .sections {
-        padding: 2rem 5%;
-      }
+      .section { flex-direction: column !important; text-align: center; }
+      .section img { max-width: 100%; }
+      .sections { padding: 2rem 5%; }
     }
   </style>
 </head>
@@ -225,36 +170,29 @@
     <div class="nav-container">
       <div class="logo">
         <img src="deped.png" alt="DepEd Logo">
-        <img src="logo.png" alt="Site Logo">
+        <img src="logo.png" alt="Logo">
       </div>
       <div class="nav-center" id="nav-links">
         <ul>
           <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-          <li><a href="and.html"><i class="fa-solid fa-link"></i>AND</a></li>
-          <li><a href="or.html"><i class="fa-solid fa-code-branch"></i>OR</a></li>
-          <li><a href="not.html"><i class="fa-solid fa-ban"></i>NOT</a></li>
+          <li>
+            <a href="#"><i class="fa-solid fa-list"></i>Operators <i class="fa-solid fa-caret-down"></i></a>
+            <div class="dropdown-menu">
+              <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+              <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+              <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+            </div>
+          </li>
         </ul>
       </div>
     </div>
   </nav>
 
-  <!-- Hamburger always visible on mobile -->
+  <!-- Hamburger -->
   <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
 
   <!-- CONTENT -->
   <div class="sections">
-    <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-      <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
-      <p style="text-align:center;">
-        <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=16s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:16–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
-      </p>
-      <div style="width:100%; display:flex; justify-content:center;">
-        <div style="max-width:560px; width:100%;">
-          <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=16" title="Boolean AND Operator Example" frameborder="0" allowfullscreen style="margin-top:1rem;border-radius:10px;border:1px solid #00bfff;"></iframe>
-        </div>
-      </div>
-    </section>
-
     <div class="section">
       <img src="and-logic.png" alt="AND Logic Diagram">
       <div class="text">
@@ -297,15 +235,15 @@
       sections.forEach(section => observer.observe(section));
     });
 
-    // Hamburger toggle (mobile)
+    // Hamburger toggle
     const hamburger = document.getElementById("hamburger");
+    const nav = document.getElementById("navbar");
     const navLinks = document.getElementById("nav-links");
-
     hamburger.addEventListener("click", () => {
+      nav.classList.toggle("hidden");
       navLinks.classList.toggle("active");
-
       const icon = hamburger.querySelector("i");
-      if (navLinks.classList.contains("active")) {
+      if (nav.classList.contains("hidden")) {
         icon.classList.remove("fa-bars");
         icon.classList.add("fa-xmark");
       } else {
@@ -316,8 +254,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
