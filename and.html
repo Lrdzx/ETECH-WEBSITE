@@ -18,6 +18,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       padding-top: 80px;
+      transition: transform 0.3s ease;
     }
 
     /* ===== NAVBAR ===== */
@@ -29,109 +30,139 @@
       left: 0;
       z-index: 900;
       border-bottom: 1px solid white;
-      transition: transform 0.3s ease-in-out;
-    }
-    nav.hidden { transform: translateY(-100%); }
-    .nav-container {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
+      align-items: center;
       height: 80px;
-      flex-wrap: wrap;
+      padding: 0 2rem;
     }
     .logo { display: flex; align-items: center; gap: 10px; }
     .logo img { height: 50px; }
 
-    .nav-center { flex: 1; display: flex; justify-content: flex-end; }
-    .nav-center ul {
-      list-style: none;
-      display: flex;
-      gap: 1.5rem;
-      margin: 0;
-      padding: 0;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    .nav-center ul li { position: relative; }
-    .nav-center ul li a {
-      text-decoration: none;
-      color: white;
-      font-weight: 500;
-      letter-spacing: 1px;
-      padding: 8px 18px;
-      border-radius: 50px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      transition: all 0.3s ease;
-      background: linear-gradient(135deg, #232526, #414345);
-    }
-    .nav-center ul li a i { font-size: 1.1em; }
-    .nav-center ul li a:hover {
-      background: linear-gradient(135deg,#00bfff,#87cefa);
-      color: #222;
-      transform: scale(1.1);
-      box-shadow: 0 4px 16px rgba(0,191,255,0.18);
-    }
-
-    /* ===== DROPDOWN ===== */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 110%;
-      left: 0;
-      background: #111;
-      border: 1px solid #ffffff33;
-      border-radius: 8px;
-      flex-direction: column;
-      min-width: 180px;
-      z-index: 1000;
-    }
-    .dropdown-menu a { border-radius: 0; margin: 3px; }
-    .nav-center ul li:hover .dropdown-menu { display: flex; }
-
-    /* Hamburger */
+    /* ===== MENU BUTTON ===== */
     .hamburger {
-      font-size: 1.8rem;
-      color: #00bfff;
+      font-size: 1rem;
+      color: white;
       cursor: pointer;
-      background: #000000cc;
+      background: #222;
       border: none;
       outline: none;
       display: flex;
       align-items: center;
+      gap: 8px;
       justify-content: center;
-      transition: transform 0.2s;
-      position: fixed;
-      top: 20px;
-      right: 20px;
-      z-index: 1001;
-      padding: 8px 12px;
+      transition: background 0.3s, transform 0.1s;
+      padding: 10px 16px;
       border-radius: 8px;
+      z-index: 1001;
     }
-    .hamburger:hover { transform: scale(1.2); color: #87cefa; }
+    .hamburger i { font-size: 1.4rem; color: #00bfff; }
+    .hamburger span { font-weight: 600; letter-spacing: 1px; }
+    .hamburger:hover { background: #444; }
+    .hamburger:active { transform: scale(0.95); }
 
-    @media (max-width: 900px) {
-      .nav-container { flex-direction: row; justify-content: space-between; }
-      .nav-center { display: none; width: 100%; margin-top: 10px; }
-      .nav-center.active { display: flex; justify-content: center; }
-      .nav-center ul { flex-direction: column; gap: 1rem; width: 100%; }
-      .nav-center ul li a { justify-content: center; width: 100%; }
-      .dropdown-menu { position: static; border: none; background: transparent; }
-      .dropdown-menu a { width: 100%; justify-content: center; }
-    }
-
-    /* ===== SECTIONS ===== */
-    .sections {
-      padding: 4rem 10%;
+    /* ===== SIDE MENU ===== */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: #111;
       display: flex;
       flex-direction: column;
-      gap: 4rem;
+      padding: 2rem;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
     }
+    .side-menu.active { right: 0; }
+    .side-menu a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #232526, #414345);
+      transition: all 0.3s ease;
+    }
+    .side-menu a:hover {
+      background: linear-gradient(135deg,#00bfff,#87cefa);
+      color: #222;
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0,191,255,0.18);
+    }
+
+    /* ===== CLASSIFICATION INSIDE MENU ===== */
+    .classification {
+      margin-top: 2rem;
+      border-top: 1px solid #444;
+      padding-top: 1rem;
+    }
+    .classification h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #00bfff;
+    }
+    .classification p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
+
+    /* ===== OVERLAY ===== */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+    }
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .page-wrapper { transition: margin-right 0.3s ease; }
+    .page-wrapper.shifted { margin-right: 250px; }
+
+    /* ===== HERO / VIDEO ===== */
+    .hero {
+      position: relative;
+      height: 50vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      border-bottom: 1px solid white;
+      margin-bottom: 2rem;
+    }
+    .hero video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) brightness(0.55);
+      z-index: -1;
+    }
+    .hero-content { z-index: 1; padding: 2rem; }
+    .hero-content p { font-size: 1.2rem; color: #00bfff; letter-spacing: 2px; }
+    .hero-content h1 { font-size: 3rem; font-weight: 700; letter-spacing: 2px; }
+
+    /* ===== SECTIONS ===== */
+    .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
       display: flex;
       gap: 2rem;
@@ -147,11 +178,7 @@
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
     .section.visible { opacity: 1; transform: translateY(0); }
-    .section img {
-      width: 300px;
-      border-radius: 10px;
-      box-shadow: 0 4px 16px rgba(0,191,255,0.2);
-    }
+    .section img { width: 300px; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,191,255,0.2); }
     .section .text { max-width: 600px; }
     .section h2 {
       font-size: 1.8rem;
@@ -163,6 +190,7 @@
     }
     .section p { line-height: 1.6; color: #e0e0e0; }
     .section:nth-child(even) { flex-direction: row-reverse; }
+
     @media (max-width: 900px) {
       .sections { padding: 2rem 5%; }
       .section { flex-direction: column !important; text-align: center; }
@@ -171,79 +199,98 @@
   </style>
 </head>
 <body>
-  <!-- NAVBAR -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <div class="logo">
-        <img src="deped.png" alt="DepEd Logo">
-        <img src="logo.png" alt="Logo">
-      </div>
-      <div class="nav-center" id="nav-links">
-        <ul>
-          <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-          <li>
-            <a href="#"><i class="fa-solid fa-list"></i>Operators <i class="fa-solid fa-caret-down"></i></a>
-            <div class="dropdown-menu">
-              <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-              <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-              <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <div class="logo">
+      <img src="deped.png" alt="DepEd Logo">
+      <img src="logo.png" alt="Logo">
     </div>
+    <button class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </button>
   </nav>
 
-  <!-- Hamburger -->
-  <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+  <!-- ===== SIDE MENU ===== -->
+  <div class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="And.html"><i class="fa-solid fa-link"></i> AND</a>
+    <a href="Or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+    <a href="Not.html"><i class="fa-solid fa-ban"></i> NOT</a>
 
-  <!-- CONTENT -->
-  <div class="sections">
-    <!-- Video Section -->
-    <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
-      <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
-      <p style="text-align:center;">
-        <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
-      </p>
-      <div style="width:100%; display:flex; justify-content:center;">
-        <div style="max-width:560px; width:100%;">
-            <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
+    <div class="classification">
+      <h3>Classification</h3>
+      <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+      <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+      <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
+    </div>
+  </div>
+
+  <!-- Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- Page Wrapper -->
+  <div class="page-wrapper" id="pageWrapper">
+
+    <!-- Hero / Video Section -->
+    <section class="hero">
+      <video autoplay muted loop>
+        <source src="tech.mp4" type="video/mp4">
+      </video>
+      <div class="hero-content">
+        <p>EMPOWERMENT TECHNOLOGY</p>
+        <h1>BOOLEAN AND OPERATOR</h1>
       </div>
     </section>
 
-    <!-- What is AND -->
-    <div class="section">
-      <img src="and-logic.png" alt="AND Logic Diagram">
-      <div class="text">
-        <h2>What is the "AND" Operator?</h2>
-        <p>The "AND" operator is a logical operator used to combine two or more conditions, returning true only if all conditions are true.</p>
-      </div>
-    </div>
+    <!-- ===== CONTENT SECTIONS ===== -->
+    <div class="sections">
+      <!-- YouTube Video Demo -->
+      <section style="margin-bottom: 2rem; display: flex; flex-direction: column; align-items: center; background: rgba(20,20,30,0.7); border: 1px solid #00bfff; border-radius: 14px; box-shadow: 0 4px 32px rgba(0,191,255,0.10); padding: 2rem;">
+        <h2 style="color:white; text-align:center;">Watch: Boolean <span style="color:#00bfff;">AND</span> Operator in Action</h2>
+        <p style="text-align:center;">
+          <a href="https://www.youtube.com/watch?v=NqLqEbFUKNk&t=10s" target="_blank" style="color:#00bfff;text-decoration:underline;">▶️ Watch 0:17–0:30 – Boolean <strong>AND</strong> demonstration on YouTube</a>
+        </p>
+        <div style="width:100%; display:flex; justify-content:center;">
+          <div style="max-width:560px; width:100%;">
+            <iframe width="100%" height="315" src="https://www.youtube.com/embed/NqLqEbFUKNk?start=10" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </section>
 
-    <!-- Purpose -->
-    <div class="section">
-      <img src="filter.png" alt="Filter Illustration">
-      <div class="text">
-        <h2>Purpose of "AND" Operator</h2>
-        <p>The AND operator is used to combine two or more logical conditions, requiring all of them to be met for the overall condition to be considered true.</p>
+      <!-- What is AND -->
+      <div class="section">
+        <img src="and-logic.png" alt="AND Logic Diagram">
+        <div class="text">
+          <h2>What is the "AND" Operator?</h2>
+          <p>The "AND" operator is a logical operator used to combine two or more conditions, returning true only if all conditions are true.</p>
+        </div>
       </div>
-    </div>
 
-    <!-- Examples -->
-    <div class="section">
-      <img src="search-example.png" alt="Search Example">
-      <div class="text">
-        <h2>Examples</h2>
-        <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both the words cats and dogs.</p>
-        <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true because both statements are true.</p>
-        <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects only records where both conditions are met.</p>
+      <!-- Purpose -->
+      <div class="section">
+        <img src="filter.png" alt="Filter Illustration">
+        <div class="text">
+          <h2>Purpose of "AND" Operator</h2>
+          <p>The AND operator is used to combine two or more logical conditions, requiring all of them to be met for the overall condition to be considered true.</p>
+        </div>
+      </div>
+
+      <!-- Examples -->
+      <div class="section">
+        <img src="search-example.png" alt="Search Example">
+        <div class="text">
+          <h2>Examples</h2>
+          <p><strong>Search Example:</strong> cats AND dogs → Finds only results containing both the words cats and dogs.</p>
+          <p><strong>Programming Example:</strong> (5 > 2) AND (3 < 4) → Returns true because both statements are true.</p>
+          <p><strong>Data Filtering Example:</strong> age > 18 AND country = "Philippines" → Selects only records where both conditions are met.</p>
+        </div>
       </div>
     </div>
   </div>
 
   <script>
-    // Fade-in effect
+    // Fade-in sections
     document.addEventListener("DOMContentLoaded", function () {
       const sections = document.querySelectorAll('.section');
       const observer = new IntersectionObserver(entries => {
@@ -257,15 +304,28 @@
       sections.forEach(section => observer.observe(section));
     });
 
-    // Hamburger toggle
+    // Menu toggle logic
     const hamburger = document.getElementById("hamburger");
-    const nav = document.getElementById("navbar");
-    const navLinks = document.getElementById("nav-links");
-    hamburger.addEventListener("click", () => {
-      nav.classList.toggle("hidden");
-      navLinks.classList.toggle("active");
+    const sideMenu = document.getElementById("sideMenu");
+    const pageWrapper = document.getElementById("pageWrapper");
+    const overlay = document.getElementById("overlay");
+
+    function closeMenu() {
+      sideMenu.classList.remove("active");
+      pageWrapper.classList.remove("shifted");
+      overlay.classList.remove("active");
       const icon = hamburger.querySelector("i");
-      if (nav.classList.contains("hidden")) {
+      icon.classList.remove("fa-xmark");
+      icon.classList.add("fa-bars");
+    }
+
+    hamburger.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+      pageWrapper.classList.toggle("shifted");
+      overlay.classList.toggle("active");
+
+      const icon = hamburger.querySelector("i");
+      if (sideMenu.classList.contains("active")) {
         icon.classList.remove("fa-bars");
         icon.classList.add("fa-xmark");
       } else {
@@ -273,7 +333,14 @@
         icon.classList.add("fa-bars");
       }
     });
+
+    // Close menu when overlay or link is clicked
+    overlay.addEventListener("click", closeMenu);
+    document.querySelectorAll(".side-menu a").forEach(link => {
+      link.addEventListener("click", closeMenu);
+    });
   </script>
 </body>
 </html>
+
 
