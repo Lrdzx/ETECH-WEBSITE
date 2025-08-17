@@ -89,21 +89,21 @@
 }
 
 .member {
-  width: 100%;                /* span full container width */
-  max-width: 1200px;          /* prevent over-expanding on huge screens */
-  font-size:8vw;
-  font-weight:700;
-  text-align:center;
-  white-space: nowrap;
-  padding:1rem 2rem;
-  border-radius:20px;
-  backdrop-filter:blur(8px);
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(0,191,255,0.2);
+  width: 90%;                /* container takes most of the screen */
+  max-width: 1200px;         /* prevent huge stretching */
+  font-size: clamp(16px, 6vw, 8vw);  /* scales but stays readable on small screens */
+  font-weight: 700;
+  text-align: center;
+  white-space: normal;       /* allows wrapping on small screens */
+  padding: 1rem 2rem;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(0,191,255,0.2);
   transition: transform 0.2s, opacity 0.2s;
-  box-sizing: border-box;
-  margin: 0 auto;             /* horizontal centering */
-  overflow: hidden;           /* prevents scaling from overflowing */
+  margin: 0 auto;
+  overflow-wrap: break-word; /* ensure long names break nicely */
+  word-break: break-word;
 }
 
 
@@ -213,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
 
 
 
