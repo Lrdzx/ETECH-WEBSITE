@@ -269,56 +269,65 @@
   </div>
 
   <!-- ===== JS ===== -->
-  <script>
-    // Fade-in sections
-    document.addEventListener("DOMContentLoaded", function () {
-      const sections = document.querySelectorAll('.section');
-      const observer = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.15 });
-      sections.forEach(section => observer.observe(section));
-    });
+  <!-- ===== JS ===== -->
+<script>
+  // ===================== FADE-IN SECTIONS =====================
+  document.addEventListener("DOMContentLoaded", function () {
+    const sections = document.querySelectorAll('.section');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    sections.forEach(section => observer.observe(section));
+  });
 
-    // Menu toggle logic
-    const hamburger = document.getElementById("hamburger");
-    const sideMenu = document.getElementById("sideMenu");
-    const pageWrapper = document.getElementById("pageWrapper");
-    const overlay = document.getElementById("overlay");
+  // ===================== MENU TOGGLE LOGIC =====================
+  const hamburger = document.getElementById("hamburger");
+  const sideMenu = document.getElementById("sideMenu");
+  const pageWrapper = document.getElementById("pageWrapper");
+  const overlay = document.getElementById("overlay");
 
-    function closeMenu() {
-      sideMenu.classList.remove("active");
-      pageWrapper.classList.remove("shifted");
-      overlay.classList.remove("active");
-      const icon = hamburger.querySelector("i");
+  function closeMenu() {
+    sideMenu.classList.remove("active");
+    pageWrapper.classList.remove("shifted");
+    overlay.classList.remove("active");
+    const icon = hamburger.querySelector("i");
+    icon.classList.remove("fa-xmark");
+    icon.classList.add("fa-bars");
+  }
+
+  hamburger.addEventListener("click", () => {
+    sideMenu.classList.toggle("active");
+    pageWrapper.classList.toggle("shifted");
+    overlay.classList.toggle("active");
+    const icon = hamburger.querySelector("i");
+    if (sideMenu.classList.contains("active")) {
+      icon.classList.remove("fa-bars");
+      icon.classList.add("fa-xmark");
+    } else {
       icon.classList.remove("fa-xmark");
       icon.classList.add("fa-bars");
     }
+  });
 
-    hamburger.addEventListener("click", () => {
-      sideMenu.classList.toggle("active");
-      pageWrapper.classList.toggle("shifted");
-      overlay.classList.toggle("active");
+  overlay.addEventListener("click", closeMenu);
+  document.querySelectorAll(".side-menu a").forEach(link => link.addEventListener("click", closeMenu));
 
-      const icon = hamburger.querySelector("i");
-      if (sideMenu.classList.contains("active")) {
-        icon.classList.remove("fa-bars");
-        icon.classList.add("fa-xmark");
-      } else {
-        icon.classList.remove("fa-xmark");
-        icon.classList.add("fa-bars");
-      }
-    });
+  // ===================== NAVBAR SCROLL HIDE/SHOW =====================
+  const navbar = document.querySelector("nav");
+  navbar.style.transition = "top 0.3s"; // smooth transition
+  let lastScrollY = window.scrollY;
 
-    // Close menu when overlay or link is clicked
-    overlay.addEventListener("click", closeMenu);
-    document.querySelectorAll(".side-menu a").forEach(link => {
-      link.addEventListener("click", closeMenu);
-    });
-  </script>
-</body>
-</html>
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > lastScrollY) {
+      navbar.style.top = "-80px"; // hide navbar
+    } else {
+      navbar.style.top = "0"; // show navbar
+    }
+    lastScrollY = window.scrollY;
+  });
+</script>
