@@ -18,6 +18,7 @@
       min-height: 100vh;
       overflow-x: hidden;
       padding-top: 80px;
+      transition: transform 0.3s ease;
     }
 
     /* ===== NAVBAR ===== */
@@ -25,123 +26,142 @@
       width: 100%;
       background: #000000e6;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       z-index: 900;
       border-bottom: 1px solid white;
-      transition: transform 0.3s ease-in-out;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      padding: 0 2rem;
     }
-    nav.hidden { transform: translateY(-100%); }
-
-    .nav-container {
+    .logo {
       display: flex;
       align-items: center;
-      justify-content: space-between;
-      max-width: 1200px;
-      margin: 0 auto;
-      width: 100%;
-      padding: 0 2rem;
-      height: 80px;
-      flex-wrap: wrap;
+      gap: 10px;
     }
-
-    .logo { display: flex; align-items: center; gap: 10px; }
     .logo img { height: 50px; }
 
-    .nav-center { flex: 1; display: flex; justify-content: flex-end; }
-    .nav-center ul {
-      list-style: none;
+    /* ===== MENU BUTTON ===== */
+    .hamburger {
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      background: #222;
+      border: none;
+      outline: none;
       display: flex;
-      gap: 1.5rem;
-      margin: 0; padding: 0;
       align-items: center;
-      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      transition: background 0.3s, transform 0.1s;
+      padding: 10px 16px;
+      border-radius: 8px;
+      z-index: 1001;
     }
+    .hamburger i {
+      font-size: 1.4rem;
+      color: #00bfff;
+    }
+    .hamburger span {
+      font-weight: 600;
+      letter-spacing: 1px;
+    }
+    .hamburger:hover { background: #444; }
+    .hamburger:active { transform: scale(0.95); }
 
-    .nav-center ul li { position: relative; }
-
-    .nav-center ul li a {
+    /* ===== SIDE MENU ===== */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    .side-menu.active { right: 0; }
+    .side-menu a {
       text-decoration: none;
       color: white;
       font-weight: 500;
       letter-spacing: 1px;
-      padding: 8px 18px;
-      border-radius: 50px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 5px 0;
       display: flex;
       align-items: center;
       gap: 8px;
-      transition: all 0.3s ease;
       background: linear-gradient(135deg, #232526, #414345);
+      transition: all 0.3s ease;
     }
-    .nav-center ul li a i { font-size: 1.1em; }
-    .nav-center ul li a:hover {
+    .side-menu a:hover {
       background: linear-gradient(135deg,#00bfff,#87cefa);
       color: #222;
-      transform: scale(1.1);
+      transform: scale(1.05);
       box-shadow: 0 4px 16px rgba(0,191,255,0.18);
     }
 
-    /* ===== DROPDOWN ===== */
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 110%;
-      left: 0;
-      background: #111;
-      border: 1px solid #ffffff33;
-      border-radius: 8px;
-      flex-direction: column;
-      min-width: 180px;
-      z-index: 1000;
+    /* ===== CLASSIFICATION INSIDE MENU ===== */
+    .classification {
+      margin-top: 2rem;
+      border-top: 1px solid #444;
+      padding-top: 1rem;
     }
-    .dropdown-menu a {
-      border-radius: 0;
-      margin: 3px;
-    }
-    .nav-center ul li:hover .dropdown-menu {
-      display: flex;
-    }
-
-    /* Hamburger button */
-    .hamburger {
-      font-size: 1.8rem;
+    .classification h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
       color: #00bfff;
-      cursor: pointer;
-      background: #000000cc;
-      border: none; outline: none;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.2s;
-      position: fixed; top: 20px; right: 20px;
-      z-index: 1001;
-      padding: 8px 12px; border-radius: 8px;
     }
-    .hamburger:hover { transform: scale(1.2); color: #87cefa; }
+    .classification p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
 
-    @media (max-width: 900px) {
-      .nav-container { flex-direction: row; justify-content: space-between; }
-      .nav-center { display: none; width: 100%; margin-top: 10px; }
-      .nav-center.active { display: flex; justify-content: center; }
-      .nav-center ul { flex-direction: column; gap: 1rem; width: 100%; }
-      .nav-center ul li a { justify-content: center; width: 100%; }
-      .dropdown-menu {
-        position: static;
-        border: none;
-        background: transparent;
-      }
-      .dropdown-menu a { width: 100%; justify-content: center; }
+    /* ===== OVERLAY ===== */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 999;
     }
+    .overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* ===== PAGE WRAPPER ===== */
+    .page-wrapper { transition: margin-right 0.3s ease; }
+    .page-wrapper.shifted { margin-right: 250px; }
 
     /* ===== HERO ===== */
     .hero {
       position: relative;
       height: 80vh;
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       text-align: center;
       overflow: hidden;
       border-bottom: 1px solid white;
     }
     .hero video {
-      position: absolute; top: 0; left: 0;
-      width: 100%; height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       object-fit: cover;
       filter: grayscale(100%) brightness(0.55);
       z-index: -1;
@@ -151,30 +171,31 @@
     .hero-content h1 { font-size: 3rem; font-weight: 700; letter-spacing: 2px; }
 
     /* ===== SECTIONS ===== */
-    .sections {
-      padding: 4rem 10%;
-      display: flex; flex-direction: column;
-      gap: 4rem;
-    }
+    .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
     .section {
-      display: flex; gap: 2rem; align-items: center;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
       flex-wrap: wrap;
       border: 1px solid #ffffff33;
       padding: 2rem;
       border-radius: 10px;
       background: rgba(255,255,255,0.05);
       backdrop-filter: blur(8px);
-      opacity: 0; transform: translateY(20px);
+      opacity: 0;
+      transform: translateY(20px);
       transition: opacity 0.6s ease-out, transform 0.6s ease-out;
     }
     .section.visible { opacity: 1; transform: translateY(0); }
     .section img {
-      width: 300px; border-radius: 10px;
+      width: 300px;
+      border-radius: 10px;
       box-shadow: 0 4px 16px rgba(0,191,255,0.2);
     }
     .section .text { max-width: 600px; }
     .section h2 {
-      font-size: 1.8rem; font-weight: 700;
+      font-size: 1.8rem;
+      font-weight: 700;
       background: linear-gradient(135deg,#00bfff,#87cefa);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -182,7 +203,6 @@
     }
     .section p { line-height: 1.6; color: #e0e0e0; }
     .section:nth-child(even) { flex-direction: row-reverse; }
-
     @media (max-width: 900px) {
       .hero-content h1 { font-size: 2.2rem; }
       .sections { padding: 2rem 5%; }
@@ -193,64 +213,72 @@
 </head>
 <body>
   <!-- ===== NAVBAR ===== -->
-  <nav id="navbar">
-    <div class="nav-container">
-      <div class="logo">
-        <img src="deped.png" alt="DepEd Logo">
-        <img src="logo.png" alt="Logo">
-      </div>
-      <div class="nav-center" id="nav-links">
-        <ul>
-          <li><a href="index.html"><i class="fa-solid fa-house"></i>Home</a></li>
-          <li>
-            <a href="#"><i class="fa-solid fa-list"></i>Operators <i class="fa-solid fa-caret-down"></i></a>
-            <div class="dropdown-menu">
-              <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-              <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-              <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-            </div>
-          </li>
-        </ul>
-      </div>
+  <nav>
+    <div class="logo">
+      <img src="deped.png" alt="DepEd Logo">
+      <img src="logo.png" alt="Logo">
     </div>
+    <button class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </button>
   </nav>
 
-  <!-- Hamburger always visible -->
-  <button class="hamburger" id="hamburger"><i class="fa-solid fa-bars"></i></button>
+  <!-- ===== SIDE MENU ===== -->
+  <div class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
 
-  <!-- ===== HERO ===== -->
-  <section class="hero">
-    <video autoplay muted loop>
-      <source src="tech.mp4" type="video/mp4">
-    </video>
-    <div class="hero-content">
-      <p>EMPOWERMENT TECHNOLOGY</p>
-      <h1>BOOLEAN OPERATORS</h1>
+    <div class="classification">
+      <h3>Classification</h3>
+      <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+      <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+      <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
     </div>
-  </section>
+  </div>
 
-  <!-- ===== SECTIONS ===== -->
-  <div class="sections">
-    <div class="section">
-      <img src="bool.png" alt="Boolean Concept">
-      <div class="text">
-        <h2>What is a Boolean Operator?</h2>
-        <p>Boolean operators are words or symbols used to combine search terms in databases and search engines to narrow or broaden search results. The most common operators are AND, OR, and NOT.</p>
-        <p>It’s based on Boolean logic, a form of algebra developed by George Boole, where values are either true or false.</p>
+  <!-- ✅ Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ===== PAGE WRAPPER ===== -->
+  <div class="page-wrapper" id="pageWrapper">
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <video autoplay muted loop>
+        <source src="tech.mp4" type="video/mp4">
+      </video>
+      <div class="hero-content">
+        <p>EMPOWERMENT TECHNOLOGY</p>
+        <h1>BOOLEAN OPERATORS</h1>
       </div>
-    </div>
-    <div class="section">
-      <img src="search.png" alt="Advantage">
-      <div class="text">
-        <h2>Advantage of Using Boolean Operators</h2>
-        <p>Boolean operators help make searches more precise by narrowing or broadening results as needed. They save time by filtering out unrelated information and allow flexible searching using combinations like AND, OR, and NOT. This is especially useful for complex research that requires specific keyword combinations.</p>
+    </section>
+
+    <!-- ===== SECTIONS ===== -->
+    <div class="sections">
+      <div class="section">
+        <img src="bool.png" alt="Boolean Concept">
+        <div class="text">
+          <h2>What is a Boolean Operator?</h2>
+          <p>Boolean operators are words or symbols used to combine search terms in databases and search engines to narrow or broaden search results. The most common operators are AND, OR, and NOT.</p>
+          <p>It’s based on Boolean logic, a form of algebra developed by George Boole, where values are either true or false.</p>
+        </div>
       </div>
-    </div>
-    <div class="section">
-      <img src="search2.png" alt="Disadvantage">
-      <div class="text">
-        <h2>Disadvantage of Using Boolean Operators</h2>
-        <p>Using Boolean operators incorrectly, such as with the wrong syntax, can lead to poor or no results. Overusing NOT may remove valuable information, while excessive use of AND or OR can make results too narrow or too broad. Different databases or search engines may interpret these operators differently, causing variations in search outcomes.</p>
+
+      <div class="section">
+        <img src="search.png" alt="Advantage">
+        <div class="text">
+          <h2>Advantage of Using Boolean Operators</h2>
+          <p>Boolean operators help make searches more precise by narrowing or broadening results as needed. They save time by filtering out unrelated information and allow flexible searching using combinations like AND, OR, and NOT.</p>
+        </div>
+      </div>
+      <div class="section">
+        <img src="search2.png" alt="Disadvantage">
+        <div class="text">
+          <h2>Disadvantage of Using Boolean Operators</h2>
+          <p>Using Boolean operators incorrectly can lead to poor or no results. Overusing NOT may remove valuable information, while excessive use of AND or OR can make results too narrow or too broad. Different databases or search engines may interpret these operators differently.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -271,21 +299,40 @@
       sections.forEach(section => observer.observe(section));
     });
 
-    // Hamburger toggle
+    // Menu toggle logic
     const hamburger = document.getElementById("hamburger");
-    const nav = document.getElementById("navbar");
-    const navLinks = document.getElementById("nav-links");
-    hamburger.addEventListener("click", () => {
-      nav.classList.toggle("hidden");
-      navLinks.classList.toggle("active");
+    const sideMenu = document.getElementById("sideMenu");
+    const pageWrapper = document.getElementById("pageWrapper");
+    const overlay = document.getElementById("overlay");
+
+    function closeMenu() {
+      sideMenu.classList.remove("active");
+      pageWrapper.classList.remove("shifted");
+      overlay.classList.remove("active");
       const icon = hamburger.querySelector("i");
-      if (nav.classList.contains("hidden")) {
+      icon.classList.remove("fa-xmark");
+      icon.classList.add("fa-bars");
+    }
+
+    hamburger.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+      pageWrapper.classList.toggle("shifted");
+      overlay.classList.toggle("active");
+
+      const icon = hamburger.querySelector("i");
+      if (sideMenu.classList.contains("active")) {
         icon.classList.remove("fa-bars");
         icon.classList.add("fa-xmark");
       } else {
         icon.classList.remove("fa-xmark");
         icon.classList.add("fa-bars");
       }
+    });
+
+    // Close menu when overlay or link is clicked
+    overlay.addEventListener("click", closeMenu);
+    document.querySelectorAll(".side-menu a").forEach(link => {
+      link.addEventListener("click", closeMenu);
     });
   </script>
 </body>
