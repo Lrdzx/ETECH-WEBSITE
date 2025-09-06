@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Acronym Quiz</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body {
+      font-family:'Inter','Roboto',Arial,sans-serif;
+      background:#000; color:white;
+      min-height:100vh; overflow-x:hidden;
+      padding-top:80px;
+    }
+
+    /* NAVBAR */
+    nav {
+      width:100%; background:#000000e6;
+      position:fixed; top:0; left:0; z-index:900;
+      border-bottom:1px solid white;
+      display:flex; justify-content:space-between; align-items:center;
+      height:80px; padding:0 2rem;
+    }
+    .logo { display:flex; align-items:center; gap:10px; }
+    .logo img { height:50px; }
+
+    /* HAMBURGER */
+    .hamburger {
+      font-size:1rem; color:white; cursor:pointer;
+      background:#222; border:none; outline:none;
+      display:flex; align-items:center; gap:8px; justify-content:center;
+      padding:10px 16px; border-radius:8px; z-index:1001;
+    }
+    .hamburger i { font-size:1.4rem; color:#00bfff; }
+    .hamburger span { font-weight:600; letter-spacing:1px; }
+    .hamburger:hover { background:#444; }
+
+    /* SIDE MENU */
+    .side-menu {
+      position:fixed; top:0; right:-250px;
+      width:250px; height:100%; background:#111;
+      display:flex; flex-direction:column; padding:2rem;
+      transition:right 0.3s ease; z-index:1000;
+      overflow-y:auto;
+    }
+    .side-menu.active { right:0; }
+    .side-menu a {
+      text-decoration:none; color:white; font-weight:500;
+      padding:12px 18px; border-radius:8px; margin:5px 0;
+      display:flex; align-items:center; gap:8px;
+      background:linear-gradient(135deg,#232526,#414345);
+      transition:all 0.3s ease;
+    }
+    .side-menu a:hover {
+      background:linear-gradient(135deg,#00bfff,#87cefa);
+      color:#222; transform:scale(1.05);
+    }
+
+    /* START MENU */
+    .start-menu {
+      padding:4rem 10%; display:flex; flex-direction:column;
+      align-items:center; gap:1rem; text-align:center;
+    }
+    .start-btn, .select-btn {
+      margin-top:1rem; padding:10px 20px; border:none;
+      border-radius:8px; background:#00bfff; color:#000;
+      font-weight:700; cursor:pointer; transition:0.3s;
+    }
+    .start-btn:hover, .select-btn:hover { background:#87cefa; }
+    .dept-options {
+      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+      gap:1rem; margin:1rem 0; width:100%; max-width:600px;
+    }
+    .dept-card {
+      background:rgba(255,255,255,0.05);
+      border:1px solid #555; border-radius:10px; padding:1rem;
+      display:flex; align-items:center; cursor:pointer; transition:all 0.3s ease;
+    }
+    .dept-card:hover { background:rgba(0,191,255,0.1); border-color:#00bfff; }
+    .dept-card input { display:none; }
+    .dept-card label { width:100%; cursor:pointer; }
+    .dept-card.selected { background:rgba(0,191,255,0.2); border-color:#00bfff; }
+
+    /* QUIZ */
+    .quiz-container {
+      padding:4rem 10%; display:flex; flex-direction:column; align-items:center; gap:2rem;
+    }
+    .question-card {
+      background:rgba(255,255,255,0.05);
+      border:1px solid #ffffff33;
+      border-radius:12px; padding:2rem;
+      max-width:700px; width:100%; text-align:center;
+      box-shadow:0 4px 24px rgba(0,191,255,0.15);
+      opacity:0; transform:translateY(20px);
+      transition:opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .question-card.visible { opacity:1; transform:translateY(0); }
+    .question-card img {
+      max-width:250px; width:100%; margin-bottom:1rem;
+      border-radius:10px; box-shadow:0 4px 16px rgba(0,191,255,0.2);
+    }
+    .question-card input {
+      padding:10px; width:100%; max-width:400px;
+      border:none; border-radius:8px; outline:none;
+      margin-top:1rem;
+    }
+    .question-card button {
+      margin-top:1rem; padding:10px 20px; border:none; border-radius:8px;
+      background:#00bfff; color:#000; font-weight:700; cursor:pointer;
+    }
+    .feedback { margin-top:1rem; font-size:1rem; font-weight:600; text-align:left; }
+    .correct { color:#32cd32; }
+    .incorrect { color:#ff4444; }
+  </style>
+</head>
+<body>
+  <!-- NAV -->
+  <nav>
+    <div class="logo">
+      <img src="deped.png" alt="DepEd Logo">
+      <img src="logo.png" alt="Logo">
+    </div>
+    <button class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i><span>Menu</span>
+    </button>
+  </nav>
+
+  <!-- SIDE MENU -->
+  <div class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+    <a href="quiz.html"><i class="fa-solid fa-question"></i> Quiz</a>
+  </div>
+
+  <div class="page-wrapper" id="pageWrapper">
+    <!-- START MENU -->
+    <div class="start-menu" id="startMenu">
+      <h2>📘 Choose Departments for Quiz</h2>
+      <div class="dept-options" id="deptSelect">
+        <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
+<div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
+<div class="dept-card"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
+<div class="dept-card"><input type="checkbox" value="DEPDev" id="depdev"><label for="depdev">Department of Economy, Planning, and Development (DEPDev)</label></div>
+<div class="dept-card"><input type="checkbox" value="DepEd" id="deped"><label for="deped">Department of Education (DepEd)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOE" id="doe"><label for="doe">Department of Energy (DOE)</label></div>
+<div class="dept-card"><input type="checkbox" value="DENR" id="denr"><label for="denr">Department of Environment and Natural Resources (DENR)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOF" id="dof"><label for="dof">Department of Finance (DOF)</label></div>
+<div class="dept-card"><input type="checkbox" value="DFA" id="dfa"><label for="dfa">Department of Foreign Affairs (DFA)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOH" id="doh"><label for="doh">Department of Health (DOH)</label></div>
+<div class="dept-card"><input type="checkbox" value="DHSUD" id="dhsud"><label for="dhsud">Department of Human Settlements and Urban Development (DHSUD)</label></div>
+<div class="dept-card"><input type="checkbox" value="DICT" id="dict"><label for="dict">Department of Information and Communications Technology (DICT)</label></div>
+<div class="dept-card"><input type="checkbox" value="CSC" id="csc"><label for="csc">Civil Service Commission (CSC)</label></div>
+<div class="dept-card"><input type="checkbox" value="COMELEC" id="comelec"><label for="comelec">Commission on Elections (COMELEC)</label></div>
+<div class="dept-card"><input type="checkbox" value="COA" id="coa"><label for="coa">Commission on Audit (COA)</label></div>
+<div class="dept-card"><input type="checkbox" value="CHR" id="chr"><label for="chr">Commission on Human Rights (CHR)</label></div>
+<div class="dept-card"><input type="checkbox" value="Ombudsman" id="ombudsman"><label for="ombudsman">Office of the Ombudsman</label></div>
+<div class="dept-card"><input type="checkbox" value="DILG" id="dilg"><label for="dilg">Department of the Interior and Local Government (DILG)</label></div>
+<div class="dept-card"><input type="checkbox" value="PNP" id="pnp"><label for="pnp">Philippine National Police (PNP)</label></div>
+<div class="dept-card"><input type="checkbox" value="BFP" id="bfp"><label for="bfp">Bureau of Fire Protection (BFP)</label></div>
+<div class="dept-card"><input type="checkbox" value="BJMP" id="bjmp"><label for="bjmp">Bureau of Jail Management and Penology (BJMP)</label></div>
+<div class="dept-card"><input type="checkbox" value="LGUs" id="lgus"><label for="lgus">Local Government Units (LGUs)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOJ" id="doj"><label for="doj">Department of Justice (DOJ)</label></div>
+<div class="dept-card"><input type="checkbox" value="NBI" id="nbi"><label for="nbi">National Bureau of Investigation (NBI)</label></div>
+<div class="dept-card"><input type="checkbox" value="BuCor" id="bucor"><label for="bucor">Bureau of Corrections (BuCor)</label></div>
+<div class="dept-card"><input type="checkbox" value="BI" id="bi"><label for="bi">Bureau of Immigration (BI)</label></div>
+<div class="dept-card"><input type="checkbox" value="OSG" id="osg"><label for="osg">Office of the Solicitor General (OSG)</label></div>
+<div class="dept-card"><input type="checkbox" value="PAO" id="pao"><label for="pao">Public Attorney’s Office (PAO)</label></div>
+<div class="dept-card"><input type="checkbox" value="Prosecutor General" id="prosecutor"><label for="prosecutor">Office of the Prosecutor General</label></div>
+<div class="dept-card"><input type="checkbox" value="AFP" id="afp"><label for="afp">Armed Forces of the Philippines (AFP)</label></div>
+<div class="dept-card"><input type="checkbox" value="PA" id="pa"><label for="pa">Philippine Army (PA)</label></div>
+<div class="dept-card"><input type="checkbox" value="PN" id="pn"><label for="pn">Philippine Navy (PN)</label></div>
+<div class="dept-card"><input type="checkbox" value="PAF" id="paf"><label for="paf">Philippine Air Force (PAF)</label></div>
+<div class="dept-card"><input type="checkbox" value="BSP" id="bsp"><label for="bsp">Bangko Sentral ng Pilipinas (BSP)</label></div>
+<div class="dept-card"><input type="checkbox" value="NSC" id="nsc"><label for="nsc">National Security Council (NSC)</label></div>
+<div class="dept-card"><input type="checkbox" value="NEDA" id="neda"><label for="neda">National Economic and Development Authority (NEDA)</label></div>
+<div class="dept-card"><input type="checkbox" value="PRC" id="prc"><label for="prc">Professional Regulation Commission (PRC)</label></div>
+<div class="dept-card"><input type="checkbox" value="ERC" id="erc"><label for="erc">Energy Regulatory Commission (ERC)</label></div>
+<div class="dept-card"><input type="checkbox" value="IC" id="ic"><label for="ic">Insurance Commission (IC)</label></div>
+<div class="dept-card"><input type="checkbox" value="SEC" id="sec"><label for="sec">Securities and Exchange Commission (SEC)</label></div>
+<div class="dept-card"><input type="checkbox" value="CHED" id="ched"><label for="ched">Commission on Higher Education (CHED)</label></div>
+<div class="dept-card"><input type="checkbox" value="TESDA" id="tesda"><label for="tesda">Technical Education and Skills Development Authority (TESDA)</label></div>
+<div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
+<div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
+<div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
+      </div>
+      <button class="select-btn" id="selectAllBtn">Select All</button>
+      <button class="start-btn" id="startBtn">Start Quiz</button>
+    </div>
+
+    <!-- QUIZ -->
+    <div class="quiz-container" style="display:none;" id="quizContainer">
+      <div class="question-card" id="quizCard"></div>
+    </div>
+  </div>
+
+  <script>
+    const hamburger = document.getElementById("hamburger");
+    const sideMenu = document.getElementById("sideMenu");
+    hamburger.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+    });
+
+    const selectAllBtn = document.getElementById("selectAllBtn");
+    const startBtn = document.getElementById("startBtn");
+    const cards = document.querySelectorAll(".dept-card");
+
+    // Toggle card highlight on click
+    cards.forEach(card => {
+      const checkbox = card.querySelector("input");
+      card.addEventListener("click", () => {
+        checkbox.checked = !checkbox.checked;
+        card.classList.toggle("selected", checkbox.checked);
+      });
+    });
+
+    // Select All button
+    selectAllBtn.addEventListener("click", () => {
+      cards.forEach(card => {
+        const checkbox = card.querySelector("input");
+        checkbox.checked = true;
+        card.classList.add("selected");
+      });
+    });
+
+    let quizData = [];
+    let currentIndex = 0;
+
+    startBtn.addEventListener("click", () => {
+      const selected = [...cards].filter(c => c.querySelector("input").checked).map(c => c.querySelector("input").value);
+      if (selected.length === 0) {
+        alert("Please select at least one department!");
+        return;
+      }
+
+      // Dummy data for now
+      quizData = [
+        // Executive Departments
+    { img:"dar.png", acronym:"DAR", meaning:"Department of Agrarian Reform", secretary:"Conrado Estrella III", elected:"06/30/2022" },
+    { img:"da.png", acronym:"DA", meaning:"Department of Agriculture", secretary:"Francisco P. Tiu Laurel Jr", elected:"11/03/2023" },
+    { img:"dbm.png", acronym:"DBM", meaning:"Department of Budget and Management", secretary:"Amenah Pangandaman", elected:"06/30/2022" },
+    { img:"depdev.png", acronym:"DEPDev", meaning:"Department of Economy, Planning, and Development (formerly NEDA)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
+    { img:"deped.png", acronym:"DepEd", meaning:"Department of Education", secretary:"Sonny Angara", elected:"07/19/2024" },
+    { img:"doe.png", acronym:"DOE", meaning:"Department of Energy", secretary:"Sharon Garin", elected:"05/23/2025" },
+    { img:"denr.png", acronym:"DENR", meaning:"Department of Environment and Natural Resources", secretary:"Raphael Lotilla", elected:"05/23/2025" },
+    { img:"dof.png", acronym:"DOF", meaning:"Department of Finance", secretary:"Ralph Recto", elected:"01/12/2024" },
+    { img:"dfa.png", acronym:"DFA", meaning:"Department of Foreign Affairs", secretary:"Maria Theresa Lazaro", elected:"07/01/2025" },
+    { img:"doh.png", acronym:"DOH", meaning:"Department of Health", secretary:"Teodoro Herbosa", elected:"06/05/2023" },
+    { img:"dhsud.png", acronym:"DHSUD", meaning:"Department of Human Settlements and Urban Development", secretary:"Jose Ramon Aliling", elected:"05/26/2025" },
+    { img:"dict.png", acronym:"DICT", meaning:"Department of Information and Communications Technology", secretary:"Henry Rhoel Aguda", elected:"03/20/2025" },
+
+// Constitutional Commissions
+    { img:"csc.png", acronym:"CSC", meaning:"Civil Service Commission", secretary:"Luis M. Pangulayan", elected:"02/10/2025" },
+    { img:"comelec.png", acronym:"COMELEC", meaning:"Commission on Elections", secretary:"George Erwin Garcia", elected:"n/a" },
+    { img:"coa.png", acronym:"COA", meaning:"Commission on Audit", secretary:"Mallillin", elected:"02/10/2025" },
+
+// Independent Constitutional Bodies
+    { img:"chr.png", acronym:"CHR", meaning:"Commission on Human Rights", secretary:"Atty. Richard P. Palpal-latoc", elected:"09/27/2022" },
+    { img:"ombudsman.png", acronym:"Ombudsman", meaning:"Office of the Ombudsman", secretary:"Samuel R. Martires", elected:"07/26/2018" },
+
+// Law Enforcement & Security
+    { img:"dilg.png", acronym:"DILG", meaning:"Department of the Interior and Local Government", secretary:"Jonvic Remulla", elected:"n/a" },
+    { img:"pnp.png", acronym:"PNP", meaning:"Philippine National Police", secretary:"Jonvic Remulla / Rafael Calinisan / PGEN. Torre III", elected:"n/a" },
+    { img:"bfp.png", acronym:"BFP", meaning:"Bureau of Fire Protection", secretary:"Dir. Jesus P. Fernandez", elected:"n/a" },
+    { img:"bjmp.png", acronym:"BJMP", meaning:"Bureau of Jail Management and Penology", secretary:"J/Dir Ruel S. Rivera", elected:"n/a" },
+    { img:"lgu.png", acronym:"LGUs", meaning:"Local Government Units", secretary:"n/a", elected:"n/a" },
+    { img:"doj.png", acronym:"DOJ", meaning:"Department of Justice", secretary:"Jesus C. Remulla", elected:"07/01/2022" },
+    { img:"nbi.png", acronym:"NBI", meaning:"National Bureau of Investigation", secretary:"Dir. Jaime B. Santiago", elected:"06/14/2024" },
+    { img:"bucor.png", acronym:"BuCor", meaning:"Bureau of Corrections", secretary:"Gregorio Pio P. Catapang Jr", elected:"10/21/2022" },
+    { img:"bi.png", acronym:"BI", meaning:"Bureau of Immigration", secretary:"Joel Anthony M. Viado", elected:"09/30/2024" },
+    { img:"osg.png", acronym:"OSG", meaning:"Office of the Solicitor General", secretary:"Darlene Berberabe", elected:"05/29/2025" },
+    { img:"pao.png", acronym:"PAO", meaning:"Public Attorney’s Office", secretary:"Persida V. Rueda-Acosta", elected:"02/23/2001" },
+    { img:"prosecutor.png", acronym:"Prosecutor General", meaning:"Office of the Prosecutor General", secretary:"Richard A. D. Fadullon", elected:"11/04/2024" },
+
+// National Defense
+    { img:"afp.png", acronym:"AFP", meaning:"Armed Forces of the Philippines", secretary:"Gen. Romeo S. Brawner Jr.", elected:"07/21/2023" },
+    { img:"pa.png", acronym:"PA", meaning:"Philippine Army", secretary:"Lt. Gen. Antonio G. Nafarrete", elected:"07/31/2025" },
+    { img:"pn.png", acronym:"PN", meaning:"Philippine Navy (with Marines)", secretary:"VAdm. Jose Ma. Ambrosio Q. Ezpeleta", elected:"11/15/2024" },
+    { img:"paf.png", acronym:"PAF", meaning:"Philippine Air Force", secretary:"Lt. Gen. Arthur M. Cordura", elected:"12/20/2022" },
+
+// Other Key Agencies
+    { img:"bsp.png", acronym:"BSP", meaning:"Bangko Sentral ng Pilipinas", secretary:"Eli Remolona Jr.", elected:"06/23/2023" },
+    { img:"nsc.png", acronym:"NSC", meaning:"National Security Council", secretary:"Eduardo Año", elected:"n/a" },
+    { img:"neda.png", acronym:"NEDA", meaning:"National Economic and Development Authority (now DEPDev)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
+    { img:"prc.png", acronym:"PRC", meaning:"Professional Regulation Commission", secretary:"Charito A. Zamora", elected:"n/a" },
+    { img:"erc.png", acronym:"ERC", meaning:"Energy Regulatory Commission", secretary:"Francis S. Juan", elected:"08/08/2025" },
+    { img:"ic.png", acronym:"IC", meaning:"Insurance Commission", secretary:"Reynaldo A. Regalado", elected:"n/a" },
+    { img:"sec.png", acronym:"SEC", meaning:"Securities and Exchange Commission", secretary:"Francis Edralin Lim", elected:"n/a" },
+    { img:"ched.png", acronym:"CHED", meaning:"Commission on Higher Education", secretary:"Shirley C. Agrupis", elected:"06/09/2025" },
+    { img:"tesda.png", acronym:"TESDA", meaning:"Technical Education and Skills Development Authority", secretary:"Jose Francisco “Kiko” Benitez", elected:"n/a" },
+    { img:"ncca.png", acronym:"NCCA", meaning:"National Commission for Culture and the Arts", secretary:"Victorino M. Manalo", elected:"n/a" },
+    { img:"ncip.png", acronym:"NCIP", meaning:"National Commission on Indigenous Peoples", secretary:"Marie Grace T. Pascua", elected:"n/a" },
+    { img:"mtrcb.png", acronym:"MTRCB", meaning:"Movie and Television Review and Classification Board", secretary:"Lala Sotto-Antonio", elected:"n/a" }
+
+      ].filter(q => selected.includes(q.acronym));
+
+      currentIndex = 0;
+      document.getElementById("startMenu").style.display = "none";
+      document.getElementById("quizContainer").style.display = "flex";
+      renderQuizCard();
+    });
+
+    function renderQuizCard(){
+      const card = document.getElementById("quizCard");
+      card.innerHTML = `
+        <img id="acronymImage" src="" alt="Acronym Image">
+        <h2>Fill in the details</h2>
+        <input type="text" id="acronymInput" placeholder="Acronym...">
+        <input type="text" id="meaningInput" placeholder="Meaning...">
+        <input type="text" id="secretaryInput" placeholder="Secretary...">
+        <input type="text" id="electedInput" placeholder="Elected (MM/DD/YYYY)...">
+        <button id="submitBtn">Submit</button>
+        <p class="feedback" id="feedback"></p>
+      `;
+
+      acronymImage = document.getElementById("acronymImage");
+      acronymInput = document.getElementById("acronymInput");
+      meaningInput = document.getElementById("meaningInput");
+      secretaryInput = document.getElementById("secretaryInput");
+      electedInput = document.getElementById("electedInput");
+      feedback = document.getElementById("feedback");
+      document.getElementById("submitBtn").addEventListener("click", checkAnswer);
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = quizData[currentIndex];
+      acronymImage.src = q.img;
+      acronymInput.value = "";
+      meaningInput.value = "";
+      secretaryInput.value = "";
+      electedInput.value = "";
+      feedback.textContent = "";
+      const quizCard = document.getElementById("quizCard");
+      quizCard.classList.remove("visible");
+      setTimeout(() => quizCard.classList.add("visible"), 100);
+    }
+
+    function checkAnswer() {
+      const q = quizData[currentIndex];
+      let result = "";
+
+      result += acronymInput.value.trim().toLowerCase() === q.acronym.toLowerCase()
+        ? `✅ Acronym correct! (${q.acronym})<br>` : `❌ Acronym wrong. Correct: ${q.acronym}<br>`;
+
+      result += meaningInput.value.trim().toLowerCase() === q.meaning.toLowerCase()
+        ? `✅ Meaning correct! (${q.meaning})<br>` : `❌ Meaning wrong. Correct: ${q.meaning}<br>`;
+
+      result += secretaryInput.value.trim().toLowerCase() === q.secretary.toLowerCase()
+        ? `✅ Secretary correct! (${q.secretary})<br>` : `❌ Secretary wrong. Correct: ${q.secretary}<br>`;
+
+      result += electedInput.value.trim() === q.elected
+        ? `✅ Elected correct! (${q.elected})<br>` : `❌ Elected wrong. Correct: ${q.elected}<br>`;
+
+      feedback.innerHTML = result;
+
+      setTimeout(() => {
+        currentIndex++;
+        if(currentIndex < quizData.length) {
+          loadQuestion();
+        } else {
+          document.getElementById("quizCard").innerHTML = `
+            <h2>🎉 Quiz Complete!</h2>
+            <p class="feedback correct">Great job finishing all questions!</p>
+            <button onclick="restartQuiz()">Retake Quiz</button>
+          `;
+        }
+      }, 3000);
+    }
+
+    function restartQuiz(){
+      currentIndex = 0;
+      document.getElementById("quizContainer").style.display = "none";
+      document.getElementById("startMenu").style.display = "flex";
+    }
+  </script>
+</body>
+</html>
