@@ -155,6 +155,12 @@ margin-top:1rem;
 margin-top:1rem; padding:10px 20px; border:none; border-radius:8px;
 background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 }
+.page-wrapper {
+  transition: margin-left 0.3s ease;
+}
+.page-wrapper.shifted {
+  margin-left: 300px; /* same width as dept-popup */
+}
 .feedback { margin-top:1rem; font-size:1rem; font-weight:600; text-align:left; }
 .correct { color:#32cd32; }
 .incorrect { color:#ff4444; }
@@ -267,12 +273,15 @@ const deptToggleBtn = document.getElementById('deptToggleBtn');
 // Open side menu
 deptToggleBtn.addEventListener('click', () => {
   deptPopup.classList.add('active');
+  document.getElementById('pageWrapper').classList.add('shifted');
 });
+
 
 // Close when clicking outside
 document.addEventListener('click', (e) => {
   if(!deptPopup.contains(e.target) && !deptToggleBtn.contains(e.target)){
     deptPopup.classList.remove('active');
+    document.getElementById('pageWrapper').classList.remove('shifted');
   }
 });
 
