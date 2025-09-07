@@ -77,33 +77,40 @@ font-weight:700; cursor:pointer; transition:0.3s;
 .start-btn:hover, .select-btn:hover, .select-dept-btn:hover { background:#87cefa; }
 
 /* DEPARTMENT POPUP */
+/* DEPARTMENT SIDE MENU */
 .dept-popup {
-position: fixed;
-top: 50%; left: 50%;
-transform: translate(-50%, -50%);
-background: #111;
-padding: 1.5rem;
-border-radius: 12px;
-width: 90%;
-max-width: 600px;
-max-height: 80vh;
-overflow-y: auto;
-display: none; /* hidden by default */
-z-index: 2000;
-border: 2px solid #00bfff;
+  position: fixed;
+  top: 0;
+  right: -300px; /* hidden off-screen initially */
+  width: 300px;
+  height: 100%;
+  background: #111;
+  padding: 2rem 1rem;
+  border-left: 2px solid #00bfff;
+  display: flex;
+  flex-direction: column;
+  transition: right 0.3s ease;
+  z-index: 1500;
+  overflow-y: auto;
 }
-.dept-popup.active { display: block; }
+
+/* hide scrollbar */
+.dept-popup::-webkit-scrollbar { display: none; }
+.dept-popup { -ms-overflow-style: none; scrollbar-width: none; }
+
+.dept-popup.active { right: 0; }
+
 .dept-popup-header {
-display: flex;
-justify-content: space-between;
-align-items: center;
-margin-bottom: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
 }
-.dept-popup-header h3 { font-size: 1.2rem; }
+.dept-popup-header h3 { font-size: 1.2rem; color:white; }
 .dept-popup-header button {
-background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
+  background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
 }
-.dept-popup-body { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+.dept-popup-body { display: flex; flex-direction: column; gap: 0.5rem; }
 
 /* DEPARTMENT CARDS */
 .dept-card {
@@ -251,9 +258,18 @@ hamburger.addEventListener("click", () => { sideMenu.classList.toggle("active");
 // Department popup
 const deptPopup = document.getElementById('deptPopup');
 const deptToggleBtn = document.getElementById('deptToggleBtn');
-const closeDeptPopup = document.getElementById('closeDeptPopup');
-deptToggleBtn.addEventListener('click', () => deptPopup.classList.add('active'));
-closeDeptPopup.addEventListener('click', () => deptPopup.classList.remove('active'));
+
+// Open side menu
+deptToggleBtn.addEventListener('click', () => {
+  deptPopup.classList.add('active');
+});
+
+// Close when clicking outside
+document.addEventListener('click', (e) => {
+  if(!deptPopup.contains(e.target) && !deptToggleBtn.contains(e.target)){
+    deptPopup.classList.remove('active');
+  }
+});
 
 // Department card selection
 const cards = deptPopup.querySelectorAll(".dept-card");
