@@ -78,19 +78,19 @@ font-weight:700; cursor:pointer; transition:0.3s;
 
 /* DEPARTMENT SIDE MENU FROM LEFT BELOW NAVBAR */
 .dept-popup {
-  position: fixed;
-  top: 80px;           /* leave space for navbar height */
-  left: -300px;        /* hidden off-screen initially */
-  width: 300px;
-  height: calc(100% - 80px); /* full height minus navbar */
-  background: #111;
-  padding: 2rem 1rem;
-  border-right: 2px solid #00bfff;
-  display: flex;
-  flex-direction: column;
-  transition: left 0.3s ease;
-  z-index: 1500;
-  overflow-y: auto;
+position: fixed;
+top: 80px; /* leave space for navbar height */
+left: -300px; /* hidden off-screen initially */
+width: 300px;
+height: calc(100% - 80px); /* full height minus navbar */
+background: #111;
+padding: 2rem 1rem;
+border-right: 2px solid #00bfff;
+display: flex;
+flex-direction: column;
+transition: left 0.3s ease;
+z-index: 1500;
+overflow-y: auto;
 }
 
 /* hide scrollbar */
@@ -100,21 +100,21 @@ font-weight:700; cursor:pointer; transition:0.3s;
 .dept-popup.active { left: 0; }
 
 .dept-popup-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
 }
 .dept-popup-header h3 { font-size: 1.2rem; color:white; }
 
 .dept-popup-body { display: flex; flex-direction: column; gap: 0.5rem; }
 
 .start-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center; /* center buttons horizontally */
-  gap: 10px;
-  margin-top: 2rem; /* space from top or other elements */
+display: flex;
+flex-wrap: wrap;
+justify-content: center; /* center buttons horizontally */
+gap: 10px;
+margin-top: 2rem; /* space from top or other elements */
 }
 
 
@@ -156,10 +156,10 @@ margin-top:1rem; padding:10px 20px; border:none; border-radius:8px;
 background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 }
 .page-wrapper {
-  transition: margin-left 0.3s ease;
+transition: margin-left 0.3s ease;
 }
 .page-wrapper.shifted {
-  margin-left: 300px; /* same width as dept-popup */
+margin-left: 300px; /* same width as dept-popup */
 }
 .feedback { margin-top:1rem; font-size:1rem; font-weight:600; text-align:left; }
 .correct { color:#32cd32; }
@@ -196,79 +196,83 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 
 <!-- DEPARTMENT POPUP (slide-in side menu) -->
 <div class="dept-popup" id="deptPopup">
-  <div class="dept-popup-header">
-    <h3>Select Departments</h3>
-  </div>
-  <div class="dept-popup-body">
-<!-- Example Department Cards -->
-    <div class="dept-card category-btn" data-category="executive">Executive Departments</div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DEPDev" id="depdev"><label for="depdev">Department of Economy, Planning, and Development (DEPDev)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DepEd" id="deped"><label for="deped">Department of Education (DepEd)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DOE" id="doe"><label for="doe">Department of Energy (DOE)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DENR" id="denr"><label for="denr">Department of Environment and Natural Resources (DENR)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DOF" id="dof"><label for="dof">Department of Finance (DOF)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DFA" id="dfa"><label for="dfa">Department of Foreign Affairs (DFA)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DOH" id="doh"><label for="doh">Department of Health (DOH)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DHSUD" id="dhsud"><label for="dhsud">Department of Human Settlements and Urban Development (DHSUD)</label></div>
-<div class="dept-card" data-category="executive"><input type="checkbox" value="DICT" id="dict"><label for="dict">Department of Information and Communications Technology (DICT)</label></div>
-
-<div class="dept-card category-btn" data-category="constitutional">Constitutional Commissions</div>
-<div class="dept-card" data-category="commission"><input type="checkbox" value="CSC" id="csc"><label for="csc">Civil Service Commission (CSC)</label></div>
-<div class="dept-card" data-category="commission"><input type="checkbox" value="COMELEC" id="comelec"><label for="comelec">Commission on Elections (COMELEC)</label></div>
-<div class="dept-card" data-category="commission"><input type="checkbox" value="COA" id="coa"><label for="coa">Commission on Audit (COA)</label></div>
-
-<div class="dept-card category-btn" data-category="independent">Other Independent Bodies</div>
-<div class="dept-card" data-category="independent"><input type="checkbox" value="CHR" id="chr"><label for="chr">Commission on Human Rights (CHR)</label></div>
-<div class="dept-card" data-category="independent"><input type="checkbox" value="OMB" id="obm"><label for="ombudsman">Office of the Ombudsman</label></div>
-
-<div class="dept-card category-btn" data-category="law">Law Enforcement & Security</div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="DILG" id="dilg"><label for="dilg">Department of the Interior and Local Government (DILG)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="PNP" id="pnp"><label for="pnp">Philippine National Police (PNP)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="BFP" id="bfp"><label for="bfp">Bureau of Fire Protection (BFP)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="BJMP" id="bjmp"><label for="bjmp">Bureau of Jail Management and Penology (BJMP)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="LGUs" id="lgus"><label for="lgus">Local Government Units (LGUs)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="DOJ" id="doj"><label for="doj">Department of Justice (DOJ)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="NBI" id="nbi"><label for="nbi">National Bureau of Investigation (NBI)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="BuCor" id="bucor"><label for="bucor">Bureau of Corrections (BuCor)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="BI" id="bi"><label for="bi">Bureau of Immigration (BI)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="OSG" id="osg"><label for="osg">Office of the Solicitor General (OSG)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="PAO" id="pao"><label for="pao">Public Attorney’s Office (PAO)</label></div>
-<div class="dept-card" data-category="security"><input type="checkbox" value="PG" id="prosecutor"><label for="prosecutor">Office of the Prosecutor General</label></div>
-
-<div class="dept-card category-btn" data-category="defense">Under DND</div>
-<div class="dept-card" data-category="dnd"><input type="checkbox" value="AFP" id="afp"><label for="afp">Armed Forces of the Philippines (AFP)</label></div>
-<div class="dept-card" data-category="dnd"><input type="checkbox" value="PA" id="pa"><label for="pa">Philippine Army (PA)</label></div>
-<div class="dept-card" data-category="dnd"><input type="checkbox" value="PN" id="pn"><label for="pn">Philippine Navy (PN)</label></div>
-<div class="dept-card" data-category="dnd"><input type="checkbox" value="PAF" id="paf"><label for="paf">Philippine Air Force (PAF)</label></div>
-
-<div class="dept-card category-btn" data-category="other">Other Key Agencies</div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="BSP" id="bsp"><label for="bsp">Bangko Sentral ng Pilipinas (BSP)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="NSC" id="nsc"><label for="nsc">National Security Council (NSC)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="NEDA" id="neda"><label for="neda">National Economic and Development Authority (NEDA)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="PRC" id="prc"><label for="prc">Professional Regulation Commission (PRC)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="ERC" id="erc"><label for="erc">Energy Regulatory Commission (ERC)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="IC" id="ic"><label for="ic">Insurance Commission (IC)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="SEC" id="sec"><label for="sec">Securities and Exchange Commission (SEC)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="CHED" id="ched"><label for="ched">Commission on Higher Education (CHED)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="TESDA" id="tesda"><label for="tesda">Technical Education and Skills Development Authority (TESDA)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></
-
-  </div>
+<div class="dept-popup-header">
+<h3>Select Departments</h3>
 </div>
-  <div class="start-buttons" style="display:flex; justify-content:center; gap:10px; margin-top:2rem;">
+<div class="dept-popup-body">
+<!-- Example Department Cards -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Executive Departments</h4>
+<div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
+<div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
+<div class="dept-card"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
+<div class="dept-card"><input type="checkbox" value="DEPDev" id="depdev"><label for="depdev">Department of Economy, Planning, and Development (DEPDev)</label></div>
+<div class="dept-card"><input type="checkbox" value="DepEd" id="deped"><label for="deped">Department of Education (DepEd)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOE" id="doe"><label for="doe">Department of Energy (DOE)</label></div>
+<div class="dept-card"><input type="checkbox" value="DENR" id="denr"><label for="denr">Department of Environment and Natural Resources (DENR)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOF" id="dof"><label for="dof">Department of Finance (DOF)</label></div>
+<div class="dept-card"><input type="checkbox" value="DFA" id="dfa"><label for="dfa">Department of Foreign Affairs (DFA)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOH" id="doh"><label for="doh">Department of Health (DOH)</label></div>
+<div class="dept-card"><input type="checkbox" value="DHSUD" id="dhsud"><label for="dhsud">Department of Human Settlements and Urban Development (DHSUD)</label></div>
+<div class="dept-card"><input type="checkbox" value="DICT" id="dict"><label for="dict">Department of Information and Communications Technology (DICT)</label></div>
+
+<!-- Constitutional Commissions -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Constitutional Commissions</h4>
+<div class="dept-card"><input type="checkbox" value="CSC" id="csc"><label for="csc">Civil Service Commission (CSC)</label></div>
+<div class="dept-card"><input type="checkbox" value="COMELEC" id="comelec"><label for="comelec">Commission on Elections (COMELEC)</label></div>
+<div class="dept-card"><input type="checkbox" value="COA" id="coa"><label for="coa">Commission on Audit (COA)</label></div>
+
+<!-- Independent Constitutional Bodies -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Other Independent Constitutional Bodies</h4>
+<div class="dept-card"><input type="checkbox" value="CHR" id="chr"><label for="chr">Commission on Human Rights (CHR)</label></div>
+<div class="dept-card"><input type="checkbox" value="OMB" id="omb"><label for="omb">Office of the Ombudsman</label></div>
+
+<!-- Law Enforcement & Security Agencies -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Law Enforcement & Security Agencies</h4>
+<div class="dept-card"><input type="checkbox" value="DILG" id="dilg"><label for="dilg">Department of the Interior and Local Government (DILG)</label></div>
+<div class="dept-card"><input type="checkbox" value="PNP" id="pnp"><label for="pnp">Philippine National Police (PNP)</label></div>
+<div class="dept-card"><input type="checkbox" value="BFP" id="bfp"><label for="bfp">Bureau of Fire Protection (BFP)</label></div>
+<div class="dept-card"><input type="checkbox" value="BJMP" id="bjmp"><label for="bjmp">Bureau of Jail Management and Penology (BJMP)</label></div>
+<div class="dept-card"><input type="checkbox" value="LGUs" id="lgus"><label for="lgus">Local Government Units (LGUs)</label></div>
+<div class="dept-card"><input type="checkbox" value="DOJ" id="doj"><label for="doj">Department of Justice (DOJ)</label></div>
+<div class="dept-card"><input type="checkbox" value="NBI" id="nbi"><label for="nbi">National Bureau of Investigation (NBI)</label></div>
+<div class="dept-card"><input type="checkbox" value="BuCor" id="bucor"><label for="bucor">Bureau of Corrections (BuCor)</label></div>
+<div class="dept-card"><input type="checkbox" value="BI" id="bi"><label for="bi">Bureau of Immigration (BI)</label></div>
+<div class="dept-card"><input type="checkbox" value="OSG" id="osg"><label for="osg">Office of the Solicitor General (OSG)</label></div>
+<div class="dept-card"><input type="checkbox" value="PAO" id="pao"><label for="pao">Public Attorney’s Office (PAO)</label></div>
+<div class="dept-card"><input type="checkbox" value="PG" id="prosecutor"><label for="prosecutor">Office of the Prosecutor General</label></div>
+
+<!-- Under Department of National Defense -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Under Department of National Defense (DND)</h4>
+<div class="dept-card"><input type="checkbox" value="AFP" id="afp"><label for="afp">Armed Forces of the Philippines (AFP)</label></div>
+<div class="dept-card"><input type="checkbox" value="PA" id="pa"><label for="pa">Philippine Army (PA)</label></div>
+<div class="dept-card"><input type="checkbox" value="PN" id="pn"><label for="pn">Philippine Navy (PN)</label></div>
+<div class="dept-card"><input type="checkbox" value="PAF" id="paf"><label for="paf">Philippine Air Force (PAF)</label></div>
+
+<!-- Other Key Agencies / Commissions -->
+<h4 style="color:#00bfff; margin:0.5rem 0;">📌 Other Key Agencies / Commissions</h4>
+<div class="dept-card"><input type="checkbox" value="BSP" id="bsp"><label for="bsp">Bangko Sentral ng Pilipinas (BSP)</label></div>
+<div class="dept-card"><input type="checkbox" value="NSC" id="nsc"><label for="nsc">National Security Council (NSC)</label></div>
+<div class="dept-card"><input type="checkbox" value="NEDA" id="neda"><label for="neda">National Economic and Development Authority (now DEPDev)</label></div>
+<div class="dept-card"><input type="checkbox" value="PRC" id="prc"><label for="prc">Professional Regulation Commission (PRC)</label></div>
+<div class="dept-card"><input type="checkbox" value="ERC" id="erc"><label for="erc">Energy Regulatory Commission (ERC)</label></div>
+<div class="dept-card"><input type="checkbox" value="IC" id="ic"><label for="ic">Insurance Commission (IC)</label></div>
+<div class="dept-card"><input type="checkbox" value="SEC" id="sec"><label for="sec">Securities and Exchange Commission (SEC)</label></div>
+<div class="dept-card"><input type="checkbox" value="CHED" id="ched"><label for="ched">Commission on Higher Education (CHED)</label></div>
+<div class="dept-card"><input type="checkbox" value="TESDA" id="tesda"><label for="tesda">Technical Education and Skills Development Authority (TESDA)</label></div>
+<div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
+<div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
+<div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
+</div>
+
+</div>
+<div class="start-buttons" style="display:flex; justify-content:center; gap:10px; margin-top:2rem;">
 <button class="select-btn" id="selectAllBtn">Select All</button>
 <button class="select-btn" id="clearBtn">Clear Selection</button>
 <button class="select-btn" id="randomBtn">Select Random</button>
-<button class="select-btn" data-category="executive">Executive Departments</button>
-<button class="select-btn" data-category="commission">Constitutional Commissions</button>
-<button class="select-btn" data-category="independent">Independent Constitutional Bodies</button>
-<button class="select-btn" data-category="security">Law Enforcement & Security Agencies</button>
-<button class="select-btn" data-category="dnd">Under DND</button>
-<button class="select-btn" data-category="other">Other Key Agencies</button>
+<button class="select-btn" id="selectExecutiveBtn">Executive Departments</button>
+  <button class="select-btn" id="selectConstitutionalBtn">Constitutional Commissions</button>
+  <button class="select-btn" id="selectIndependentBtn">Independent Bodies</button>
+  <button class="select-btn" id="selectLawBtn">Law Enforcement & Security</button>
 <button class="start-btn" id="startBtn">Start Quiz</button>
 </div>
 
@@ -289,40 +293,23 @@ const deptToggleBtn = document.getElementById('deptToggleBtn');
 
 // Open side menu
 deptToggleBtn.addEventListener('click', () => {
-  deptPopup.classList.add('active');
-  document.getElementById('pageWrapper').classList.add('shifted');
+deptPopup.classList.add('active');
+document.getElementById('pageWrapper').classList.add('shifted');
 });
 
 
 // Close when clicking outside
-const categoryButtons = document.querySelectorAll('.start-buttons .select-btn[data-category]');
-categoryButtons.forEach(btn => {
-  btn.addEventListener('click', () => {
-    const category = btn.dataset.category;
-    // Select only cards in that category
-    cards.forEach(card => {
-      const checkbox = card.querySelector('input');
-      if(card.dataset.category === category){
-        checkbox.checked = true;
-        card.classList.add('selected');
-      } else {
-        checkbox.checked = false;
-        card.classList.remove('selected');
-      }
-    });
-  });
-});
 const startButtonsContainer = document.querySelector('.start-buttons');
 
 document.addEventListener('click', (e) => {
-  if (
-    !deptPopup.contains(e.target) &&
-    !deptToggleBtn.contains(e.target) &&
-    !startButtonsContainer.contains(e.target) // exclude start buttons
-  ) {
-    deptPopup.classList.remove('active');
-    document.getElementById('pageWrapper').classList.remove('shifted');
-  }
+if (
+!deptPopup.contains(e.target) &&
+!deptToggleBtn.contains(e.target) &&
+!startButtonsContainer.contains(e.target) // exclude start buttons
+) {
+deptPopup.classList.remove('active');
+document.getElementById('pageWrapper').classList.remove('shifted');
+}
 });
 // Department card selection
 const cards = deptPopup.querySelectorAll(".dept-card");
@@ -354,7 +341,33 @@ const halfCount = Math.ceil(cards.length / 2);
 cards.forEach(card => { card.querySelector("input").checked = false; card.classList.remove("selected"); });
 shuffled.slice(0, halfCount).forEach(card => { card.querySelector("input").checked = true; card.classList.add("selected"); });
 });
+// Define category mapping
+const categories = {
+  executive: ["DAR","DA","DBM","DEPDev","DepEd","DOE","DENR","DOF","DFA","DOH","DHSUD","DICT"],
+  constitutional: ["CSC","COMELEC","COA"],
+  independent: ["CHR","OMB"],
+  law: ["DILG","PNP","BFP","BJMP","LGUs","DOJ","NBI","BuCor","BI","OSG","PAO","PG"]
+};
 
+// Function to select only certain acronyms
+function selectCategory(categoryList){
+  cards.forEach(card=>{
+    const input = card.querySelector("input");
+    if(categoryList.includes(input.value)){
+      input.checked = true;
+      card.classList.add("selected");
+    } else {
+      input.checked = false;
+      card.classList.remove("selected");
+    }
+  });
+}
+
+// Event listeners for new category buttons
+document.getElementById("selectExecutiveBtn").addEventListener("click", ()=> selectCategory(categories.executive));
+document.getElementById("selectConstitutionalBtn").addEventListener("click", ()=> selectCategory(categories.constitutional));
+document.getElementById("selectIndependentBtn").addEventListener("click", ()=> selectCategory(categories.independent));
+document.getElementById("selectLawBtn").addEventListener("click", ()=> selectCategory(categories.law));
 // Quiz
 let quizData = [];
 let currentIndex = 0;
@@ -500,4 +513,3 @@ document.getElementById("quizContainer").style.display="none";
 </script>
 </body>
 </html>
-
