@@ -273,6 +273,8 @@ margin-left: 300px; /* same width as dept-popup */
   <button class="select-btn" id="selectConstitutionalBtn">Constitutional Commissions</button>
   <button class="select-btn" id="selectIndependentBtn">Independent Bodies</button>
   <button class="select-btn" id="selectLawBtn">Law Enforcement & Security</button>
+  <button class="select-btn" id="selectDNDBtn">Under DND</button>
+  <button class="select-btn" id="selectOtherKeyBtn">Other Key Agencies / Commissions</button>
 <button class="start-btn" id="startBtn">Start Quiz</button>
 </div>
 
@@ -346,10 +348,12 @@ const categories = {
   executive: ["DAR","DA","DBM","DEPDev","DepEd","DOE","DENR","DOF","DFA","DOH","DHSUD","DICT"],
   constitutional: ["CSC","COMELEC","COA"],
   independent: ["CHR","OMB"],
-  law: ["DILG","PNP","BFP","BJMP","LGUs","DOJ","NBI","BuCor","BI","OSG","PAO","PG"]
+  law: ["DILG","PNP","BFP","BJMP","LGUs","DOJ","NBI","BuCor","BI","OSG","PAO","PG"],
+  dnd: ["AFP","PA","PN","PAF"],
+  otherKey: ["BSP","NSC","NEDA","PRC","ERC","IC","SEC","CHED","TESDA","NCCA","NCIP","MTRCB"]
 };
 
-// Function to select only certain acronyms
+// Function to select only the departments in a category
 function selectCategory(categoryList){
   cards.forEach(card=>{
     const input = card.querySelector("input");
@@ -363,11 +367,13 @@ function selectCategory(categoryList){
   });
 }
 
-// Event listeners for new category buttons
+// Add event listeners for the new category buttons
 document.getElementById("selectExecutiveBtn").addEventListener("click", ()=> selectCategory(categories.executive));
 document.getElementById("selectConstitutionalBtn").addEventListener("click", ()=> selectCategory(categories.constitutional));
 document.getElementById("selectIndependentBtn").addEventListener("click", ()=> selectCategory(categories.independent));
 document.getElementById("selectLawBtn").addEventListener("click", ()=> selectCategory(categories.law));
+document.getElementById("selectDNDBtn").addEventListener("click", ()=> selectCategory(categories.dnd));
+document.getElementById("selectOtherKeyBtn").addEventListener("click", ()=> selectCategory(categories.otherKey));
 // Quiz
 let quizData = [];
 let currentIndex = 0;
