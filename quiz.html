@@ -140,8 +140,17 @@
   </div>
 
   <div class="page-wrapper" id="pageWrapper">
-    <!-- SIDE SCROLLABLE DEPT SELECTION -->
-<div class="dept-side-panel" id="deptSelectSide">
+   <!-- DEPARTMENT POPUP -->
+<button class="select-dept-btn" id="deptToggleBtn">
+  <i class="fa-solid fa-building-columns"></i> Select Departments
+</button>
+
+<div class="dept-popup" id="deptPopup">
+  <div class="dept-popup-header">
+    <h3>Select Departments</h3>
+    <button id="closeDeptPopup"><i class="fa-solid fa-xmark"></i></button>
+  </div>
+  <div class="dept-popup-body">
    <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
 <div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
 <div class="dept-card"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
@@ -187,8 +196,8 @@
 <div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
 <div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
 <div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
+ </div>
 </div>
-
     <!-- START MENU -->
    <div class="start-menu" id="startMenu">
   <h2>📘 Choose Departments for Quiz</h2>
@@ -435,6 +444,22 @@ randomBtn.addEventListener("click", () => {
       document.getElementById("quizContainer").style.display = "none";
       document.getElementById("startMenu").style.display = "flex";
     }
+     const deptPopup = document.getElementById('deptPopup');
+const deptToggleBtn = document.getElementById('deptToggleBtn');
+const closeDeptPopup = document.getElementById('closeDeptPopup');
+
+deptToggleBtn.addEventListener('click', () => deptPopup.classList.add('active'));
+closeDeptPopup.addEventListener('click', () => deptPopup.classList.remove('active'));
+
+// Existing card selection logic works here
+const cards = deptPopup.querySelectorAll(".dept-card");
+cards.forEach(card => {
+  const checkbox = card.querySelector("input");
+  card.addEventListener("click", () => {
+    checkbox.checked = !checkbox.checked;
+    card.classList.toggle("selected", checkbox.checked);
+  });
+});
   </script>
   <style>
   /* existing CSS ... */
@@ -472,6 +497,17 @@ randomBtn.addEventListener("click", () => {
 
   .dept-side-panel .dept-card input { display: none; }
   .dept-side-panel .dept-card.selected { background: rgba(0,191,255,0.2); border-color: #00bfff; }
+    .dept-popup { ... }  /* use the CSS from my previous message */
+.dept-popup.active { ... }
+.dept-popup-header { ... }
+.dept-popup-header h3 { ... }
+.dept-popup-header button { ... }
+.dept-popup-body { ... }
+.dept-card { ... }
+.dept-card:hover { ... }
+.dept-card.selected { ... }
+.select-dept-btn { ... }
+  .select-dept-btn:hover { ... }
 
   /* CENTERED BUTTONS */
   .start-menu {
@@ -489,5 +525,6 @@ randomBtn.addEventListener("click", () => {
     justify-content: center;
   }
 </style>
+ 
 </body>
 </html>
