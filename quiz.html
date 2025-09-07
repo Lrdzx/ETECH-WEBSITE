@@ -1,157 +1,189 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Acronym Quiz</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Acronym Quiz</title>
 
-  <!-- Fonts & Icons -->
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+<!-- Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
-  <style>
-    * { margin:0; padding:0; box-sizing:border-box; }
-    body {
-      font-family:'Inter','Roboto',Arial,sans-serif;
-      background:#000; color:white;
-      min-height:100vh; overflow-x:hidden;
-      padding-top:80px;
-    }
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+font-family:'Inter','Roboto',Arial,sans-serif;
+background:#000; color:white;
+min-height:100vh; overflow-x:hidden;
+padding-top:80px;
+}
 
-    /* NAVBAR */
-    nav {
-      width:100%; background:#000000e6;
-      position:fixed; top:0; left:0; z-index:900;
-      border-bottom:1px solid white;
-      display:flex; justify-content:space-between; align-items:center;
-      height:80px; padding:0 2rem;
-    }
-    .logo { display:flex; align-items:center; gap:10px; }
-    .logo img { height:50px; }
+/* NAVBAR */
+nav {
+width:100%; background:#000000e6;
+position:fixed; top:0; left:0; z-index:900;
+border-bottom:1px solid white;
+display:flex; justify-content:space-between; align-items:center;
+height:80px; padding:0 2rem;
+}
+.logo { display:flex; align-items:center; gap:10px; }
+.logo img { height:50px; }
 
-    /* HAMBURGER */
-    .hamburger {
-      font-size:1rem; color:white; cursor:pointer;
-      background:#222; border:none; outline:none;
-      display:flex; align-items:center; gap:8px; justify-content:center;
-      padding:10px 16px; border-radius:8px; z-index:1001;
-    }
-    .hamburger i { font-size:1.4rem; color:#00bfff; }
-    .hamburger span { font-weight:600; letter-spacing:1px; }
-    .hamburger:hover { background:#444; }
+/* HAMBURGER */
+.hamburger {
+font-size:1rem; color:white; cursor:pointer;
+background:#222; border:none; outline:none;
+display:flex; align-items:center; gap:8px; justify-content:center;
+padding:10px 16px; border-radius:8px; z-index:1001;
+}
+.hamburger i { font-size:1.4rem; color:#00bfff; }
+.hamburger span { font-weight:600; letter-spacing:1px; }
+.hamburger:hover { background:#444; }
 
-    /* SIDE MENU */
-    .side-menu {
-      position:fixed; top:0; right:-250px;
-      width:250px; height:100%; background:#111;
-      display:flex; flex-direction:column; padding:2rem;
-      transition:right 0.3s ease; z-index:1000;
-      overflow-y:auto;
-    }
-    .side-menu.active { right:0; }
-    .side-menu a {
-      text-decoration:none; color:white; font-weight:500;
-      padding:12px 18px; border-radius:8px; margin:5px 0;
-      display:flex; align-items:center; gap:8px;
-      background:linear-gradient(135deg,#232526,#414345);
-      transition:all 0.3s ease;
-    }
-    .side-menu a:hover {
-      background:linear-gradient(135deg,#00bfff,#87cefa);
-      color:#222; transform:scale(1.05);
-    }
+/* SIDE MENU */
+.side-menu {
+position:fixed; top:0; right:-250px;
+width:250px; height:100%; background:#111;
+display:flex; flex-direction:column; padding:2rem;
+transition:right 0.3s ease; z-index:1000;
+overflow-y:auto;
+}
+.side-menu.active { right:0; }
+.side-menu a {
+text-decoration:none; color:white; font-weight:500;
+padding:12px 18px; border-radius:8px; margin:5px 0;
+display:flex; align-items:center; gap:8px;
+background:linear-gradient(135deg,#232526,#414345);
+transition:all 0.3s ease;
+}
+.side-menu a:hover {
+background:linear-gradient(135deg,#00bfff,#87cefa);
+color:#222; transform:scale(1.05);
+}
 
-    /* START MENU */
-    .start-menu {
-      padding:4rem 10%; display:flex; flex-direction:column;
-      align-items:center; gap:1rem; text-align:center;
-    }
-    .start-btn, .select-btn {
-      margin-top:1rem; padding:10px 20px; border:none;
-      border-radius:8px; background:#00bfff; color:#000;
-      font-weight:700; cursor:pointer; transition:0.3s;
-    }
-    .start-btn:hover, .select-btn:hover { background:#87cefa; }
-    .dept-options {
-      display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:1rem; margin:1rem 0; width:100%; max-width:600px;
-    }
-    .dept-card {
-      background:rgba(255,255,255,0.05);
-      border:1px solid #555; border-radius:10px; padding:1rem;
-      display:flex; align-items:center; cursor:pointer; transition:all 0.3s ease;
-    }
-    .dept-card:hover { background:rgba(0,191,255,0.1); border-color:#00bfff; }
-    .dept-card input { display:none; }
-    .dept-card label { width:100%; cursor:pointer; }
-    .dept-card.selected { background:rgba(0,191,255,0.2); border-color:#00bfff; }
+/* START MENU & BUTTONS */
+.start-menu {
+padding:4rem 10%; display:flex; flex-direction:column;
+align-items:center; gap:1rem; text-align:center;
+}
+.start-buttons {
+display:flex; flex-wrap: wrap; gap:10px; justify-content:center;
+}
+.start-btn, .select-btn, .select-dept-btn {
+margin-top:1rem; padding:10px 20px; border:none;
+border-radius:8px; background:#00bfff; color:#000;
+font-weight:700; cursor:pointer; transition:0.3s;
+}
+.start-btn:hover, .select-btn:hover, .select-dept-btn:hover { background:#87cefa; }
 
-    /* QUIZ */
-    .quiz-container {
-      padding:4rem 10%; display:flex; flex-direction:column; align-items:center; gap:2rem;
-    }
-    .question-card {
-      background:rgba(255,255,255,0.05);
-      border:1px solid #ffffff33;
-      border-radius:12px; padding:2rem;
-      max-width:700px; width:100%; text-align:center;
-      box-shadow:0 4px 24px rgba(0,191,255,0.15);
-      opacity:0; transform:translateY(20px);
-      transition:opacity 0.6s ease-out, transform 0.6s ease-out;
-    }
-    .question-card.visible { opacity:1; transform:translateY(0); }
-    .question-card img {
-      max-width:250px; width:100%; margin-bottom:1rem;
-      border-radius:10px; box-shadow:0 4px 16px rgba(0,191,255,0.2);
-    }
-    .question-card input {
-      padding:10px; width:100%; max-width:400px;
-      border:none; border-radius:8px; outline:none;
-      margin-top:1rem;
-    }
-    .question-card button {
-      margin-top:1rem; padding:10px 20px; border:none; border-radius:8px;
-      background:#00bfff; color:#000; font-weight:700; cursor:pointer;
-    }
-    .feedback { margin-top:1rem; font-size:1rem; font-weight:600; text-align:left; }
-    .correct { color:#32cd32; }
-    .incorrect { color:#ff4444; }
-  </style>
+/* DEPARTMENT POPUP */
+.dept-popup {
+position: fixed;
+top: 50%; left: 50%;
+transform: translate(-50%, -50%);
+background: #111;
+padding: 1.5rem;
+border-radius: 12px;
+width: 90%;
+max-width: 600px;
+max-height: 80vh;
+overflow-y: auto;
+display: none; /* hidden by default */
+z-index: 2000;
+border: 2px solid #00bfff;
+}
+.dept-popup.active { display: block; }
+.dept-popup-header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin-bottom: 1rem;
+}
+.dept-popup-header h3 { font-size: 1.2rem; }
+.dept-popup-header button {
+background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
+}
+.dept-popup-body { display: grid; grid-template-columns: 1fr; gap: 0.5rem; }
+
+/* DEPARTMENT CARDS */
+.dept-card {
+background:rgba(255,255,255,0.05);
+border:1px solid #555; border-radius:10px; padding:0.8rem;
+display:flex; align-items:center; cursor:pointer; transition:all 0.3s ease;
+}
+.dept-card:hover { background:rgba(0,191,255,0.1); border-color:#00bfff; }
+.dept-card input { display:none; }
+.dept-card.selected { background:rgba(0,191,255,0.2); border-color:#00bfff; }
+
+/* QUIZ */
+.quiz-container {
+padding:4rem 10%; display:flex; flex-direction:column; align-items:center; gap:2rem;
+}
+.question-card {
+background:rgba(255,255,255,0.05);
+border:1px solid #ffffff33;
+border-radius:12px; padding:2rem;
+max-width:700px; width:100%; text-align:center;
+box-shadow:0 4px 24px rgba(0,191,255,0.15);
+opacity:0; transform:translateY(20px);
+transition:opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.question-card.visible { opacity:1; transform:translateY(0); }
+.question-card img {
+max-width:250px; width:100%; margin-bottom:1rem;
+border-radius:10px; box-shadow:0 4px 16px rgba(0,191,255,0.2);
+}
+.question-card input {
+padding:10px; width:100%; max-width:400px;
+border:none; border-radius:8px; outline:none;
+margin-top:1rem;
+}
+.question-card button {
+margin-top:1rem; padding:10px 20px; border:none; border-radius:8px;
+background:#00bfff; color:#000; font-weight:700; cursor:pointer;
+}
+.feedback { margin-top:1rem; font-size:1rem; font-weight:600; text-align:left; }
+.correct { color:#32cd32; }
+.incorrect { color:#ff4444; }
+
+</style>
 </head>
 <body>
-  <!-- NAV -->
-  <nav>
-    <div class="logo">
-      <img src="deped.png" alt="DepEd Logo">
-      <img src="logo.png" alt="Logo">
-    </div>
-    <button class="hamburger" id="hamburger">
-      <i class="fa-solid fa-bars"></i><span>Menu</span>
-    </button>
-  </nav>
+<!-- NAV -->
+<nav>
+<div class="logo">
+<img src="deped.png" alt="DepEd Logo">
+<img src="logo.png" alt="Logo">
+</div>
+<button class="hamburger" id="hamburger">
+<i class="fa-solid fa-bars"></i><span>Menu</span>
+</button>
+</nav>
 
-  <!-- SIDE MENU -->
-  <div class="side-menu" id="sideMenu">
-    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-    <a href="quiz.html"><i class="fa-solid fa-question"></i> Quiz</a>
-  </div>
+<!-- SIDE MENU -->
+<div class="side-menu" id="sideMenu">
+<a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+<a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+<a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+<a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+<a href="quiz.html"><i class="fa-solid fa-question"></i> Quiz</a>
+</div>
 
-  <div class="page-wrapper" id="pageWrapper">
-   <!-- DEPARTMENT POPUP -->
+<div class="page-wrapper" id="pageWrapper">
+<!-- DEPARTMENT SELECT BUTTON -->
 <button class="select-dept-btn" id="deptToggleBtn">
-  <i class="fa-solid fa-building-columns"></i> Select Departments
+<i class="fa-solid fa-building-columns"></i> Select Departments
 </button>
 
+<!-- DEPARTMENT POPUP -->
 <div class="dept-popup" id="deptPopup">
-  <div class="dept-popup-header">
-    <h3>Select Departments</h3>
-    <button id="closeDeptPopup"><i class="fa-solid fa-xmark"></i></button>
-  </div>
-  <div class="dept-popup-body">
-   <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
+<div class="dept-popup-header">
+<h3>Select Departments</h3>
+<button id="closeDeptPopup"><i class="fa-solid fa-xmark"></i></button>
+</div>
+<div class="dept-popup-body">
+<!-- Example Department Cards -->
+<div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
 <div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
 <div class="dept-card"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
 <div class="dept-card"><input type="checkbox" value="DEPDev" id="depdev"><label for="depdev">Department of Economy, Planning, and Development (DEPDev)</label></div>
@@ -196,335 +228,207 @@
 <div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
 <div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
 <div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
- </div>
 </div>
-    <!-- START MENU -->
-   <div class="start-menu" id="startMenu">
-  <h2>📘 Choose Departments for Quiz</h2>
-  <div class="start-buttons">
-    <button class="select-btn" id="selectAllBtn">Select All</button>
-    <button class="select-btn" id="clearBtn">Clear Selection</button>
-    <button class="select-btn" id="randomBtn">Select Random</button>
-    <button class="start-btn" id="startBtn">Start Quiz</button>
-  </div>
+<div class="start-buttons">
+<button class="select-btn" id="selectAllBtn">Select All</button>
+<button class="select-btn" id="clearBtn">Clear Selection</button>
+<button class="select-btn" id="randomBtn">Select Random</button>
+<button class="start-btn" id="startBtn">Start Quiz</button>
 </div>
-      
+</div>
 
-    <!-- QUIZ -->
-    <div class="quiz-container" style="display:none;" id="quizContainer">
-      <div class="question-card" id="quizCard"></div>
-    </div>
-  </div>
+<!-- QUIZ -->
+<div class="quiz-container" style="display:none;" id="quizContainer">
+<div class="question-card" id="quizCard"></div>
+</div>
+</div>
 
-  <script>
-    const hamburger = document.getElementById("hamburger");
-    const sideMenu = document.getElementById("sideMenu");
-    hamburger.addEventListener("click", () => {
-      sideMenu.classList.toggle("active");
-    });
+<script>
+const hamburger = document.getElementById("hamburger");
+const sideMenu = document.getElementById("sideMenu");
+hamburger.addEventListener("click", () => { sideMenu.classList.toggle("active"); });
 
-    const selectAllBtn = document.getElementById("selectAllBtn");
-    const startBtn = document.getElementById("startBtn");
-    const cards = document.querySelectorAll(".dept-card");
-
-    // Toggle card highlight on click
-    cards.forEach(card => {
-      const checkbox = card.querySelector("input");
-      card.addEventListener("click", () => {
-        checkbox.checked = !checkbox.checked;
-        card.classList.toggle("selected", checkbox.checked);
-      });
-    });
-
-    // Select All button
-   // Select All button
-selectAllBtn.addEventListener("click", () => {
-  cards.forEach(card => {
-    const checkbox = card.querySelector("input");
-    checkbox.checked = true;
-    card.classList.add("selected");
-  });
-});
-
-// Clear Selection button
-const clearBtn = document.getElementById("clearBtn");
-clearBtn.addEventListener("click", () => {
-  cards.forEach(card => {
-    const checkbox = card.querySelector("input");
-    checkbox.checked = false;
-    card.classList.remove("selected");
-  });
-});
-
-// **Add Select Random button logic here**
-const randomBtn = document.getElementById("randomBtn");
-randomBtn.addEventListener("click", () => {
-  // Clear previous selections
-  cards.forEach(card => {
-    const checkbox = card.querySelector("input");
-    checkbox.checked = false;
-    card.classList.remove("selected");
-  });
-
-  // Shuffle the cards array
-  const shuffled = [...cards].sort(() => 0.5 - Math.random());
-
-  // Pick half of the cards
-  const halfCount = Math.ceil(cards.length / 2);
-  const selectedCards = shuffled.slice(0, halfCount);
-
-  // Check & highlight the selected ones
-  selectedCards.forEach(card => {
-    const checkbox = card.querySelector("input");
-    checkbox.checked = true;
-    card.classList.add("selected");
-  });
-});
-
-
-    let quizData = [];
-    let currentIndex = 0;
-
-      // Shuffle helper
-  function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [array[i], array[j]] = [array[j], array[i]];
-    }
-    return array;
-  }
-
-
-    startBtn.addEventListener("click", () => {
-      const selected = [...cards].filter(c => c.querySelector("input").checked).map(c => c.querySelector("input").value);
-      if (selected.length === 0) {
-        alert("Please select at least one department!");
-        return;
-      }
-
-      // Dummy data for now
-      quizData = [
-        // Executive Departments
-    { img:"dar.png", acronym:"DAR", meaning:"Department of Agrarian Reform", secretary:"Conrado Estrella III", elected:"06/30/2022" },
-    { img:"da.png", acronym:"DA", meaning:"Department of Agriculture", secretary:"Francisco P. Tiu Laurel Jr", elected:"11/03/2023" },
-    { img:"dbm.png", acronym:"DBM", meaning:"Department of Budget and Management", secretary:"Amenah Pangandaman", elected:"06/30/2022" },
-    { img:"depdev.png", acronym:"DEPDev", meaning:"Department of Economy, Planning, and Development (formerly NEDA)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
-    { img:"deped.png", acronym:"DepEd", meaning:"Department of Education", secretary:"Sonny Angara", elected:"07/19/2024" },
-    { img:"doe.png", acronym:"DOE", meaning:"Department of Energy", secretary:"Sharon Garin", elected:"05/23/2025" },
-    { img:"denr.png", acronym:"DENR", meaning:"Department of Environment and Natural Resources", secretary:"Raphael Lotilla", elected:"05/23/2025" },
-    { img:"dof.png", acronym:"DOF", meaning:"Department of Finance", secretary:"Ralph Recto", elected:"01/12/2024" },
-    { img:"dfa.png", acronym:"DFA", meaning:"Department of Foreign Affairs", secretary:"Maria Theresa Lazaro", elected:"07/01/2025" },
-    { img:"doh.png", acronym:"DOH", meaning:"Department of Health", secretary:"Teodoro Herbosa", elected:"06/05/2023" },
-    { img:"dhsud.png", acronym:"DHSUD", meaning:"Department of Human Settlements and Urban Development", secretary:"Jose Ramon Aliling", elected:"05/26/2025" },
-    { img:"dict.png", acronym:"DICT", meaning:"Department of Information and Communications Technology", secretary:"Henry Rhoel Aguda", elected:"03/20/2025" },
-
-// Constitutional Commissions
-    { img:"csc.png", acronym:"CSC", meaning:"Civil Service Commission", secretary:"Luis M. Pangulayan", elected:"02/10/2025" },
-    { img:"comelec.png", acronym:"COMELEC", meaning:"Commission on Elections", secretary:"George Erwin Garcia", elected:"n/a" },
-    { img:"coa.png", acronym:"COA", meaning:"Commission on Audit", secretary:"Mallillin", elected:"02/10/2025" },
-
-// Independent Constitutional Bodies
-    { img:"chr.png", acronym:"CHR", meaning:"Commission on Human Rights", secretary:"Atty. Richard P. Palpal-latoc", elected:"09/27/2022" },
-    { img:"oto.png", acronym:"OMB", meaning:"Office of the Ombudsman", secretary:"Samuel R. Martires", elected:"07/26/2018" },
-
-// Law Enforcement & Security
-    { img:"dilg.png", acronym:"DILG", meaning:"Department of the Interior and Local Government", secretary:"Jonvic Remulla", elected:"n/a" },
-    { img:"pnp.png", acronym:"PNP", meaning:"Philippine National Police", secretary:"Jonvic Remulla / Rafael Calinisan / PGEN. Torre III", elected:"n/a" },
-    { img:"bfp.png", acronym:"BFP", meaning:"Bureau of Fire Protection", secretary:"Dir. Jesus P. Fernandez", elected:"n/a" },
-    { img:"bjmp.png", acronym:"BJMP", meaning:"Bureau of Jail Management and Penology", secretary:"J/Dir Ruel S. Rivera", elected:"n/a" },
-    { img:"lgu.png", acronym:"LGUs", meaning:"Local Government Units", secretary:"n/a", elected:"n/a" },
-    { img:"doj.png", acronym:"DOJ", meaning:"Department of Justice", secretary:"Jesus C. Remulla", elected:"07/01/2022" },
-    { img:"nbi.png", acronym:"NBI", meaning:"National Bureau of Investigation", secretary:"Dir. Jaime B. Santiago", elected:"06/14/2024" },
-    { img:"bucor.png", acronym:"BuCor", meaning:"Bureau of Corrections", secretary:"Gregorio Pio P. Catapang Jr", elected:"10/21/2022" },
-    { img:"bi.png", acronym:"BI", meaning:"Bureau of Immigration", secretary:"Joel Anthony M. Viado", elected:"09/30/2024" },
-    { img:"osg.png", acronym:"OSG", meaning:"Office of the Solicitor General", secretary:"Darlene Berberabe", elected:"05/29/2025" },
-    { img:"pao.png", acronym:"PAO", meaning:"Public Attorney’s Office", secretary:"Persida V. Rueda-Acosta", elected:"02/23/2001" },
-    { img:"opg.png", acronym:"PG", meaning:"Office of the Prosecutor General", secretary:"Richard A. D. Fadullon", elected:"11/04/2024" },
-
-// National Defense
-    { img:"afp.png", acronym:"AFP", meaning:"Armed Forces of the Philippines", secretary:"Gen. Romeo S. Brawner Jr.", elected:"07/21/2023" },
-    { img:"pa.png", acronym:"PA", meaning:"Philippine Army", secretary:"Lt. Gen. Antonio G. Nafarrete", elected:"07/31/2025" },
-    { img:"pn.png", acronym:"PN", meaning:"Philippine Navy (with Marines)", secretary:"VAdm. Jose Ma. Ambrosio Q. Ezpeleta", elected:"11/15/2024" },
-    { img:"paf.png", acronym:"PAF", meaning:"Philippine Air Force", secretary:"Lt. Gen. Arthur M. Cordura", elected:"12/20/2022" },
-
-// Other Key Agencies
-    { img:"bsp.png", acronym:"BSP", meaning:"Bangko Sentral ng Pilipinas", secretary:"Eli Remolona Jr.", elected:"06/23/2023" },
-    { img:"nsc.png", acronym:"NSC", meaning:"National Security Council", secretary:"Eduardo Año", elected:"n/a" },
-    { img:"neda.png", acronym:"NEDA", meaning:"National Economic and Development Authority (now DEPDev)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
-    { img:"prc.png", acronym:"PRC", meaning:"Professional Regulation Commission", secretary:"Charito A. Zamora", elected:"n/a" },
-    { img:"erc.png", acronym:"ERC", meaning:"Energy Regulatory Commission", secretary:"Francis S. Juan", elected:"08/08/2025" },
-    { img:"ic.png", acronym:"IC", meaning:"Insurance Commission", secretary:"Reynaldo A. Regalado", elected:"n/a" },
-    { img:"sec.png", acronym:"SEC", meaning:"Securities and Exchange Commission", secretary:"Francis Edralin Lim", elected:"n/a" },
-    { img:"ched.png", acronym:"CHED", meaning:"Commission on Higher Education", secretary:"Shirley C. Agrupis", elected:"06/09/2025" },
-    { img:"tesda.png", acronym:"TESDA", meaning:"Technical Education and Skills Development Authority", secretary:"Jose Francisco “Kiko” Benitez", elected:"n/a" },
-    { img:"ncca.png", acronym:"NCCA", meaning:"National Commission for Culture and the Arts", secretary:"Victorino M. Manalo", elected:"n/a" },
-    { img:"ncip.png", acronym:"NCIP", meaning:"National Commission on Indigenous Peoples", secretary:"Marie Grace T. Pascua", elected:"n/a" },
-    { img:"mtrcb.png", acronym:"MTRCB", meaning:"Movie and Television Review and Classification Board", secretary:"Lala Sotto-Antonio", elected:"n/a" }
-
-      ].filter(q => selected.includes(q.acronym));
-
-      quizData = shuffleArray(quizData);
-
-      currentIndex = 0;
-      document.getElementById("startMenu").style.display = "none";
-      document.getElementById("quizContainer").style.display = "flex";
-      renderQuizCard();
-    });
-
-    function renderQuizCard(){
-      const card = document.getElementById("quizCard");
-      card.innerHTML = `
-        <img id="acronymImage" src="" alt="Acronym Image">
-        <h2>Fill in the details</h2>
-        <input type="text" id="acronymInput" placeholder="Acronym...">
-        <input type="text" id="meaningInput" placeholder="Meaning...">
-        <input type="text" id="secretaryInput" placeholder="Secretary...">
-        <input type="text" id="electedInput" placeholder="Elected (MM/DD/YYYY)...">
-        <button id="submitBtn">Submit</button>
-        <p class="feedback" id="feedback"></p>
-      `;
-
-      acronymImage = document.getElementById("acronymImage");
-      acronymInput = document.getElementById("acronymInput");
-      meaningInput = document.getElementById("meaningInput");
-      secretaryInput = document.getElementById("secretaryInput");
-      electedInput = document.getElementById("electedInput");
-      feedback = document.getElementById("feedback");
-      document.getElementById("submitBtn").addEventListener("click", checkAnswer);
-      loadQuestion();
-    }
-
-    function loadQuestion() {
-      const q = quizData[currentIndex];
-      acronymImage.src = q.img;
-      acronymInput.value = "";
-      meaningInput.value = "";
-      secretaryInput.value = "";
-      electedInput.value = "";
-      feedback.textContent = "";
-      const quizCard = document.getElementById("quizCard");
-      quizCard.classList.remove("visible");
-      setTimeout(() => quizCard.classList.add("visible"), 100);
-    }
-
-    function checkAnswer() {
-      const q = quizData[currentIndex];
-      let result = "";
-
-      result += acronymInput.value.trim().toLowerCase() === q.acronym.toLowerCase()
-        ? `✅ Acronym correct! (${q.acronym})<br>` : `❌ Acronym wrong. Correct: ${q.acronym}<br>`;
-
-      result += meaningInput.value.trim().toLowerCase() === q.meaning.toLowerCase()
-        ? `✅ Meaning correct! (${q.meaning})<br>` : `❌ Meaning wrong. Correct: ${q.meaning}<br>`;
-
-      result += secretaryInput.value.trim().toLowerCase() === q.secretary.toLowerCase()
-        ? `✅ Secretary correct! (${q.secretary})<br>` : `❌ Secretary wrong. Correct: ${q.secretary}<br>`;
-
-      result += electedInput.value.trim() === q.elected
-        ? `✅ Elected correct! (${q.elected})<br>` : `❌ Elected wrong. Correct: ${q.elected}<br>`;
-
-      feedback.innerHTML = result;
-
-      setTimeout(() => {
-        currentIndex++;
-        if(currentIndex < quizData.length) {
-          loadQuestion();
-        } else {
-          document.getElementById("quizCard").innerHTML = `
-            <h2>🎉 Quiz Complete!</h2>
-            <p class="feedback correct">Great job finishing all questions!</p>
-            <button onclick="restartQuiz()">Retake Quiz</button>
-          `;
-        }
-      }, 3000);
-    }
-
-    function restartQuiz(){
-      currentIndex = 0;
-      document.getElementById("quizContainer").style.display = "none";
-      document.getElementById("startMenu").style.display = "flex";
-    }
-     const deptPopup = document.getElementById('deptPopup');
+// Department popup
+const deptPopup = document.getElementById('deptPopup');
 const deptToggleBtn = document.getElementById('deptToggleBtn');
 const closeDeptPopup = document.getElementById('closeDeptPopup');
-
 deptToggleBtn.addEventListener('click', () => deptPopup.classList.add('active'));
 closeDeptPopup.addEventListener('click', () => deptPopup.classList.remove('active'));
 
-// Existing card selection logic works here
+// Department card selection
 const cards = deptPopup.querySelectorAll(".dept-card");
 cards.forEach(card => {
-  const checkbox = card.querySelector("input");
-  card.addEventListener("click", () => {
-    checkbox.checked = !checkbox.checked;
-    card.classList.toggle("selected", checkbox.checked);
-  });
+const checkbox = card.querySelector("input");
+card.addEventListener("click", (e) => {
+if(e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL'){
+checkbox.checked = !checkbox.checked;
+}
+card.classList.toggle("selected", checkbox.checked);
 });
-  </script>
-  <style>
-  /* existing CSS ... */
+});
 
-  /* SIDE SCROLLABLE PANEL */
-  .dept-side-panel {
-    position: fixed;
-    left: 0;
-    top: 80px; /* below navbar */
-    width: 280px;
-    height: calc(100vh - 80px);
-    background: #111;
-    border-right: 1px solid #555;
-    padding: 1rem;
-    overflow-y: auto;
-    z-index: 1000;
-  }
+// Buttons
+const selectAllBtn = document.getElementById("selectAllBtn");
+const clearBtn = document.getElementById("clearBtn");
+const randomBtn = document.getElementById("randomBtn");
+const startBtn = document.getElementById("startBtn");
 
-  .dept-side-panel .dept-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid #555;
-    border-radius: 10px;
-    padding: 0.8rem;
-    margin-bottom: 0.5rem;
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
+selectAllBtn.addEventListener("click", () => {
+cards.forEach(card => { card.querySelector("input").checked = true; card.classList.add("selected"); });
+});
+clearBtn.addEventListener("click", () => {
+cards.forEach(card => { card.querySelector("input").checked = false; card.classList.remove("selected"); });
+});
+randomBtn.addEventListener("click", () => {
+const shuffled = [...cards].sort(() => 0.5 - Math.random());
+const halfCount = Math.ceil(cards.length / 2);
+cards.forEach(card => { card.querySelector("input").checked = false; card.classList.remove("selected"); });
+shuffled.slice(0, halfCount).forEach(card => { card.querySelector("input").checked = true; card.classList.add("selected"); });
+});
 
-  .dept-side-panel .dept-card:hover {
-    background: rgba(0,191,255,0.1);
-    border-color: #00bfff;
-  }
+// Quiz
+let quizData = [];
+let currentIndex = 0;
+function shuffleArray(array) {
+for(let i=array.length-1;i>0;i--){
+const j = Math.floor(Math.random()*(i+1));
+[array[i], array[j]] = [array[j], array[i]];
+}
+return array;
+}
 
-  .dept-side-panel .dept-card input { display: none; }
-  .dept-side-panel .dept-card.selected { background: rgba(0,191,255,0.2); border-color: #00bfff; }
-    .dept-popup { ... }  /* use the CSS from my previous message */
-.dept-popup.active { ... }
-.dept-popup-header { ... }
-.dept-popup-header h3 { ... }
-.dept-popup-header button { ... }
-.dept-popup-body { ... }
-.dept-card { ... }
-.dept-card:hover { ... }
-.dept-card.selected { ... }
-.select-dept-btn { ... }
-  .select-dept-btn:hover { ... }
+startBtn.addEventListener("click", () => {
+const selected = [...cards].filter(c=>c.querySelector("input").checked).map(c=>c.querySelector("input").value);
+if(selected.length===0){ alert("Please select at least one department!"); return; }
 
-  /* CENTERED BUTTONS */
-  .start-menu {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-  }
+quizData = [
+// Executive Departments
+{ img:"dar.png", acronym:"DAR", meaning:"Department of Agrarian Reform", secretary:"Conrado Estrella III", elected:"06/30/2022" },
+{ img:"da.png", acronym:"DA", meaning:"Department of Agriculture", secretary:"Francisco P. Tiu Laurel Jr", elected:"11/03/2023" },
+{ img:"dbm.png", acronym:"DBM", meaning:"Department of Budget and Management", secretary:"Amenah Pangandaman", elected:"06/30/2022" },
+{ img:"depdev.png", acronym:"DEPDev", meaning:"Department of Economy, Planning, and Development (formerly NEDA)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
+{ img:"deped.png", acronym:"DepEd", meaning:"Department of Education", secretary:"Sonny Angara", elected:"07/19/2024" },
+{ img:"doe.png", acronym:"DOE", meaning:"Department of Energy", secretary:"Sharon Garin", elected:"05/23/2025" },
+{ img:"denr.png", acronym:"DENR", meaning:"Department of Environment and Natural Resources", secretary:"Raphael Lotilla", elected:"05/23/2025" },
+{ img:"dof.png", acronym:"DOF", meaning:"Department of Finance", secretary:"Ralph Recto", elected:"01/12/2024" },
+{ img:"dfa.png", acronym:"DFA", meaning:"Department of Foreign Affairs", secretary:"Maria Theresa Lazaro", elected:"07/01/2025" },
+{ img:"doh.png", acronym:"DOH", meaning:"Department of Health", secretary:"Teodoro Herbosa", elected:"06/05/2023" },
+{ img:"dhsud.png", acronym:"DHSUD", meaning:"Department of Human Settlements and Urban Development", secretary:"Jose Ramon Aliling", elected:"05/26/2025" },
+{ img:"dict.png", acronym:"DICT", meaning:"Department of Information and Communications Technology", secretary:"Henry Rhoel Aguda", elected:"03/20/2025" },
 
-  .start-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-  }
-</style>
- 
+// Constitutional Commissions
+{ img:"csc.png", acronym:"CSC", meaning:"Civil Service Commission", secretary:"Luis M. Pangulayan", elected:"02/10/2025" },
+{ img:"comelec.png", acronym:"COMELEC", meaning:"Commission on Elections", secretary:"George Erwin Garcia", elected:"n/a" },
+{ img:"coa.png", acronym:"COA", meaning:"Commission on Audit", secretary:"Mallillin", elected:"02/10/2025" },
+
+// Independent Constitutional Bodies
+{ img:"chr.png", acronym:"CHR", meaning:"Commission on Human Rights", secretary:"Atty. Richard P. Palpal-latoc", elected:"09/27/2022" },
+{ img:"oto.png", acronym:"OMB", meaning:"Office of the Ombudsman", secretary:"Samuel R. Martires", elected:"07/26/2018" },
+
+// Law Enforcement & Security
+{ img:"dilg.png", acronym:"DILG", meaning:"Department of the Interior and Local Government", secretary:"Jonvic Remulla", elected:"n/a" },
+{ img:"pnp.png", acronym:"PNP", meaning:"Philippine National Police", secretary:"Jonvic Remulla / Rafael Calinisan / PGEN. Torre III", elected:"n/a" },
+{ img:"bfp.png", acronym:"BFP", meaning:"Bureau of Fire Protection", secretary:"Dir. Jesus P. Fernandez", elected:"n/a" },
+{ img:"bjmp.png", acronym:"BJMP", meaning:"Bureau of Jail Management and Penology", secretary:"J/Dir Ruel S. Rivera", elected:"n/a" },
+{ img:"lgu.png", acronym:"LGUs", meaning:"Local Government Units", secretary:"n/a", elected:"n/a" },
+{ img:"doj.png", acronym:"DOJ", meaning:"Department of Justice", secretary:"Jesus C. Remulla", elected:"07/01/2022" },
+{ img:"nbi.png", acronym:"NBI", meaning:"National Bureau of Investigation", secretary:"Dir. Jaime B. Santiago", elected:"06/14/2024" },
+{ img:"bucor.png", acronym:"BuCor", meaning:"Bureau of Corrections", secretary:"Gregorio Pio P. Catapang Jr", elected:"10/21/2022" },
+{ img:"bi.png", acronym:"BI", meaning:"Bureau of Immigration", secretary:"Joel Anthony M. Viado", elected:"09/30/2024" },
+{ img:"osg.png", acronym:"OSG", meaning:"Office of the Solicitor General", secretary:"Darlene Berberabe", elected:"05/29/2025" },
+{ img:"pao.png", acronym:"PAO", meaning:"Public Attorney’s Office", secretary:"Persida V. Rueda-Acosta", elected:"02/23/2001" },
+{ img:"opg.png", acronym:"PG", meaning:"Office of the Prosecutor General", secretary:"Richard A. D. Fadullon", elected:"11/04/2024" },
+
+// National Defense
+{ img:"afp.png", acronym:"AFP", meaning:"Armed Forces of the Philippines", secretary:"Gen. Romeo S. Brawner Jr.", elected:"07/21/2023" },
+{ img:"pa.png", acronym:"PA", meaning:"Philippine Army", secretary:"Lt. Gen. Antonio G. Nafarrete", elected:"07/31/2025" },
+{ img:"pn.png", acronym:"PN", meaning:"Philippine Navy (with Marines)", secretary:"VAdm. Jose Ma. Ambrosio Q. Ezpeleta", elected:"11/15/2024" },
+{ img:"paf.png", acronym:"PAF", meaning:"Philippine Air Force", secretary:"Lt. Gen. Arthur M. Cordura", elected:"12/20/2022" },
+
+// Other Key Agencies
+{ img:"bsp.png", acronym:"BSP", meaning:"Bangko Sentral ng Pilipinas", secretary:"Eli Remolona Jr.", elected:"06/23/2023" },
+{ img:"nsc.png", acronym:"NSC", meaning:"National Security Council", secretary:"Eduardo Año", elected:"n/a" },
+{ img:"neda.png", acronym:"NEDA", meaning:"National Economic and Development Authority (now DEPDev)", secretary:"Arsenio Balisacan", elected:"06/30/2022" },
+{ img:"prc.png", acronym:"PRC", meaning:"Professional Regulation Commission", secretary:"Charito A. Zamora", elected:"n/a" },
+{ img:"erc.png", acronym:"ERC", meaning:"Energy Regulatory Commission", secretary:"Francis S. Juan", elected:"08/08/2025" },
+{ img:"ic.png", acronym:"IC", meaning:"Insurance Commission", secretary:"Reynaldo A. Regalado", elected:"n/a" },
+{ img:"sec.png", acronym:"SEC", meaning:"Securities and Exchange Commission", secretary:"Francis Edralin Lim", elected:"n/a" },
+{ img:"ched.png", acronym:"CHED", meaning:"Commission on Higher Education", secretary:"Shirley C. Agrupis", elected:"06/09/2025" },
+{ img:"tesda.png", acronym:"TESDA", meaning:"Technical Education and Skills Development Authority", secretary:"Jose Francisco “Kiko” Benitez", elected:"n/a" },
+{ img:"ncca.png", acronym:"NCCA", meaning:"National Commission for Culture and the Arts", secretary:"Victorino M. Manalo", elected:"n/a" },
+{ img:"ncip.png", acronym:"NCIP", meaning:"National Commission on Indigenous Peoples", secretary:"Marie Grace T. Pascua", elected:"n/a" },
+{ img:"mtrcb.png", acronym:"MTRCB", meaning:"Movie and Television Review and Classification Board", secretary:"Lala Sotto-Antonio", elected:"n/a" }
+
+].filter(q=>selected.includes(q.acronym));
+quizData = shuffleArray(quizData);
+currentIndex = 0;
+deptPopup.classList.remove('active');
+document.getElementById("quizContainer").style.display = "flex";
+renderQuizCard();
+});
+
+function renderQuizCard(){
+const card = document.getElementById("quizCard");
+card.innerHTML = `
+<img id="acronymImage" src="" alt="Acronym Image">
+<h2>Fill in the details</h2>
+<input type="text" id="acronymInput" placeholder="Acronym...">
+<input type="text" id="meaningInput" placeholder="Meaning...">
+<input type="text" id="secretaryInput" placeholder="Secretary...">
+<input type="text" id="electedInput" placeholder="Elected (MM/DD/YYYY)...">
+<button id="submitBtn">Submit</button>
+<p class="feedback" id="feedback"></p>
+`;
+acronymImage = document.getElementById("acronymImage");
+acronymInput = document.getElementById("acronymInput");
+meaningInput = document.getElementById("meaningInput");
+secretaryInput = document.getElementById("secretaryInput");
+electedInput = document.getElementById("electedInput");
+feedback = document.getElementById("feedback");
+document.getElementById("submitBtn").addEventListener("click", checkAnswer);
+loadQuestion();
+}
+
+function loadQuestion() {
+const q = quizData[currentIndex];
+acronymImage.src = q.img;
+acronymInput.value = "";
+meaningInput.value = "";
+secretaryInput.value = "";
+electedInput.value = "";
+feedback.textContent = "";
+const quizCard = document.getElementById("quizCard");
+quizCard.classList.remove("visible");
+setTimeout(()=>quizCard.classList.add("visible"),100);
+}
+
+function checkAnswer() {
+const q = quizData[currentIndex];
+let result = "";
+result += acronymInput.value.trim().toLowerCase()===q.acronym.toLowerCase() ? `✅ Acronym correct! (${q.acronym})<br>` : `❌ Acronym wrong. Correct: ${q.acronym}<br>`;
+result += meaningInput.value.trim().toLowerCase()===q.meaning.toLowerCase() ? `✅ Meaning correct! (${q.meaning})<br>` : `❌ Meaning wrong. Correct: ${q.meaning}<br>`;
+result += secretaryInput.value.trim().toLowerCase()===q.secretary.toLowerCase() ? `✅ Secretary correct! (${q.secretary})<br>` : `❌ Secretary wrong. Correct: ${q.secretary}<br>`;
+result += electedInput.value.trim()===q.elected ? `✅ Elected correct! (${q.elected})<br>` : `❌ Elected wrong. Correct: ${q.elected}<br>`;
+feedback.innerHTML = result;
+
+setTimeout(()=>{
+currentIndex++;
+if(currentIndex<quizData.length){ loadQuestion(); }
+else {
+document.getElementById("quizCard").innerHTML = `
+<h2>🎉 Quiz Complete!</h2>
+<p class="feedback correct">Great job finishing all questions!</p>
+<button onclick="restartQuiz()">Retake Quiz</button>
+`;
+}
+},3000);
+}
+
+function restartQuiz(){
+currentIndex=0;
+document.getElementById("quizContainer").style.display="none";
+}
+</script>
 </body>
 </html>
+
