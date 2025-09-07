@@ -76,20 +76,19 @@ font-weight:700; cursor:pointer; transition:0.3s;
 }
 .start-btn:hover, .select-btn:hover, .select-dept-btn:hover { background:#87cefa; }
 
-/* DEPARTMENT POPUP */
-/* DEPARTMENT SIDE MENU */
+/* DEPARTMENT SIDE MENU FROM LEFT BELOW NAVBAR */
 .dept-popup {
   position: fixed;
-  top: 0;
-  right: -300px; /* hidden off-screen initially */
+  top: 80px;           /* leave space for navbar height */
+  left: -300px;        /* hidden off-screen initially */
   width: 300px;
-  height: 100%;
+  height: calc(100% - 80px); /* full height minus navbar */
   background: #111;
   padding: 2rem 1rem;
-  border-left: 2px solid #00bfff;
+  border-right: 2px solid #00bfff;
   display: flex;
   flex-direction: column;
-  transition: right 0.3s ease;
+  transition: left 0.3s ease;
   z-index: 1500;
   overflow-y: auto;
 }
@@ -98,7 +97,7 @@ font-weight:700; cursor:pointer; transition:0.3s;
 .dept-popup::-webkit-scrollbar { display: none; }
 .dept-popup { -ms-overflow-style: none; scrollbar-width: none; }
 
-.dept-popup.active { right: 0; }
+.dept-popup.active { left: 0; }
 
 .dept-popup-header {
   display: flex;
@@ -107,10 +106,17 @@ font-weight:700; cursor:pointer; transition:0.3s;
   margin-bottom: 1rem;
 }
 .dept-popup-header h3 { font-size: 1.2rem; color:white; }
-.dept-popup-header button {
-  background: none; border: none; color: white; font-size: 1.2rem; cursor: pointer;
-}
+
 .dept-popup-body { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.start-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center; /* center buttons horizontally */
+  gap: 10px;
+  margin-top: 2rem; /* space from top or other elements */
+}
+
 
 /* DEPARTMENT CARDS */
 .dept-card {
@@ -182,13 +188,12 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 <i class="fa-solid fa-building-columns"></i> Select Departments
 </button>
 
-<!-- DEPARTMENT POPUP -->
+<!-- DEPARTMENT POPUP (slide-in side menu) -->
 <div class="dept-popup" id="deptPopup">
-<div class="dept-popup-header">
-<h3>Select Departments</h3>
-<button id="closeDeptPopup"><i class="fa-solid fa-xmark"></i></button>
-</div>
-<div class="dept-popup-body">
+  <div class="dept-popup-header">
+    <h3>Select Departments</h3>
+  </div>
+  <div class="dept-popup-body">
 <!-- Example Department Cards -->
 <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
 <div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
@@ -235,13 +240,13 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 <div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
 <div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
 <div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
+  </div>
 </div>
-<div class="start-buttons">
+  <div class="start-buttons" style="display:flex; justify-content:center; gap:10px; margin-top:2rem;">
 <button class="select-btn" id="selectAllBtn">Select All</button>
 <button class="select-btn" id="clearBtn">Clear Selection</button>
 <button class="select-btn" id="randomBtn">Select Random</button>
 <button class="start-btn" id="startBtn">Start Quiz</button>
-</div>
 </div>
 
 <!-- QUIZ -->
