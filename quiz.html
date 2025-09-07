@@ -140,11 +140,9 @@
   </div>
 
   <div class="page-wrapper" id="pageWrapper">
-    <!-- START MENU -->
-    <div class="start-menu" id="startMenu">
-      <h2>📘 Choose Departments for Quiz</h2>
-      <div class="dept-options" id="deptSelect">
-        <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
+    <!-- SIDE SCROLLABLE DEPT SELECTION -->
+<div class="dept-side-panel" id="deptSelectSide">
+   <div class="dept-card"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
 <div class="dept-card"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
 <div class="dept-card"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
 <div class="dept-card"><input type="checkbox" value="DEPDev" id="depdev"><label for="depdev">Department of Economy, Planning, and Development (DEPDev)</label></div>
@@ -189,12 +187,19 @@
 <div class="dept-card"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
 <div class="dept-card"><input type="checkbox" value="NCIP" id="ncip"><label for="ncip">National Commission on Indigenous Peoples (NCIP)</label></div>
 <div class="dept-card"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
-      </div>
-      <button class="select-btn" id="selectAllBtn">Select All</button>
-      <button class="select-btn" id="clearBtn">Clear Selection</button>
-      <button class="select-btn" id="randomBtn">Select Random</button>
-      <button class="start-btn" id="startBtn">Start Quiz</button>
-    </div>
+</div>
+
+    <!-- START MENU -->
+   <div class="start-menu" id="startMenu">
+  <h2>📘 Choose Departments for Quiz</h2>
+  <div class="start-buttons">
+    <button class="select-btn" id="selectAllBtn">Select All</button>
+    <button class="select-btn" id="clearBtn">Clear Selection</button>
+    <button class="select-btn" id="randomBtn">Select Random</button>
+    <button class="start-btn" id="startBtn">Start Quiz</button>
+  </div>
+</div>
+      
 
     <!-- QUIZ -->
     <div class="quiz-container" style="display:none;" id="quizContainer">
@@ -431,5 +436,58 @@ randomBtn.addEventListener("click", () => {
       document.getElementById("startMenu").style.display = "flex";
     }
   </script>
+  <style>
+  /* existing CSS ... */
+
+  /* SIDE SCROLLABLE PANEL */
+  .dept-side-panel {
+    position: fixed;
+    left: 0;
+    top: 80px; /* below navbar */
+    width: 280px;
+    height: calc(100vh - 80px);
+    background: #111;
+    border-right: 1px solid #555;
+    padding: 1rem;
+    overflow-y: auto;
+    z-index: 1000;
+  }
+
+  .dept-side-panel .dept-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid #555;
+    border-radius: 10px;
+    padding: 0.8rem;
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .dept-side-panel .dept-card:hover {
+    background: rgba(0,191,255,0.1);
+    border-color: #00bfff;
+  }
+
+  .dept-side-panel .dept-card input { display: none; }
+  .dept-side-panel .dept-card.selected { background: rgba(0,191,255,0.2); border-color: #00bfff; }
+
+  /* CENTERED BUTTONS */
+  .start-menu {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .start-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+</style>
 </body>
 </html>
