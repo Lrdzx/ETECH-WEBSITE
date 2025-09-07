@@ -278,13 +278,18 @@ deptToggleBtn.addEventListener('click', () => {
 
 
 // Close when clicking outside
+const startButtonsContainer = document.querySelector('.start-buttons');
+
 document.addEventListener('click', (e) => {
-  if(!deptPopup.contains(e.target) && !deptToggleBtn.contains(e.target)){
+  if (
+    !deptPopup.contains(e.target) &&
+    !deptToggleBtn.contains(e.target) &&
+    !startButtonsContainer.contains(e.target) // exclude start buttons
+  ) {
     deptPopup.classList.remove('active');
     document.getElementById('pageWrapper').classList.remove('shifted');
   }
 });
-
 // Department card selection
 const cards = deptPopup.querySelectorAll(".dept-card");
 cards.forEach(card => {
