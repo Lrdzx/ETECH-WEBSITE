@@ -201,7 +201,7 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
   </div>
   <div class="dept-popup-body">
 <!-- Example Department Cards -->
-    <button class="category-btn" data-category="executive">Executive Departments</button>
+    <div class="dept-card category-btn" data-category="executive">Executive Departments</div>
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DAR" id="dar"><label for="dar">Department of Agrarian Reform (DAR)</label></div>
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DA" id="da"><label for="da">Department of Agriculture (DA)</label></div>
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DBM" id="dbm"><label for="dbm">Department of Budget and Management (DBM)</label></div>
@@ -214,14 +214,17 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DOH" id="doh"><label for="doh">Department of Health (DOH)</label></div>
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DHSUD" id="dhsud"><label for="dhsud">Department of Human Settlements and Urban Development (DHSUD)</label></div>
 <div class="dept-card" data-category="executive"><input type="checkbox" value="DICT" id="dict"><label for="dict">Department of Information and Communications Technology (DICT)</label></div>
-<button class="category-btn" data-category="constitutional">Constitutional Commissions</button>
+
+<div class="dept-card category-btn" data-category="constitutional">Constitutional Commissions</div>
 <div class="dept-card" data-category="commission"><input type="checkbox" value="CSC" id="csc"><label for="csc">Civil Service Commission (CSC)</label></div>
 <div class="dept-card" data-category="commission"><input type="checkbox" value="COMELEC" id="comelec"><label for="comelec">Commission on Elections (COMELEC)</label></div>
 <div class="dept-card" data-category="commission"><input type="checkbox" value="COA" id="coa"><label for="coa">Commission on Audit (COA)</label></div>
- <button class="category-btn" data-category="independent">Other Independent Bodies</button>
+
+<div class="dept-card category-btn" data-category="independent">Other Independent Bodies</div>
 <div class="dept-card" data-category="independent"><input type="checkbox" value="CHR" id="chr"><label for="chr">Commission on Human Rights (CHR)</label></div>
 <div class="dept-card" data-category="independent"><input type="checkbox" value="OMB" id="obm"><label for="ombudsman">Office of the Ombudsman</label></div>
- <button class="category-btn" data-category="law">Law Enforcement & Security</button>
+
+<div class="dept-card category-btn" data-category="law">Law Enforcement & Security</div>
 <div class="dept-card" data-category="security"><input type="checkbox" value="DILG" id="dilg"><label for="dilg">Department of the Interior and Local Government (DILG)</label></div>
 <div class="dept-card" data-category="security"><input type="checkbox" value="PNP" id="pnp"><label for="pnp">Philippine National Police (PNP)</label></div>
 <div class="dept-card" data-category="security"><input type="checkbox" value="BFP" id="bfp"><label for="bfp">Bureau of Fire Protection (BFP)</label></div>
@@ -234,12 +237,14 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 <div class="dept-card" data-category="security"><input type="checkbox" value="OSG" id="osg"><label for="osg">Office of the Solicitor General (OSG)</label></div>
 <div class="dept-card" data-category="security"><input type="checkbox" value="PAO" id="pao"><label for="pao">Public Attorney’s Office (PAO)</label></div>
 <div class="dept-card" data-category="security"><input type="checkbox" value="PG" id="prosecutor"><label for="prosecutor">Office of the Prosecutor General</label></div>
-<button class="category-btn" data-category="defense">Under DND</button>
+
+<div class="dept-card category-btn" data-category="defense">Under DND</div>
 <div class="dept-card" data-category="dnd"><input type="checkbox" value="AFP" id="afp"><label for="afp">Armed Forces of the Philippines (AFP)</label></div>
 <div class="dept-card" data-category="dnd"><input type="checkbox" value="PA" id="pa"><label for="pa">Philippine Army (PA)</label></div>
 <div class="dept-card" data-category="dnd"><input type="checkbox" value="PN" id="pn"><label for="pn">Philippine Navy (PN)</label></div>
 <div class="dept-card" data-category="dnd"><input type="checkbox" value="PAF" id="paf"><label for="paf">Philippine Air Force (PAF)</label></div>
-<button class="category-btn" data-category="other">Other Key Agencies</button>
+
+<div class="dept-card category-btn" data-category="other">Other Key Agencies</div>
 <div class="dept-card" data-category="other"><input type="checkbox" value="BSP" id="bsp"><label for="bsp">Bangko Sentral ng Pilipinas (BSP)</label></div>
 <div class="dept-card" data-category="other"><input type="checkbox" value="NSC" id="nsc"><label for="nsc">National Security Council (NSC)</label></div>
 <div class="dept-card" data-category="other"><input type="checkbox" value="NEDA" id="neda"><label for="neda">National Economic and Development Authority (NEDA)</label></div>
@@ -250,7 +255,8 @@ background:#00bfff; color:#000; font-weight:700; cursor:pointer;
 <div class="dept-card" data-category="other"><input type="checkbox" value="CHED" id="ched"><label for="ched">Commission on Higher Education (CHED)</label></div>
 <div class="dept-card" data-category="other"><input type="checkbox" value="TESDA" id="tesda"><label for="tesda">Technical Education and Skills Development Authority (TESDA)</label></div>
 <div class="dept-card" data-category="other"><input type="checkbox" value="NCCA" id="ncca"><label for="ncca">National Commission for Culture and the Arts (NCCA)</label></div>
-<div class="dept-card" data-category="other"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></div>
+<div class="dept-card" data-category="other"><input type="checkbox" value="MTRCB" id="mtrcb"><label for="mtrcb">Movie and Television Review and Classification Board (MTRCB)</label></
+
   </div>
 </div>
   <div class="start-buttons" style="display:flex; justify-content:center; gap:10px; margin-top:2rem;">
@@ -289,6 +295,23 @@ deptToggleBtn.addEventListener('click', () => {
 
 
 // Close when clicking outside
+const categoryButtons = document.querySelectorAll('.start-buttons .select-btn[data-category]');
+categoryButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const category = btn.dataset.category;
+    // Select only cards in that category
+    cards.forEach(card => {
+      const checkbox = card.querySelector('input');
+      if(card.dataset.category === category){
+        checkbox.checked = true;
+        card.classList.add('selected');
+      } else {
+        checkbox.checked = false;
+        card.classList.remove('selected');
+      }
+    });
+  });
+});
 const startButtonsContainer = document.querySelector('.start-buttons');
 
 document.addEventListener('click', (e) => {
