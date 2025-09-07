@@ -232,6 +232,16 @@
     let quizData = [];
     let currentIndex = 0;
 
+      // Shuffle helper
+  function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+  }
+
+
     startBtn.addEventListener("click", () => {
       const selected = [...cards].filter(c => c.querySelector("input").checked).map(c => c.querySelector("input").value);
       if (selected.length === 0) {
@@ -299,6 +309,8 @@
     { img:"mtrcb.png", acronym:"MTRCB", meaning:"Movie and Television Review and Classification Board", secretary:"Lala Sotto-Antonio", elected:"n/a" }
 
       ].filter(q => selected.includes(q.acronym));
+
+      quizData = shuffleArray(quizData);
 
       currentIndex = 0;
       document.getElementById("startMenu").style.display = "none";
