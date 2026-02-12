@@ -46,7 +46,7 @@
     transition: all 0.2s ease;
   }
   button:hover { transform: scale(1.1); box-shadow:0 10px 20px rgba(236,72,153,0.5);}
-  #yesBtn { background:#ec4899; color:#fff; position:absolute; }
+  #yesBtn { background:#ec4899; color:#fff;}
   #noBtn { background:#9ca3af; color:#fff; position:absolute; }
 
   .spotify-card {
@@ -64,6 +64,7 @@
   .progress-bar { background: rgba(255,255,255,0.2); height: 8px; border-radius:4px; overflow:hidden; cursor:pointer; margin:0.5rem 0; }
   .progress { background:#ec4899; height:100%; width:0%; transition: width 0.1s linear; }
   .volume { display:flex; align-items:center; gap:0.5rem; justify-content:center; margin:0.5rem 0; }
+
   .heart {
     position:absolute; width:15px; height:15px; background:red; transform:rotate(-45deg);
     animation: floatUp 3s ease forwards; pointer-events:none;
@@ -109,121 +110,144 @@
 <audio id="musicAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
 <script>
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const message = document.getElementById('dynamicMessage');
-  const questionCard = document.getElementById('questionCard');
-  const musicPlayer = document.getElementById('musicPlayer');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const musicAudio = document.getElementById('musicAudio');
-  const volumeSlider = document.getElementById('volume');
-  const progressBar = document.getElementById('progressBar');
-  const progress = document.getElementById('progress');
-  const teleportAudio = document.getElementById('teleportAudio');
-  const yesAudio = document.getElementById('yesAudio');
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const message = document.getElementById('dynamicMessage');
+const questionCard = document.getElementById('questionCard');
+const musicPlayer = document.getElementById('musicPlayer');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const musicAudio = document.getElementById('musicAudio');
+const volumeSlider = document.getElementById('volume');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const teleportAudio = document.getElementById('teleportAudio');
+const yesAudio = document.getElementById('yesAudio');
 
-  let noAttempts=0, isPlaying=false;
+let noAttempts=0, isPlaying=false;
 
-  // Initialize Yes/No positions centered and parallel
-  function initButtonPosition(){
-    const cardRect = questionCard.getBoundingClientRect();
-    const yesWidth = yesBtn.offsetWidth;
-    const noWidth = noBtn.offsetWidth;
-    const totalWidth = yesWidth + noWidth + 10; // gap 10px
-    const startX = (cardRect.width - totalWidth)/2;
+// ======= INITIAL POSITION - YES and NO parallel =====
+window.onload = () => {
+  const yesRect = yesBtn.getBoundingClientRect();
+  const noRect = noBtn.getBoundingClientRect();
+  const container = document.body.getBoundingClientRect();
+  const startTop = yesRect.top;
+  const gap = 180; // horizontal gap between yes and no
+  noBtn.style.top = startTop + 'px';
+  noBtn.style.left = (yesRect.left + gap) + 'px';
+};
 
-    yesBtn.style.left = startX + 'px';
-    yesBtn.style.top = '50%';
-    yesBtn.style.transform = 'translateY(-50%)';
+// ======= Dynamic message =====
+function updateMessage() {
+  if(noAttempts===0) message.textContent="💕";
+  else if(noAttempts<3) message.textContent="Please? 🥺";
+  else if(noAttempts<5) message.textContent="Pretty please? 💖";
+  else if(noAttempts<8) message.textContent="I'll take that as a yes! 😊";
+  else message.textContent="You can't resist forever! 💝";
+}
 
-    noBtn.style.left = (startX + yesWidth + 10) + 'px';
-    noBtn.style.top = '50%';
-    noBtn.style.transform = 'translateY(-50%)';
+// ======= Teleport / run away logic =====
+const PADDING = 20;   // padding from screen edges
+const MIN_DISTANCE = 120; // distance to trigger run
+const MAX_SHIFT = 100;    // maximum movement per frame
+
+function teleportNoButton() {
+  const rect = noBtn.getBoundingClientRect();
+  const btnX = rect.left;
+  const btnY = rect.top;
+
+  const mouseX = lastMouse.x;
+  const mouseY = lastMouse.y;
+
+  // Direction away from mouse
+  let dx = btnX - mouseX;
+  let dy = btnY - mouseY;
+  const distance = Math.hypot(dx, dy) || 1;
+
+  // distance-based shift
+  let shift = Math.min(MAX_SHIFT, MIN_DISTANCE*2 / distance * 50);
+  let moveX = (dx / distance) * shift;
+  let moveY = (dy / distance) * shift;
+
+  let newX = btnX + moveX;
+  let newY = btnY + moveY;
+
+  // keep inside screen
+  const maxX = window.innerWidth - noBtn.offsetWidth - PADDING;
+  const maxY = window.innerHeight - noBtn.offsetHeight - PADDING;
+  newX = Math.min(maxX, Math.max(PADDING, newX));
+  newY = Math.min(maxY, Math.max(PADDING, newY));
+
+  // if button is too close to edge, reset to center
+  if(newX <= PADDING || newX >= maxX || newY <= PADDING || newY >= maxY){
+    newX = (window.innerWidth - noBtn.offsetWidth)/2;
+    newY = (window.innerHeight - noBtn.offsetHeight)/2;
   }
 
-  window.addEventListener('load', initButtonPosition);
-  window.addEventListener('resize', initButtonPosition);
+  noBtn.style.left = newX+'px';
+  noBtn.style.top = newY+'px';
 
-  function updateMessage() {
-    if(noAttempts===0) message.textContent="💕";
-    else if(noAttempts<3) message.textContent="Please? 🥺";
-    else if(noAttempts<5) message.textContent="Pretty please? 💖";
-    else if(noAttempts<8) message.textContent="I'll take that as a yes! 😊";
-    else message.textContent="You can't resist forever! 💝";
+  noAttempts++;
+  updateMessage();
+  teleportAudio.currentTime=0; teleportAudio.play();
+  createHeart(newX + noBtn.offsetWidth/2, newY + noBtn.offsetHeight/2);
+}
+
+// ======= Floating hearts =====
+function createHeart(x,y){
+  const heart=document.createElement('div');
+  heart.className='heart';
+  heart.style.left=x+'px';
+  heart.style.top=y+'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),3000);
+}
+
+// ======= Track last mouse =====
+let lastMouse = {x:0,y:0};
+document.addEventListener('mousemove', e => {
+  lastMouse.x = e.clientX;
+  lastMouse.y = e.clientY;
+
+  const rect=noBtn.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const distance = Math.hypot(e.clientX-cx,e.clientY-cy);
+
+  if(distance < MIN_DISTANCE){
+    teleportNoButton();
   }
+});
 
-  function createHeart(x,y){
-    const heart=document.createElement('div');
-    heart.className='heart';
-    heart.style.left=x+'px';
-    heart.style.top=y+'px';
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),3000);
+// ======= Yes button =====
+yesBtn.addEventListener('click',()=>{
+  questionCard.style.display='none';
+  yesAudio.currentTime=0; yesAudio.play();
+  musicPlayer.style.display='block';
+  musicAudio.currentTime=0; musicAudio.play();
+  isPlaying=true; playPauseBtn.textContent='Pause';
+});
+
+// ======= Play/pause =====
+playPauseBtn.addEventListener('click',()=>{
+  if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
+  else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
+  isPlaying=!isPlaying;
+});
+
+// ======= Volume =====
+volumeSlider.addEventListener('input',()=>{ musicAudio.volume=volumeSlider.value; });
+
+// ======= Progress bar =====
+musicAudio.addEventListener('timeupdate',()=>{
+  if(musicAudio.duration>0){
+    progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
   }
-
-  function wiggleNoButton(){
-    const shiftX = (Math.random()-0.5)*80;
-    const shiftY = (Math.random()-0.5)*40;
-    let newX = noBtn.offsetLeft + shiftX;
-    let newY = noBtn.offsetTop + shiftY;
-
-    const padding=20;
-    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
-    const minX = padding;
-    const minY = padding;
-
-    if(newX < minX || newX > maxX || newY < minY || newY > maxY){
-      initButtonPosition();
-      teleportAudio.currentTime=0; teleportAudio.play();
-      createHeart(window.innerWidth/2, window.innerHeight/2);
-      return;
-    }
-
-    noBtn.style.transition='all 0.2s ease';
-    noBtn.style.left = newX + 'px';
-    noBtn.style.top = newY + 'px';
-
-    noAttempts++;
-    updateMessage();
-    teleportAudio.currentTime=0; teleportAudio.play();
-    createHeart(newX + noBtn.offsetWidth/2, newY + noBtn.offsetHeight/2);
-  }
-
-  document.addEventListener('mousemove', e => {
-    const rect = noBtn.getBoundingClientRect();
-    const cx = rect.left + rect.width/2;
-    const cy = rect.top + rect.height/2;
-    if(Math.hypot(e.clientX-cx, e.clientY-cy) < 120) wiggleNoButton();
-  });
-
-  yesBtn.addEventListener('click',()=>{
-    questionCard.style.display='none';
-    yesAudio.currentTime=0; yesAudio.play();
-    musicPlayer.style.display='block';
-    musicAudio.currentTime=0; musicAudio.play();
-    isPlaying=true; playPauseBtn.textContent='Pause';
-  });
-
-  playPauseBtn.addEventListener('click',()=>{
-    if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
-    else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
-    isPlaying=!isPlaying;
-  });
-
-  volumeSlider.addEventListener('input',()=>{ musicAudio.volume=volumeSlider.value; });
-
-  musicAudio.addEventListener('timeupdate',()=>{
-    if(musicAudio.duration>0){
-      progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
-    }
-  });
-
-  progressBar.addEventListener('click',e=>{
-    const rect=progressBar.getBoundingClientRect();
-    const pct=(e.clientX-rect.left)/rect.width;
-    musicAudio.currentTime=pct*musicAudio.duration;
-  });
+});
+progressBar.addEventListener('click',e=>{
+  const rect=progressBar.getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  musicAudio.currentTime=pct*musicAudio.duration;
+});
 </script>
 </body>
 </html>
