@@ -1,280 +1,384 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Boolean Operators</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Boolean Operators</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+  <!-- Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <style>
+    /* ===== RESET ===== */
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter','Roboto',Arial,sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-top: 80px;
+      color: white;
+      background: url('bgi.jfif') no-repeat center center fixed;
+      background-size: cover;
+      transition: transform 0.3s ease;
+    }
 
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    /* ===== NAVBAR ===== */
+    nav {
+      width: 100%;
+      background: #000000e6;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 900;
+      border-bottom: 1px solid white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 80px;
+      padding: 0 2rem;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; }
+    .logo img { height: 50px; }
 
-<!-- Icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    /* ===== MENU BUTTON ===== */
+    .hamburger {
+      font-size: 1rem;
+      color: white;
+      cursor: pointer;
+      background: #222;
+      border: none;
+      outline: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: center;
+      transition: background 0.3s, transform 0.1s;
+      padding: 10px 16px;
+      border-radius: 8px;
+      z-index: 1001;
+    }
+    .hamburger i { font-size: 1.4rem; color: #00bfff; }
+    .hamburger span { font-weight: 600; letter-spacing: 1px; }
+    .hamburger:hover { background: #444; }
+    .hamburger:active { transform: scale(0.95); }
 
-<style>
-*{margin:0;padding:0;box-sizing:border-box;}
+    /* ===== SIDE MENU ===== */
+    .side-menu {
+      position: fixed;
+      top: 0;
+      right: -250px;
+      width: 250px;
+      height: 100%;
+      background: #111;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      transition: right 0.3s ease;
+      z-index: 1000;
+      overflow-y: auto;
+    }
+    .side-menu.active { right: 0; }
+    .side-menu a {
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      letter-spacing: 1px;
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: linear-gradient(135deg, #232526, #414345);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .side-menu a:hover {
+      background: linear-gradient(135deg,#00bfff,#87cefa);
+      color: #222;
+      transform: scale(1.05);
+      box-shadow: 0 4px 16px rgba(0,191,255,0.18);
+    }
 
-body{
-  font-family:'Inter','Roboto',Arial,sans-serif;
-  min-height:100vh;
-  padding-top:80px;
-  color:white;
-  background:url('bgi.jfif') no-repeat center center fixed;
-  background-size:cover;
-}
+    /* ===== XYERAINE BUTTON ===== */
+    .xyeraine-btn {
+      background: linear-gradient(135deg, #ff6fa3, #ffb6c1);
+      color: white;
+      font-weight: 700;
+      justify-content: center;
+      position: relative;
+      overflow: visible;
+    }
+    .xyeraine-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 6px 20px rgba(255,105,180,0.4);
+    }
+    /* Heart animation */
+    .xyeraine-btn .heart {
+      position: absolute;
+      width: 12px;
+      height: 12px;
+      background: red;
+      clip-path: polygon(50% 0%, 61% 13%, 75% 13%, 87% 25%, 87% 38%, 75% 50%, 50% 75%, 25% 50%, 13% 38%, 13% 25%, 25% 13%, 39% 13%);
+      animation: floatHeart 1.5s linear infinite;
+      opacity: 0;
+    }
+    @keyframes floatHeart {
+      0% { transform: translate(0,0) scale(0); opacity: 1; }
+      50% { transform: translate(-10px,-30px) scale(1); opacity: 0.8; }
+      100% { transform: translate(10px,-60px) scale(0); opacity: 0; }
+    }
 
-/* NAVBAR */
-nav{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:80px;
-  background:#000000e6;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:0 2rem;
-  z-index:900;
-  border-bottom:1px solid white;
-  transition:top 0.3s;
-}
+    /* ===== CLASSIFICATION INSIDE MENU ===== */
+    .classification {
+      margin-top: 2rem;
+      border-top: 1px solid #444;
+      padding-top: 1rem;
+    }
+    .classification h3 {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 0.8rem;
+      color: #00bfff;
+    }
+    .classification p {
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+    }
 
-.logo{display:flex;gap:10px;align-items:center;}
-.logo img{height:50px;}
+    /* ===== OVERLAY ===== */
+    .overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease;
+      z-index: 999;
+    }
+    .overlay.active { opacity: 1; visibility: visible; }
 
-.hamburger{
-  background:#222;
-  color:white;
-  border:none;
-  padding:10px 16px;
-  border-radius:8px;
-  cursor:pointer;
-  display:flex;
-  align-items:center;
-  gap:8px;
-}
-.hamburger i{color:#00bfff;font-size:1.4rem;}
+    /* ===== PAGE WRAPPER ===== */
+    .page-wrapper { transition: margin-right 0.3s ease; }
+    .page-wrapper.shifted { margin-right: 250px; }
 
-/* SIDE MENU */
-.side-menu{
-  position:fixed;
-  top:0;
-  right:-250px;
-  width:250px;
-  height:100%;
-  background:#111;
-  padding:2rem;
-  transition:right 0.3s ease;
-  z-index:1000;
-}
-.side-menu.active{right:0;}
+    /* ===== HERO ===== */
+    .hero {
+      position: relative;
+      height: 80vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      border-bottom: 1px solid white;
+    }
+    .hero video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: grayscale(100%) brightness(0.55);
+      z-index: -1;
+    }
+    .hero-content { z-index: 1; padding: 2rem; }
+    .hero-content p { font-size: 1.2rem; color: #00bfff; letter-spacing: 2px; }
+    .hero-content h1 { font-size: 3rem; font-weight: 700; letter-spacing: 2px; }
 
-.side-menu a{
-  display:flex;
-  align-items:center;
-  gap:8px;
-  color:white;
-  text-decoration:none;
-  padding:12px 18px;
-  border-radius:8px;
-  margin:6px 0;
-  background:linear-gradient(135deg,#232526,#414345);
-}
-.side-menu a:hover{
-  background:linear-gradient(135deg,#00bfff,#87cefa);
-  color:#222;
-}
+    /* ===== SECTIONS ===== */
+    .sections { padding: 4rem 10%; display: flex; flex-direction: column; gap: 4rem; }
+    .section {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+      border: 1px solid #ffffff33;
+      padding: 2rem;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.05);
+      backdrop-filter: blur(8px);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+    .section.visible { opacity: 1; transform: translateY(0); }
+    .section img { width: 300px; border-radius: 10px; box-shadow: 0 4px 16px rgba(0,191,255,0.2); }
+    .section .text { max-width: 600px; }
+    .section h2 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      background: linear-gradient(135deg,#00bfff,#87cefa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 1rem;
+    }
+    .section p { line-height: 1.6; color: #e0e0e0; }
+    .section:nth-child(even) { flex-direction: row-reverse; }
 
-/* XYERAINE BUTTON */
-.xyeraine-btn{
-  background:linear-gradient(135deg,#ff4da6,#ff99cc)!important;
-  font-weight:700;
-  box-shadow:0 0 15px rgba(255,105,180,0.6);
-  position:relative;
-  overflow:hidden;
-}
-
-.xyeraine-btn::before,
-.xyeraine-btn::after{
-  content:"💖";
-  position:absolute;
-  font-size:18px;
-  opacity:0;
-  animation:floatHearts 2s infinite ease-in-out;
-}
-.xyeraine-btn::before{left:10px;bottom:8px;}
-.xyeraine-btn::after{right:10px;bottom:8px;animation-delay:1s;}
-.xyeraine-btn:hover::before,
-.xyeraine-btn:hover::after{opacity:1;}
-
-@keyframes floatHearts{
-  from{transform:translateY(0);opacity:1;}
-  to{transform:translateY(-40px);opacity:0;}
-}
-
-/* OVERLAY */
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,0.5);
-  opacity:0;
-  visibility:hidden;
-  transition:0.3s;
-  z-index:999;
-}
-.overlay.active{
-  opacity:1;
-  visibility:visible;
-}
-
-/* HERO */
-.hero{
-  height:80vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  position:relative;
-  text-align:center;
-}
-.hero video{
-  position:absolute;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  filter:grayscale(100%) brightness(0.5);
-  z-index:-1;
-}
-.hero-content h1{font-size:3rem;}
-.hero-content p{color:#00bfff;letter-spacing:2px;}
-
-/* SECTIONS */
-.sections{
-  padding:4rem 10%;
-  display:flex;
-  flex-direction:column;
-  gap:4rem;
-}
-.section{
-  display:flex;
-  gap:2rem;
-  background:rgba(255,255,255,0.05);
-  padding:2rem;
-  border-radius:10px;
-  opacity:0;
-  transform:translateY(20px);
-  transition:0.6s;
-}
-.section.visible{
-  opacity:1;
-  transform:translateY(0);
-}
-.section img{width:300px;border-radius:10px;}
-.section:nth-child(even){flex-direction:row-reverse;}
-</style>
+    @media (max-width: 900px) {
+      .hero-content h1 { font-size: 2.2rem; }
+      .sections { padding: 2rem 5%; }
+      .section { flex-direction: column !important; text-align: center; }
+      .section img { width: 100%; }
+    }
+  </style>
 </head>
-
 <body>
+  <!-- ===== NAVBAR ===== -->
+  <nav>
+    <div class="logo">
+      <img src="deped.png" alt="DepEd Logo">
+      <img src="logo.png" alt="Logo">
+    </div>
+    <button class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i>
+      <span>Menu</span>
+    </button>
+  </nav>
 
-<nav>
-  <div class="logo">
-    <img src="deped.png">
-    <img src="logo.png">
-  </div>
-  <button class="hamburger" id="hamburger">
-    <i class="fa-solid fa-bars"></i>
-    <span>Menu</span>
-  </button>
-</nav>
+  <!-- ===== SIDE MENU ===== -->
+  <div class="side-menu" id="sideMenu">
+    <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+    <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+    <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+    <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+    <a href="list.html"><i class="fa-solid fa-list"></i> List</a>
+    
+    <!-- Xyeraine Valentine Button -->
+    <a href="#" class="xyeraine-btn" id="xyeraineBtn"><i class="fa-solid fa-heart"></i> Xyeraine
+      <span class="heart"></span>
+      <span class="heart"></span>
+      <span class="heart"></span>
+    </a>
 
-<div class="side-menu" id="sideMenu">
-  <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
-  <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
-  <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
-  <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
-  <a href="list.html"><i class="fa-solid fa-list"></i> List</a>
-  <a href="xyeraine.html" class="xyeraine-btn"><i class="fa-solid fa-heart"></i> Xyeraine</a>
-</div>
-
-<div class="overlay" id="overlay"></div>
-
-<section class="hero">
-  <video autoplay muted loop>
-    <source src="tech.mp4" type="video/mp4">
-  </video>
-  <div class="hero-content">
-    <p>EMPOWERMENT TECHNOLOGY</p>
-    <h1>BOOLEAN OPERATORS</h1>
-  </div>
-</section>
-
-<div class="sections">
-  <div class="section">
-    <img src="bool.png">
-    <div>
-      <h2>What is a Boolean Operator?</h2>
-      <p>Boolean operators combine search terms using AND, OR, and NOT.</p>
+    <div class="classification">
+      <h3>Classification</h3>
+      <p><i class="fa-solid fa-link"></i> <strong>AND</strong> — Narrows results</p>
+      <p><i class="fa-solid fa-code-branch"></i> <strong>OR</strong> — Broadens results</p>
+      <p><i class="fa-solid fa-ban"></i> <strong>NOT</strong> — Excludes results</p>
     </div>
   </div>
-</div>
 
-<script>
-/* FADE-IN */
-const sections = document.querySelectorAll(".section");
-const observer = new IntersectionObserver(entries=>{
-  entries.forEach(entry=>{
-    if(entry.isIntersecting){
-      entry.target.classList.add("visible");
-      observer.unobserve(entry.target);
+  <!-- ✅ Overlay -->
+  <div class="overlay" id="overlay"></div>
+
+  <!-- ===== PAGE WRAPPER ===== -->
+  <div class="page-wrapper" id="pageWrapper">
+    <!-- ===== HERO ===== -->
+    <section class="hero">
+      <video autoplay muted loop>
+        <source src="tech.mp4" type="video/mp4">
+      </video>
+      <div class="hero-content">
+        <p>EMPOWERMENT TECHNOLOGY</p>
+        <h1>BOOLEAN OPERATORS</h1>
+      </div>
+    </section>
+
+    <!-- ===== SECTIONS ===== -->
+    <div class="sections">
+      <div class="section">
+        <img src="bool.png" alt="Boolean Concept">
+        <div class="text">
+          <h2>What is a Boolean Operator?</h2>
+          <p>Boolean operators are words or symbols used to combine search terms in databases and search engines to narrow or broaden search results. The most common operators are AND, OR, and NOT.</p>
+          <p>It’s based on Boolean logic, a form of algebra developed by George Boole, where values are either true or false.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <img src="search.png" alt="Advantage">
+        <div class="text">
+          <h2>Advantage of Using Boolean Operators</h2>
+          <p>Boolean operators help make searches more precise by narrowing or broadening results as needed. They save time by filtering out unrelated information and allow flexible searching using combinations like AND, OR, and NOT.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <img src="search2.png" alt="Disadvantage">
+        <div class="text">
+          <h2>Disadvantage of Using Boolean Operators</h2>
+          <p>Using Boolean operators incorrectly can lead to poor or no results. Overusing NOT may remove valuable information, while excessive use of AND or OR can make results too narrow or too broad. Different databases or search engines may interpret these operators differently.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== JS ===== -->
+  <script>
+    // ===================== FADE-IN SECTIONS =====================
+    document.addEventListener("DOMContentLoaded", function () {
+      const sections = document.querySelectorAll('.section');
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      sections.forEach(section => observer.observe(section));
+    });
+
+    // ===================== MENU TOGGLE LOGIC =====================
+    const hamburger = document.getElementById("hamburger");
+    const sideMenu = document.getElementById("sideMenu");
+    const pageWrapper = document.getElementById("pageWrapper");
+    const overlay = document.getElementById("overlay");
+
+    function closeMenu() {
+      sideMenu.classList.remove("active");
+      pageWrapper.classList.remove("shifted");
+      overlay.classList.remove("active");
+      const icon = hamburger.querySelector("i");
+      icon.classList.remove("fa-xmark");
+      icon.classList.add("fa-bars");
     }
-  });
-},{threshold:0.15});
-sections.forEach(sec=>observer.observe(sec));
 
-/* MENU LOGIC (FIXED) */
-const hamburger = document.getElementById("hamburger");
-const sideMenu = document.getElementById("sideMenu");
-const overlay = document.getElementById("overlay");
-const icon = hamburger.querySelector("i");
+    hamburger.addEventListener("click", () => {
+      sideMenu.classList.toggle("active");
+      pageWrapper.classList.toggle("shifted");
+      overlay.classList.toggle("active");
+      const icon = hamburger.querySelector("i");
+      if (sideMenu.classList.contains("active")) {
+        icon.classList.remove("fa-bars");
+        icon.classList.add("fa-xmark");
+      } else {
+        icon.classList.remove("fa-xmark");
+        icon.classList.add("fa-bars");
+      }
+    });
 
-hamburger.addEventListener("click", ()=>{
-  if(sideMenu.classList.contains("active")){
-    sideMenu.classList.remove("active");
-    overlay.classList.remove("active");
-    icon.classList.remove("fa-xmark");
-    icon.classList.add("fa-bars");
-  } else {
-    sideMenu.classList.add("active");
-    overlay.classList.add("active");
-    icon.classList.remove("fa-bars");
-    icon.classList.add("fa-xmark");
-  }
-});
+    overlay.addEventListener("click", closeMenu);
+    document.querySelectorAll(".side-menu a").forEach(link => link.addEventListener("click", closeMenu));
 
-overlay.addEventListener("click", ()=>{
-  sideMenu.classList.remove("active");
-  overlay.classList.remove("active");
-  icon.classList.remove("fa-xmark");
-  icon.classList.add("fa-bars");
-});
+    // ===================== NAVBAR SCROLL HIDE/SHOW =====================
+    const navbar = document.querySelector("nav");
+    navbar.style.transition = "top 0.3s";
+    let lastScrollY = window.scrollY;
 
-/* NAVBAR HIDE ON SCROLL */
-let lastScrollY = window.scrollY;
-window.addEventListener("scroll",()=>{
-  const nav = document.querySelector("nav");
-  if(window.scrollY > lastScrollY){
-    nav.style.top="-80px";
-  }else{
-    nav.style.top="0";
-  }
-  lastScrollY = window.scrollY;
-});
-</script>
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > lastScrollY) {
+        navbar.style.top = "-80px";
+      } else {
+        navbar.style.top = "0";
+      }
+      lastScrollY = window.scrollY;
+    });
 
+    // ===================== HEART ANIMATION RANDOMIZATION =====================
+    const xyBtn = document.getElementById("xyeraineBtn");
+    const hearts = xyBtn.querySelectorAll(".heart");
+
+    setInterval(() => {
+      hearts.forEach(heart => {
+        heart.style.left = Math.random() * 80 + "px";
+        heart.style.top = Math.random() * 10 + "px";
+      });
+    }, 300);
+  </script>
 </body>
 </html>
-
-
-
-
-
