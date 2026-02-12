@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Valentine Interactive</title>
 <style>
-  * { box-sizing: border-box; margin:0; padding:0; font-family:'Poppins',sans-serif; }
+  * { box-sizing:border-box; margin:0; padding:0; font-family:'Poppins',sans-serif; }
   html, body { height:100%; width:100%; overflow:hidden; }
 
   body {
@@ -13,14 +13,13 @@
     background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
     background-size: 800% 800%;
     animation: gradientBG 15s ease infinite;
+    position:relative;
   }
   @keyframes gradientBG {
     0%{background-position:0% 50%;}
     50%{background-position:100% 50%;}
     100%{background-position:0% 50%;}
   }
-
-  .overlay { position:absolute; inset:0; }
 
   .card {
     position:relative; z-index:1;
@@ -33,12 +32,13 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.3);
     transition: transform 0.3s;
   }
-  .card:hover { transform: scale(1.03); }
-
-  h1 { font-size:2.5rem; margin-bottom:0.5rem; text-shadow:0 2px 10px rgba(0,0,0,0.3); }
+  h1 { font-size:2rem; margin-bottom:0.5rem; text-shadow:0 2px 10px rgba(0,0,0,0.3); }
   p { font-size:1.2rem; margin-bottom:1.5rem; min-height:1.5rem; }
 
-  .buttons { display:flex; justify-content:center; gap:1rem; position:relative; height:60px; }
+  .buttons {
+    display:flex; justify-content:center; align-items:center; gap:2rem; position:relative; height:60px;
+  }
+
   button {
     padding:1rem 2rem; border:none; border-radius:1.5rem;
     font-size:1.2rem; font-weight:bold; cursor:pointer;
@@ -49,21 +49,7 @@
   #yesBtn { background:#ec4899; color:#fff;}
   #noBtn { background:#9ca3af; color:#fff; position:absolute; top:0; left:0; }
 
-  .spotify-card {
-    display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;
-    background: rgba(0,0,0,0.5); border-radius:1.5rem; padding:1rem;
-    box-shadow:0 10px 20px rgba(0,0,0,0.3);
-  }
-  .spotify-card img { width:80px; height:80px; border-radius:1rem; object-fit:cover; transition: transform 0.3s; }
-  .spotify-card img:hover { transform: scale(1.05); }
-  .song-info { text-align:left; }
-  .song-title { font-weight:bold; }
-  .song-artist { font-size:0.9rem; opacity:0.8; }
-
-  .player { background: rgba(255,255,255,0.15); backdrop-filter: blur(25px); border-radius:2rem; border:1px solid rgba(255,255,255,0.3); padding:1rem; text-align:center; max-width:350px; margin-top:2rem; box-shadow:0 15px 40px rgba(0,0,0,0.3); }
-  .progress-bar { background: rgba(255,255,255,0.2); height: 8px; border-radius:4px; overflow:hidden; cursor:pointer; margin:0.5rem 0; }
-  .progress { background:#ec4899; height:100%; width:0%; transition: width 0.1s linear; }
-  .volume { display:flex; align-items:center; gap:0.5rem; justify-content:center; margin:0.5rem 0; }
+  /* Heart effect */
   .heart {
     position:absolute; width:15px; height:15px; background:red; transform:rotate(-45deg);
     animation: floatUp 3s ease forwards; pointer-events:none;
@@ -75,54 +61,37 @@
 </style>
 </head>
 <body>
-<div class="overlay"></div>
 
 <div class="card" id="questionCard">
-  <div class="spotify-card">
-    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album Cover">
-    <div class="song-info">
-      <div class="song-title">You Are My Valentine</div>
-      <div class="song-artist">Forever Yours</div>
-    </div>
-  </div>
   <h1>Will you be my Valentine?</h1>
   <p id="dynamicMessage">💕</p>
   <div class="buttons">
-    <button id="yesBtn">Yes! 💖</button>
+    <button id="yesBtn">Yes 💖</button>
     <button id="noBtn">No</button>
   </div>
 </div>
 
-<div class="player" id="musicPlayer" style="display:none;">
-  <img id="playerCover" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" style="width:100px;height:100px;border-radius:1rem;object-fit:cover;">
-  <div class="song-info">
-    <div class="song-title">You Are My Valentine</div>
-    <div class="song-artist">Forever Yours</div>
-  </div>
-  <div class="progress-bar" id="progressBar"><div class="progress" id="progress"></div></div>
-  <div class="volume"><label>🔊</label><input type="range" min="0" max="1" step="0.01" id="volume" value="0.7"></div>
-  <button id="playPauseBtn">Play</button>
-</div>
-
 <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
 <audio id="yesAudio" src="https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"></audio>
-<audio id="musicAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
 <script>
   const noBtn = document.getElementById('noBtn');
   const yesBtn = document.getElementById('yesBtn');
   const message = document.getElementById('dynamicMessage');
-  const questionCard = document.getElementById('questionCard');
-  const musicPlayer = document.getElementById('musicPlayer');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const musicAudio = document.getElementById('musicAudio');
-  const volumeSlider = document.getElementById('volume');
-  const progressBar = document.getElementById('progressBar');
-  const progress = document.getElementById('progress');
   const teleportAudio = document.getElementById('teleportAudio');
   const yesAudio = document.getElementById('yesAudio');
 
-  let noAttempts=0, isPlaying=false;
+  let noAttempts = 0;
+
+  // Initialize noBtn position next to yesBtn
+  function initButtonPosition() {
+    const yesRect = yesBtn.getBoundingClientRect();
+    noBtn.style.left = (yesRect.right - yesRect.left + 20) + 'px';
+    noBtn.style.top = '0px';
+  }
+
+  window.addEventListener('resize', initButtonPosition);
+  window.addEventListener('load', initButtonPosition);
 
   function updateMessage() {
     if(noAttempts===0) message.textContent="💕";
@@ -132,63 +101,48 @@
     else message.textContent="You can't resist forever! 💝";
   }
 
-  function teleportNoButton(){
+  function teleportNoButton() {
     const padding=20;
-    const maxX = window.innerWidth-noBtn.offsetWidth-padding;
-    const maxY = window.innerHeight-noBtn.offsetHeight-padding;
-    const x = Math.random()*(maxX-padding)+padding;
-    const y = Math.random()*(maxY-padding)+padding;
-    noBtn.style.transition='all 0.3s ease';
-    noBtn.style.left=x+'px';
-    noBtn.style.top=y+'px';
+    const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+    const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    const x = Math.random() * (maxX - padding) + padding;
+    const y = Math.random() * (maxY - padding) + padding;
+
+    noBtn.style.transition = 'all 0.3s ease';
+    noBtn.style.left = x + 'px';
+    noBtn.style.top = y + 'px';
+
     noAttempts++;
     updateMessage();
-    teleportAudio.currentTime=0; teleportAudio.play();
-    createHeart(x+noBtn.offsetWidth/2, y+noBtn.offsetHeight/2);
+
+    teleportAudio.currentTime = 0;
+    teleportAudio.play();
+
+    createHeart(x + noBtn.offsetWidth/2, y + noBtn.offsetHeight/2);
   }
 
-  function createHeart(x,y){
-    const heart=document.createElement('div');
-    heart.className='heart';
-    heart.style.left=x+'px';
-    heart.style.top=y+'px';
+  function createHeart(x, y) {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.style.left = x + 'px';
+    heart.style.top = y + 'px';
     document.body.appendChild(heart);
     setTimeout(()=>heart.remove(),3000);
   }
 
-  document.addEventListener('mousemove',e=>{
-    const rect=noBtn.getBoundingClientRect();
-    const cx=rect.left+rect.width/2;
-    const cy=rect.top+rect.height/2;
-    if(Math.hypot(e.clientX-cx,e.clientY-cy)<120) teleportNoButton();
-  });
-
-  yesBtn.addEventListener('click',()=>{
-    questionCard.style.display='none';
-    yesAudio.currentTime=0; yesAudio.play();
-    musicPlayer.style.display='block';
-    musicAudio.currentTime=0; musicAudio.play();
-    isPlaying=true; playPauseBtn.textContent='Pause';
-  });
-
-  playPauseBtn.addEventListener('click',()=>{
-    if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
-    else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
-    isPlaying=!isPlaying;
-  });
-
-  volumeSlider.addEventListener('input',()=>{ musicAudio.volume=volumeSlider.value; });
-
-  musicAudio.addEventListener('timeupdate',()=>{
-    if(musicAudio.duration>0){
-      progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
+  document.addEventListener('mousemove', e => {
+    const rect = noBtn.getBoundingClientRect();
+    const cx = rect.left + rect.width/2;
+    const cy = rect.top + rect.height/2;
+    if(Math.hypot(e.clientX - cx, e.clientY - cy) < 120) {
+      teleportNoButton();
     }
   });
 
-  progressBar.addEventListener('click',e=>{
-    const rect=progressBar.getBoundingClientRect();
-    const pct=(e.clientX-rect.left)/rect.width;
-    musicAudio.currentTime=pct*musicAudio.duration;
+  yesBtn.addEventListener('click', () => {
+    alert('Yay! You clicked yes! 💖');
+    yesAudio.currentTime = 0;
+    yesAudio.play();
   });
 </script>
 </body>
