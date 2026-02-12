@@ -232,7 +232,9 @@
     <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
     <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
     <a href="list.html"><i class="fa-solid fa-list"></i> List</a> <!-- New menu item -->
-    <a href="xyeraine.html"><i class="fa-solid fa-list"></i> List</a>
+    <a href="xyeraine.html" class="xyeraine-btn">
+      <i class="fa-solid fa-heart"></i> Xyeraine
+    </a>
     
     <div class="classification">
       <h3>Classification</h3>
@@ -302,6 +304,65 @@
     }, { threshold: 0.15 });
     sections.forEach(section => observer.observe(section));
   });
+  /* ===== XYERAINE VALENTINE BUTTON ===== */
+.xyeraine-btn {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #ff4da6, #ff99cc) !important;
+  color: white !important;
+  font-weight: 700;
+  letter-spacing: 1px;
+  box-shadow: 0 0 15px rgba(255, 105, 180, 0.6);
+  transition: all 0.3s ease;
+}
+
+.xyeraine-btn:hover {
+  transform: scale(1.08);
+  box-shadow: 0 0 25px rgba(255, 20, 147, 0.9);
+}
+
+/* Floating Hearts */
+.xyeraine-btn::before,
+.xyeraine-btn::after {
+  content: "💖";
+  position: absolute;
+  font-size: 18px;
+  opacity: 0;
+  pointer-events: none;
+  animation: floatHearts 2s infinite ease-in-out;
+}
+
+.xyeraine-btn::before {
+  left: 12px;
+  bottom: 8px;
+}
+
+.xyeraine-btn::after {
+  right: 12px;
+  bottom: 8px;
+  animation-delay: 1s;
+}
+
+.xyeraine-btn:hover::before,
+.xyeraine-btn:hover::after {
+  opacity: 1;
+}
+
+@keyframes floatHearts {
+  0% {
+    transform: translateY(0) scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(-20px) scale(1.2);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(-40px) scale(0.8);
+    opacity: 0;
+  }
+}
+
 
   // ===================== MENU TOGGLE LOGIC =====================
   const hamburger = document.getElementById("hamburger");
@@ -349,6 +410,7 @@
     lastScrollY = window.scrollY;
   });
 </script>
+
 
 
 
