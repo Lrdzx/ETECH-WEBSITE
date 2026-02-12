@@ -12,175 +12,165 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 
 <style>
-/* ===== RESET ===== */
-* { margin: 0; padding: 0; box-sizing: border-box; }
+*{margin:0;padding:0;box-sizing:border-box;}
 
-body {
-  font-family: 'Inter','Roboto',Arial,sans-serif;
-  min-height: 100vh;
-  padding-top: 80px;
-  color: white;
-  background: url('bgi.jfif') no-repeat center center fixed;
-  background-size: cover;
+body{
+  font-family:'Inter','Roboto',Arial,sans-serif;
+  min-height:100vh;
+  padding-top:80px;
+  color:white;
+  background:url('bgi.jfif') no-repeat center center fixed;
+  background-size:cover;
 }
 
-/* ===== NAVBAR ===== */
-nav {
-  width: 100%;
-  background: #000000e6;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 900;
-  border-bottom: 1px solid white;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 80px;
-  padding: 0 2rem;
-  transition: top 0.3s;
+/* NAVBAR */
+nav{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:80px;
+  background:#000000e6;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:0 2rem;
+  z-index:900;
+  border-bottom:1px solid white;
+  transition:top 0.3s;
 }
 
-.logo { display: flex; gap: 10px; align-items: center; }
-.logo img { height: 50px; }
+.logo{display:flex;gap:10px;align-items:center;}
+.logo img{height:50px;}
 
-/* ===== MENU BUTTON ===== */
-.hamburger {
-  font-size: 1rem;
-  color: white;
-  cursor: pointer;
-  background: #222;
-  border: none;
-  padding: 10px 16px;
-  border-radius: 8px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.hamburger{
+  background:#222;
+  color:white;
+  border:none;
+  padding:10px 16px;
+  border-radius:8px;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  gap:8px;
 }
-.hamburger i { color: #00bfff; font-size: 1.4rem; }
+.hamburger i{color:#00bfff;font-size:1.4rem;}
 
-/* ===== SIDE MENU ===== */
-.side-menu {
-  position: fixed;
-  top: 0;
-  right: -250px;
-  width: 250px;
-  height: 100%;
-  background: #111;
-  padding: 2rem;
-  transition: right 0.3s ease;
-  z-index: 1000;
+/* SIDE MENU */
+.side-menu{
+  position:fixed;
+  top:0;
+  right:-250px;
+  width:250px;
+  height:100%;
+  background:#111;
+  padding:2rem;
+  transition:right 0.3s ease;
+  z-index:1000;
 }
-.side-menu.active { right: 0; }
+.side-menu.active{right:0;}
 
-.side-menu a {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-  text-decoration: none;
-  padding: 12px 18px;
-  border-radius: 8px;
-  margin: 6px 0;
-  background: linear-gradient(135deg,#232526,#414345);
+.side-menu a{
+  display:flex;
+  align-items:center;
+  gap:8px;
+  color:white;
+  text-decoration:none;
+  padding:12px 18px;
+  border-radius:8px;
+  margin:6px 0;
+  background:linear-gradient(135deg,#232526,#414345);
 }
-.side-menu a:hover {
-  background: linear-gradient(135deg,#00bfff,#87cefa);
-  color: #222;
+.side-menu a:hover{
+  background:linear-gradient(135deg,#00bfff,#87cefa);
+  color:#222;
 }
 
-/* ===== XYERAINE BUTTON ===== */
-.xyeraine-btn {
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(135deg, #ff4da6, #ff99cc) !important;
-  font-weight: 700;
-  box-shadow: 0 0 15px rgba(255,105,180,0.6);
-}
-
-.xyeraine-btn:hover {
-  transform: scale(1.08);
-  box-shadow: 0 0 25px rgba(255,20,147,0.9);
+/* XYERAINE BUTTON */
+.xyeraine-btn{
+  background:linear-gradient(135deg,#ff4da6,#ff99cc)!important;
+  font-weight:700;
+  box-shadow:0 0 15px rgba(255,105,180,0.6);
+  position:relative;
+  overflow:hidden;
 }
 
 .xyeraine-btn::before,
-.xyeraine-btn::after {
-  content: "💖";
-  position: absolute;
-  font-size: 18px;
-  opacity: 0;
-  animation: floatHearts 2s infinite ease-in-out;
+.xyeraine-btn::after{
+  content:"💖";
+  position:absolute;
+  font-size:18px;
+  opacity:0;
+  animation:floatHearts 2s infinite ease-in-out;
 }
-
-.xyeraine-btn::before { left: 12px; bottom: 8px; }
-.xyeraine-btn::after { right: 12px; bottom: 8px; animation-delay: 1s; }
-
+.xyeraine-btn::before{left:10px;bottom:8px;}
+.xyeraine-btn::after{right:10px;bottom:8px;animation-delay:1s;}
 .xyeraine-btn:hover::before,
-.xyeraine-btn:hover::after { opacity: 1; }
+.xyeraine-btn:hover::after{opacity:1;}
 
-@keyframes floatHearts {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-40px); opacity: 0; }
+@keyframes floatHearts{
+  from{transform:translateY(0);opacity:1;}
+  to{transform:translateY(-40px);opacity:0;}
 }
 
-/* ===== OVERLAY ===== */
-.overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.5);
-  opacity: 0;
-  visibility: hidden;
-  transition: 0.3s;
-  z-index: 999;
+/* OVERLAY */
+.overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,0.5);
+  opacity:0;
+  visibility:hidden;
+  transition:0.3s;
+  z-index:999;
 }
-.overlay.active { opacity: 1; visibility: visible; }
+.overlay.active{
+  opacity:1;
+  visibility:visible;
+}
 
-/* ===== HERO ===== */
-.hero {
-  height: 80vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  position: relative;
+/* HERO */
+.hero{
+  height:80vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  position:relative;
+  text-align:center;
 }
-.hero video {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: grayscale(100%) brightness(0.5);
-  z-index: -1;
+.hero video{
+  position:absolute;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  filter:grayscale(100%) brightness(0.5);
+  z-index:-1;
 }
-.hero-content h1 { font-size: 3rem; }
-.hero-content p { color: #00bfff; letter-spacing: 2px; }
+.hero-content h1{font-size:3rem;}
+.hero-content p{color:#00bfff;letter-spacing:2px;}
 
-/* ===== SECTIONS ===== */
-.sections {
-  padding: 4rem 10%;
-  display: flex;
-  flex-direction: column;
-  gap: 4rem;
+/* SECTIONS */
+.sections{
+  padding:4rem 10%;
+  display:flex;
+  flex-direction:column;
+  gap:4rem;
 }
-.section {
-  display: flex;
-  gap: 2rem;
-  background: rgba(255,255,255,0.05);
-  padding: 2rem;
-  border-radius: 10px;
-  opacity: 0;
-  transform: translateY(20px);
-  transition: 0.6s;
+.section{
+  display:flex;
+  gap:2rem;
+  background:rgba(255,255,255,0.05);
+  padding:2rem;
+  border-radius:10px;
+  opacity:0;
+  transform:translateY(20px);
+  transition:0.6s;
 }
-.section.visible {
-  opacity: 1;
-  transform: translateY(0);
+.section.visible{
+  opacity:1;
+  transform:translateY(0);
 }
-.section img {
-  width: 300px;
-  border-radius: 10px;
-}
-.section:nth-child(even) { flex-direction: row-reverse; }
+.section img{width:300px;border-radius:10px;}
+.section:nth-child(even){flex-direction:row-reverse;}
 </style>
 </head>
 
@@ -192,17 +182,18 @@ nav {
     <img src="logo.png">
   </div>
   <button class="hamburger" id="hamburger">
-    <i class="fa-solid fa-bars"></i> Menu
+    <i class="fa-solid fa-bars"></i>
+    <span>Menu</span>
   </button>
 </nav>
 
 <div class="side-menu" id="sideMenu">
-  <a href="index.html">Home</a>
-  <a href="and.html">AND</a>
-  <a href="or.html">OR</a>
-  <a href="not.html">NOT</a>
-  <a href="list.html">List</a>
-  <a href="xyeraine.html" class="xyeraine-btn">Xyeraine</a>
+  <a href="index.html"><i class="fa-solid fa-house"></i> Home</a>
+  <a href="and.html"><i class="fa-solid fa-link"></i> AND</a>
+  <a href="or.html"><i class="fa-solid fa-code-branch"></i> OR</a>
+  <a href="not.html"><i class="fa-solid fa-ban"></i> NOT</a>
+  <a href="list.html"><i class="fa-solid fa-list"></i> List</a>
+  <a href="xyeraine.html" class="xyeraine-btn"><i class="fa-solid fa-heart"></i> Xyeraine</a>
 </div>
 
 <div class="overlay" id="overlay"></div>
@@ -221,46 +212,62 @@ nav {
   <div class="section">
     <img src="bool.png">
     <div>
-      <h2>What is Boolean Operator?</h2>
+      <h2>What is a Boolean Operator?</h2>
       <p>Boolean operators combine search terms using AND, OR, and NOT.</p>
     </div>
   </div>
 </div>
 
 <script>
-/* FADE IN */
+/* FADE-IN */
+const sections = document.querySelectorAll(".section");
 const observer = new IntersectionObserver(entries=>{
-  entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add("visible");
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.classList.add("visible");
+      observer.unobserve(entry.target);
     }
   });
-});
-document.querySelectorAll(".section").forEach(s=>observer.observe(s));
+},{threshold:0.15});
+sections.forEach(sec=>observer.observe(sec));
 
-/* MENU */
+/* MENU LOGIC (FIXED) */
 const hamburger = document.getElementById("hamburger");
 const sideMenu = document.getElementById("sideMenu");
 const overlay = document.getElementById("overlay");
+const icon = hamburger.querySelector("i");
 
-hamburger.onclick = ()=>{
-  sideMenu.classList.toggle("active");
-  overlay.classList.toggle("active");
-  hamburger.querySelector("i").classList.toggle("fa-bars");
-  hamburger.querySelector("i").classList.toggle("fa-xmark");
-};
+hamburger.addEventListener("click", ()=>{
+  if(sideMenu.classList.contains("active")){
+    sideMenu.classList.remove("active");
+    overlay.classList.remove("active");
+    icon.classList.remove("fa-xmark");
+    icon.classList.add("fa-bars");
+  } else {
+    sideMenu.classList.add("active");
+    overlay.classList.add("active");
+    icon.classList.remove("fa-bars");
+    icon.classList.add("fa-xmark");
+  }
+});
 
-overlay.onclick = ()=>{
+overlay.addEventListener("click", ()=>{
   sideMenu.classList.remove("active");
   overlay.classList.remove("active");
-};
+  icon.classList.remove("fa-xmark");
+  icon.classList.add("fa-bars");
+});
 
-/* NAVBAR SCROLL */
-let lastY = window.scrollY;
-window.addEventListener("scroll", ()=>{
+/* NAVBAR HIDE ON SCROLL */
+let lastScrollY = window.scrollY;
+window.addEventListener("scroll",()=>{
   const nav = document.querySelector("nav");
-  nav.style.top = window.scrollY > lastY ? "-80px" : "0";
-  lastY = window.scrollY;
+  if(window.scrollY > lastScrollY){
+    nav.style.top="-80px";
+  }else{
+    nav.style.top="0";
+  }
+  lastScrollY = window.scrollY;
 });
 </script>
 
