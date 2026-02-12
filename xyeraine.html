@@ -3,107 +3,122 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Be My Valentine</title>
+  <title>Valentine Interactive</title>
 
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    /* Reset */
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
     body {
-      margin: 0;
       width: 100vw;
       height: 100vh;
       display: flex;
       justify-content: center;
       align-items: center;
+      overflow: hidden;
       background: linear-gradient(120deg, #ff9a9e, #fad0c4);
       transition: background 1s ease;
+    }
+
+    /* Glass Card */
+    .glass-box {
+      width: 450px;
+      padding: 40px;
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      box-shadow: 0 20px 50px rgba(0,0,0,0.25);
+      text-align: center;
+      color: #fff;
+      position: relative;
       overflow: hidden;
     }
 
-    .glass-box {
-      width: 420px;
-      padding: 30px;
-      border-radius: 25px;
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(15px);
-      -webkit-backdrop-filter: blur(15px);
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
-      text-align: center;
-      color: #fff;
-    }
-
     h1 {
-      margin-bottom: 20px;
+      font-size: 28px;
+      margin-bottom: 30px;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
     }
 
+    /* Spotify-style card */
     .spotify-card {
-      background: rgba(0, 0, 0, 0.4);
-      border-radius: 18px;
-      padding: 15px;
+      background: rgba(0,0,0,0.5);
+      border-radius: 20px;
+      padding: 15px 20px;
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 25px;
+      margin-bottom: 35px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
     }
 
+    .spotify-card:hover { transform: scale(1.05); }
+
     .spotify-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 10px;
+      width: 90px;
+      height: 90px;
+      border-radius: 15px;
       object-fit: cover;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     }
 
     .song-info {
       text-align: left;
+      flex: 1;
     }
 
-    .song-title {
-      font-size: 18px;
-      font-weight: bold;
-    }
+    .song-title { font-size: 20px; font-weight: bold; }
+    .song-artist { font-size: 14px; opacity: 0.8; }
 
-    .song-artist {
-      font-size: 14px;
-      opacity: 0.8;
-    }
-
-    .buttons {
-      display: flex;
-      justify-content: space-around;
-      margin-top: 20px;
-      position: relative;
-    }
+    /* Buttons */
+    .buttons { position: relative; display: flex; justify-content: space-around; margin-top: 20px; height: 60px; }
 
     button {
-      padding: 12px 30px;
+      padding: 14px 35px;
       border: none;
-      border-radius: 20px;
+      border-radius: 25px;
       font-size: 16px;
+      font-weight: 600;
       cursor: pointer;
-      transition: transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
     }
 
-    #yesBtn {
-      background: #1db954;
-      color: white;
-    }
+    button:hover { transform: scale(1.1); box-shadow: 0 8px 25px rgba(0,0,0,0.4); }
 
-    #noBtn {
-      background: #ff4d4d;
-      color: white;
+    #yesBtn { background: #1db954; color: #fff; }
+    #noBtn { background: #ff4d4d; color: #fff; position: absolute; }
+
+    /* Floating hearts */
+    .heart {
       position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      transform: rotate(-45deg);
+      animation: floatUp 3s linear forwards;
     }
 
-    button:hover {
-      transform: scale(1.05);
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      border-radius: 50%;
     }
 
-    audio {
-      display: none;
+    .heart::before { top: -7px; left: 0; }
+    .heart::after { left: 7px; top: 0; }
+
+    @keyframes floatUp {
+      0% { opacity: 1; transform: translateY(0) rotate(-45deg); }
+      100% { opacity: 0; transform: translateY(-200px) rotate(-45deg); }
     }
+
   </style>
 </head>
 <body>
@@ -112,10 +127,8 @@
     <h1>Will you be my Valentine? 💖</h1>
 
     <div class="spotify-card">
-      <!-- CHANGE ALBUM COVER HERE -->
       <img src="https://i.imgur.com/8Km9tLL.jpg" alt="Album Cover" />
       <div class="song-info">
-        <!-- CHANGE SONG TITLE & ARTIST HERE -->
         <div class="song-title">Perfect</div>
         <div class="song-artist">Ed Sheeran</div>
       </div>
@@ -127,8 +140,6 @@
     </div>
   </div>
 
-  <!-- AUDIO FILES -->
-  <!-- CHANGE MUSIC FILES HERE -->
   <audio id="teleportSound" src="teleport.mp3"></audio>
   <audio id="yesMusic" src="yes.mp3"></audio>
 
@@ -138,7 +149,6 @@
     const teleportSound = document.getElementById('teleportSound');
     const yesMusic = document.getElementById('yesMusic');
 
-    // Place NO button initially
     function placeNoButton() {
       const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
       const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
@@ -148,26 +158,34 @@
 
     placeNoButton();
 
-    // Teleport NO button when mouse gets close
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', e => {
       const rect = noBtn.getBoundingClientRect();
       const distance = Math.hypot(e.clientX - rect.left, e.clientY - rect.top);
-
-      if (distance < 100) {
+      if (distance < 120) {
         teleportSound.currentTime = 0;
         teleportSound.play();
         placeNoButton();
+        createHeart(e.clientX, e.clientY);
       }
     });
 
-    // YES button click
     yesBtn.addEventListener('click', () => {
       yesMusic.currentTime = 0;
       yesMusic.play();
-
       document.body.style.background = 'linear-gradient(120deg, #ff758c, #ff7eb3)';
       document.querySelector('h1').innerText = 'Yay! 💘 Happy Valentine\'s!';
+      for(let i=0;i<50;i++){ createHeart(Math.random()*window.innerWidth, window.innerHeight); }
     });
+
+    function createHeart(x, y){
+      const heart = document.createElement('div');
+      heart.classList.add('heart');
+      heart.style.left = x + 'px';
+      heart.style.top = y + 'px';
+      heart.style.width = heart.style.height = (10 + Math.random()*15) + 'px';
+      document.body.appendChild(heart);
+      setTimeout(()=>heart.remove(),3000);
+    }
   </script>
 
 </body>
