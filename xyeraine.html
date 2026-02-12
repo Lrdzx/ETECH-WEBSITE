@@ -1,1 +1,174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Be My Valentine</title>
 
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      margin: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(120deg, #ff9a9e, #fad0c4);
+      transition: background 1s ease;
+      overflow: hidden;
+    }
+
+    .glass-box {
+      width: 420px;
+      padding: 30px;
+      border-radius: 25px;
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+      text-align: center;
+      color: #fff;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+    }
+
+    .spotify-card {
+      background: rgba(0, 0, 0, 0.4);
+      border-radius: 18px;
+      padding: 15px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .spotify-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 10px;
+      object-fit: cover;
+    }
+
+    .song-info {
+      text-align: left;
+    }
+
+    .song-title {
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .song-artist {
+      font-size: 14px;
+      opacity: 0.8;
+    }
+
+    .buttons {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 20px;
+      position: relative;
+    }
+
+    button {
+      padding: 12px 30px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    #yesBtn {
+      background: #1db954;
+      color: white;
+    }
+
+    #noBtn {
+      background: #ff4d4d;
+      color: white;
+      position: absolute;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="glass-box">
+    <h1>Will you be my Valentine? 💖</h1>
+
+    <div class="spotify-card">
+      <!-- CHANGE ALBUM COVER HERE -->
+      <img src="https://i.imgur.com/8Km9tLL.jpg" alt="Album Cover" />
+      <div class="song-info">
+        <!-- CHANGE SONG TITLE & ARTIST HERE -->
+        <div class="song-title">Perfect</div>
+        <div class="song-artist">Ed Sheeran</div>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+
+  <!-- AUDIO FILES -->
+  <!-- CHANGE MUSIC FILES HERE -->
+  <audio id="teleportSound" src="teleport.mp3"></audio>
+  <audio id="yesMusic" src="yes.mp3"></audio>
+
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const teleportSound = document.getElementById('teleportSound');
+    const yesMusic = document.getElementById('yesMusic');
+
+    // Place NO button initially
+    function placeNoButton() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight);
+      noBtn.style.left = x + 'px';
+      noBtn.style.top = y + 'px';
+    }
+
+    placeNoButton();
+
+    // Teleport NO button when mouse gets close
+    document.addEventListener('mousemove', (e) => {
+      const rect = noBtn.getBoundingClientRect();
+      const distance = Math.hypot(e.clientX - rect.left, e.clientY - rect.top);
+
+      if (distance < 100) {
+        teleportSound.currentTime = 0;
+        teleportSound.play();
+        placeNoButton();
+      }
+    });
+
+    // YES button click
+    yesBtn.addEventListener('click', () => {
+      yesMusic.currentTime = 0;
+      yesMusic.play();
+
+      document.body.style.background = 'linear-gradient(120deg, #ff758c, #ff7eb3)';
+      document.querySelector('h1').innerText = 'Yay! 💘 Happy Valentine\'s!';
+    });
+  </script>
+
+</body>
+</html>
