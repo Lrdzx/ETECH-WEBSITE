@@ -47,7 +47,7 @@
   }
   button:hover { transform: scale(1.1); box-shadow:0 10px 20px rgba(236,72,153,0.5);}
   #yesBtn { background:#ec4899; color:#fff;}
-  #noBtn { background:#9ca3af; color:#fff; position:absolute; top:0; left:0; }
+  #noBtn { background:#9ca3af; color:#fff; position:absolute; }
 
   .spotify-card {
     display:flex; align-items:center; gap:1rem; margin-bottom:1.5rem;
@@ -64,6 +64,7 @@
   .progress-bar { background: rgba(255,255,255,0.2); height: 8px; border-radius:4px; overflow:hidden; cursor:pointer; margin:0.5rem 0; }
   .progress { background:#ec4899; height:100%; width:0%; transition: width 0.1s linear; }
   .volume { display:flex; align-items:center; gap:0.5rem; justify-content:center; margin:0.5rem 0; }
+
   .heart {
     position:absolute; width:15px; height:15px; background:red; transform:rotate(-45deg);
     animation: floatUp 3s ease forwards; pointer-events:none;
@@ -109,104 +110,143 @@
 <audio id="musicAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
 <script>
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const message = document.getElementById('dynamicMessage');
-  const questionCard = document.getElementById('questionCard');
-  const musicPlayer = document.getElementById('musicPlayer');
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const musicAudio = document.getElementById('musicAudio');
-  const volumeSlider = document.getElementById('volume');
-  const progressBar = document.getElementById('progressBar');
-  const progress = document.getElementById('progress');
-  const teleportAudio = document.getElementById('teleportAudio');
-  const yesAudio = document.getElementById('yesAudio');
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const message = document.getElementById('dynamicMessage');
+const questionCard = document.getElementById('questionCard');
+const musicPlayer = document.getElementById('musicPlayer');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const musicAudio = document.getElementById('musicAudio');
+const volumeSlider = document.getElementById('volume');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const teleportAudio = document.getElementById('teleportAudio');
+const yesAudio = document.getElementById('yesAudio');
 
-  let noAttempts=0, isPlaying=false;
-  const PADDING = 20;
-  const MIN_DISTANCE = 150; 
-  const MAX_SHIFT = 200;
+let noAttempts=0, isPlaying=false;
 
-  // ======= INITIAL POSITION - YES and NO parallel =====
-  window.onload = () => {
-    const yesRect = yesBtn.getBoundingClientRect();
-    const startTop = yesRect.top;
-    const initialGap = 300; // distance between buttons
-    noBtn.style.top = startTop + 'px';
-    noBtn.style.left = (yesRect.left + initialGap) + 'px';
-  };
+// ======= INITIAL POSITION - YES and NO parallel =====
+window.onload = () => {
+  const yesRect = yesBtn.getBoundingClientRect();
+  const noRect = noBtn.getBoundingClientRect();
+  const startTop = yesRect.top;
+  const gap = 180; // horizontal gap between yes and no
+  noBtn.style.top = startTop + 'px';
+  noBtn.style.left = (yesRect.left + gap) + 'px';
+};
 
-  function updateMessage() {
-    if(noAttempts===0) message.textContent="💕";
-    else if(noAttempts<3) message.textContent="Please? 🥺";
-    else if(noAttempts<5) message.textContent="Pretty please? 💖";
-    else if(noAttempts<8) message.textContent="I'll take that as a yes! 😊";
-    else message.textContent="You can't resist forever! 💝";
+// ======= Dynamic message =====
+function updateMessage() {
+  if(noAttempts===0) message.textContent="💕";
+  else if(noAttempts<3) message.textContent="Please? 🥺";
+  else if(noAttempts<5) message.textContent="Pretty please? 💖";
+  else if(noAttempts<8) message.textContent="I'll take that as a yes! 😊";
+  else message.textContent="You can't resist forever! 💝";
+}
+
+// ======= Teleport / run away logic (fast escape!) =====
+const PADDING = 20;   
+const MIN_DISTANCE = 120; 
+const MAX_SHIFT = 350;   // much bigger to make it escape faster
+
+function teleportNoButton() {
+  const rect = noBtn.getBoundingClientRect();
+  const btnX = rect.left;
+  const btnY = rect.top;
+
+  const mouseX = lastMouse.x;
+  const mouseY = lastMouse.y;
+
+  // Direction away from mouse
+  let dx = btnX - mouseX;
+  let dy = btnY - mouseY;
+  const distance = Math.hypot(dx, dy) || 1;
+
+  // Farther movement when mouse is close
+  let moveMultiplier = Math.min(MAX_SHIFT, (MIN_DISTANCE / distance) * MAX_SHIFT);
+  let moveX = (dx / distance) * moveMultiplier;
+  let moveY = (dy / distance) * moveMultiplier;
+
+  let newX = btnX + moveX;
+  let newY = btnY + moveY;
+
+  // keep inside screen
+  const maxX = window.innerWidth - noBtn.offsetWidth - PADDING;
+  const maxY = window.innerHeight - noBtn.offsetHeight - PADDING;
+  newX = Math.min(maxX, Math.max(PADDING, newX));
+  newY = Math.min(maxY, Math.max(PADDING, newY));
+
+  // if button is too close to edge, reset to center
+  if(newX <= PADDING || newX >= maxX || newY <= PADDING || newY >= maxY){
+    newX = (window.innerWidth - noBtn.offsetWidth)/2;
+    newY = (window.innerHeight - noBtn.offsetHeight)/2;
   }
 
-  function createHeart(x,y){
-    const heart=document.createElement('div');
-    heart.className='heart';
-    heart.style.left=x+'px';
-    heart.style.top=y+'px';
-    document.body.appendChild(heart);
-    setTimeout(()=>heart.remove(),3000);
+  noBtn.style.left = newX+'px';
+  noBtn.style.top = newY+'px';
+
+  noAttempts++;
+  updateMessage();
+  teleportAudio.currentTime=0; teleportAudio.play();
+  createHeart(newX + noBtn.offsetWidth/2, newY + noBtn.offsetHeight/2);
+}
+
+// ======= Floating hearts =====
+function createHeart(x,y){
+  const heart=document.createElement('div');
+  heart.className='heart';
+  heart.style.left=x+'px';
+  heart.style.top=y+'px';
+  document.body.appendChild(heart);
+  setTimeout(()=>heart.remove(),3000);
+}
+
+// ======= Track last mouse =====
+let lastMouse = {x:0,y:0};
+document.addEventListener('mousemove', e => {
+  lastMouse.x = e.clientX;
+  lastMouse.y = e.clientY;
+
+  const rect=noBtn.getBoundingClientRect();
+  const cx = rect.left + rect.width/2;
+  const cy = rect.top + rect.height/2;
+  const distance = Math.hypot(e.clientX-cx,e.clientY-cy);
+
+  if(distance < MIN_DISTANCE){
+    teleportNoButton();
   }
+});
 
-  document.addEventListener('mousemove', e => {
-    const rect=noBtn.getBoundingClientRect();
-    const cx=rect.left+rect.width/2;
-    const cy=rect.top+rect.height/2;
-    if(Math.hypot(e.clientX-cx, e.clientY-cy) < MIN_DISTANCE){
-        // move the No button by a random amount up to MAX_SHIFT
-        const shiftX = (Math.random() * MAX_SHIFT * 2) - MAX_SHIFT;
-        const shiftY = (Math.random() * MAX_SHIFT * 2) - MAX_SHIFT;
-        let newX = noBtn.offsetLeft + shiftX;
-        let newY = noBtn.offsetTop + shiftY;
+// ======= Yes button =====
+yesBtn.addEventListener('click',()=>{
+  questionCard.style.display='none';
+  yesAudio.currentTime=0; yesAudio.play();
+  musicPlayer.style.display='block';
+  musicAudio.currentTime=0; musicAudio.play();
+  isPlaying=true; playPauseBtn.textContent='Pause';
+});
 
-        // keep inside screen
-        if(newX < PADDING) newX = window.innerWidth/2;
-        if(newX + noBtn.offsetWidth > window.innerWidth - PADDING) newX = window.innerWidth/2;
-        if(newY < PADDING) newY = window.innerHeight/2;
-        if(newY + noBtn.offsetHeight > window.innerHeight - PADDING) newY = window.innerHeight/2;
+// ======= Play/pause =====
+playPauseBtn.addEventListener('click',()=>{
+  if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
+  else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
+  isPlaying=!isPlaying;
+});
 
-        noBtn.style.left = newX + 'px';
-        noBtn.style.top = newY + 'px';
+// ======= Volume =====
+volumeSlider.addEventListener('input',()=>{ musicAudio.volume=volumeSlider.value; });
 
-        teleportAudio.currentTime=0; teleportAudio.play();
-        createHeart(newX+noBtn.offsetWidth/2, newY+noBtn.offsetHeight/2);
-        noAttempts++;
-        updateMessage();
-    }
-  });
-
-  yesBtn.addEventListener('click', ()=>{
-    questionCard.style.display='none';
-    yesAudio.currentTime=0; yesAudio.play();
-    musicPlayer.style.display='block';
-    musicAudio.currentTime=0; musicAudio.play();
-    isPlaying=true; playPauseBtn.textContent='Pause';
-  });
-
-  playPauseBtn.addEventListener('click', ()=>{
-    if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
-    else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
-    isPlaying=!isPlaying;
-  });
-
-  volumeSlider.addEventListener('input', ()=>{ musicAudio.volume=volumeSlider.value; });
-
-  musicAudio.addEventListener('timeupdate', ()=>{
-    if(musicAudio.duration>0){
-      progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
-    }
-  });
-
-  progressBar.addEventListener('click', e=>{
-    const rect=progressBar.getBoundingClientRect();
-    const pct=(e.clientX-rect.left)/rect.width;
-    musicAudio.currentTime=pct*musicAudio.duration;
-  });
+// ======= Progress bar =====
+musicAudio.addEventListener('timeupdate',()=>{
+  if(musicAudio.duration>0){
+    progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
+  }
+});
+progressBar.addEventListener('click',e=>{
+  const rect=progressBar.getBoundingClientRect();
+  const pct=(e.clientX-rect.left)/rect.width;
+  musicAudio.currentTime=pct*musicAudio.duration;
+});
 </script>
 </body>
 </html>
