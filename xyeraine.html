@@ -18,13 +18,16 @@
       overflow: hidden;
     }
     body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
-      background-size: 800% 800%;
-      animation: gradientBG 15s ease infinite;
-    }
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* Replace gradient with GIF */
+  background-image: url('background.gif');
+  background-size: cover;      /* Make it cover the screen */
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
@@ -329,6 +332,7 @@
   <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
   <audio id="yesAudio" src="https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"></audio>
   <audio id="musicAudio" src="Strawberry_Guy_-_Mrs_Magic_(mp3.pm).mp3" loop></audio>
+  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExa25icDUxdHJmM3Q1ZHp3aXluY2l3NjZvZzgxeTJzbnRna3RhdjI2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lXOI5Bj5bndSw/giphy.gif" class="background-gif" />
 
   <!-- Script -->
   <script>
