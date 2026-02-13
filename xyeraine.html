@@ -345,9 +345,21 @@ document.addEventListener("DOMContentLoaded", () => {
   const currentTimeEl = document.getElementById('currentTime');
   const durationEl = document.getElementById('duration');
   const floatingContainer = document.getElementById("floatingContainer");
+  const valentineGifEl = document.querySelector(".valentine-gif");
 
   let isPlaying = false;
   let floatingInterval = null;
+
+  // ===== GIFs and sound =====
+  const defaultGif = "https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif";
+  const hoverGifs = [
+    "https://media.giphy.com/media/l0MYt5jPR6QX5pnqM/giphy.gif",
+    "https://media.giphy.com/media/xT0xeJpnrWC4XWblEk/giphy.gif",
+    "https://media.giphy.com/media/3o6Zt481isNVuQI1l6/giphy.gif",
+    "https://media.giphy.com/media/26BRuo6sLetdllPAQ/giphy.gif",
+    "https://media.giphy.com/media/l0HlNQ03J5JxX6lva/giphy.gif"
+  ];
+  const memeAudio = new Audio("https://www.myinstants.com/media/sounds/meme-sound.mp3"); // replace with actual sound
 
   // ===== Make Yes and No absolute =====
   yesBtn.style.position = 'absolute';
@@ -355,7 +367,7 @@ document.addEventListener("DOMContentLoaded", () => {
   yesBtn.style.zIndex = 20;
   noBtn.style.zIndex = 20;
 
-  // ===== Position buttons below the card =====
+  // ===== Position buttons below card =====
   function positionButtonsBelowCard() {
     const cardRect = questionCard.getBoundingClientRect();
     const gapBetweenButtons = 20;
@@ -364,10 +376,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const noWidth = noBtn.offsetWidth;
     const totalWidth = yesWidth + noWidth + gapBetweenButtons;
 
-    // Center horizontally relative to card
     const centerX = cardRect.left + (cardRect.width - totalWidth) / 2;
-
-    // Vertical position slightly below card
     const posY = cardRect.bottom + 20;
 
     yesBtn.style.left = centerX + "px";
@@ -399,23 +408,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // ===== No Button Teleport =====
   const padding = 20;
-  const noBtnPositions = [];
+  let noBtnPositions = [];
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
 
   function generateNoPositions() {
-    noBtnPositions.length = 0;
+    noBtnPositions = [];
     for (let i = 0; i < 20; i++) {
       const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
       const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
       noBtnPositions.push({x, y});
     }
   }
-
   generateNoPositions();
 
   let lastIndex = -1;
+  let memePlayed = false;
+
   noBtn.addEventListener('mouseenter', () => {
+    // Teleport
     let index;
     do { index = Math.floor(Math.random() * noBtnPositions.length); }
     while(index === lastIndex);
@@ -423,6 +434,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const pos = noBtnPositions[index];
     noBtn.style.left = pos.x + "px";
     noBtn.style.top = pos.y + "px";
+
+    // Play meme sound
+    memeAudio.currentTime = 0;
+    memeAudio.play().catch(() => {}); 
+  });
+
+  // ===== Change GIF when mouse is close to No =====
+  document.addEventListener('mousemove', (e) => {
+    const noRect = noBtn.getBoundingClientRect();
+    const noCenterX = noRect.left + noRect.width / 2;
+    const noCenterY = noRect.top + noRect.height / 2;
+
+    const dist = Math.hypot(e.clientX - noCenterX, e.clientY - noCenterY);
+
+    if (dist < 150) {
+      valentineGifEl.src = hoverGifs[Math.floor(Math.random() * hoverGifs.length)];
+    } else {
+      valentineGifEl.src = defaultGif;
+    }
   });
 
   window.addEventListener('resize', () => {
@@ -491,6 +521,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => img.remove(), duration * 1000);
   }
 });
+
 
 </script>
 
