@@ -73,9 +73,10 @@
       box-shadow: 0 20px 40px rgba(0,0,0,0.3);
       transition: transform 0.3s;
     }
-    .card:hover { transform: scale(1.03); }
-
-    h1 { 
+    .card:hover {
+      transform: scale(1.03);
+    }
+    h1 {
       font-size: 2.5rem;
       margin-bottom: 0.5rem;
       text-shadow: 0 2px 10px rgba(0,0,0,0.3);
@@ -108,139 +109,84 @@
       transform: scale(1.1);
       box-shadow: 0 10px 20px rgba(236,72,153,0.5);
     }
-    #yesBtn { background: #ec4899; color: #fff; }
-    #noBtn { 
-      background: #9ca3af; 
-      color: #fff; 
-      position: static; /* remove absolute to let flex work */
+    #yesBtn {
+      background: #ec4899;
+      color: #fff;
+    }
+    #noBtn {
+      background: #9ca3af;
+      color: #fff;
+      position: static;
     }
 
     /* ===== Spotify Card ===== */
-    <!-- Image Card -->
-<div class="card" id="questionCard">
-  <img id="hoverImage" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" 
-       alt="Hover Image" style="width:100%; border-radius:1rem; margin-bottom:1rem;">
-  <h1>Will you be my Valentine?</h1>
-  <p id="dynamicMessage">💕</p>
-  <div class="buttons">
-    <button id="yesBtn">Yes! 💖</button>
-    <button id="noBtn">No</button>
-  </div>
-</div>
+    .spotify-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .spotify-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
+    .song-info {
+      text-align: left;
+    }
+    .song-title {
+      font-weight: bold;
+    }
+    .song-artist {
+      font-size: 0.9rem;
+      opacity: 0.8;
+    }
 
     /* ===== Music Player ===== */
-    /* ===== Spotify-Style Music Player ===== */
-.player {
-  position: relative;
-  z-index: 1;
-  background: #1e1e1e; /* dark background */
-  border-radius: 1rem;
-  padding: 1rem 1.5rem;
-  color: #fff;
-  max-width: 360px;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
-  font-family: 'Poppins', sans-serif;
-}
+    .player {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(25px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 1rem;
+      text-align: center;
+      max-width: 350px;
+      margin-top: 2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    .player img {
+      width: 100px;
+      height: 100px;
+      border-radius: 1rem;
+    }
+    .progress-bar {
+      background: rgba(255,255,255,0.2);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      margin: 0.5rem 0;
+    }
+    .progress {
+      background: #ec4899;
+      height: 100%;
+      width: 0%;
+    }
+    .volume {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
 
-.player-info {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-bottom: 1rem;
-}
-
-.player-info img {
-  width: 70px;
-  height: 70px;
-  border-radius: 8px;
-  object-fit: cover;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
-}
-
-.song-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.song-title {
-  font-weight: bold;
-  font-size: 1rem;
-}
-
-.song-artist {
-  font-size: 0.85rem;
-  color: #b3b3b3;
-  margin-top: 2px;
-}
-
-.progress-bar {
-  background: #404040;
-  height: 6px;
-  border-radius: 3px;
-  overflow: hidden;
-  cursor: pointer;
-  margin-bottom: 1rem;
-}
-
-.progress {
-  background: #1db954; /* Spotify green */
-  height: 100%;
-  width: 0%;
-  transition: width 0.2s linear;
-}
-
-.controls {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.controls button {
-  background: #1db954;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  font-size: 1rem;
-  color: #fff;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
-  transition: transform 0.2s;
-}
-
-.controls button:hover {
-  transform: scale(1.1);
-}
-
-.controls input[type="range"] {
-  -webkit-appearance: none;
-  width: 150px;
-  height: 4px;
-  background: #404040;
-  border-radius: 2px;
-  cursor: pointer;
-}
-
-.controls input[type="range"]::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #1db954;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-}
-
-.controls input[type="range"]::-moz-range-thumb {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  background: #1db954;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
-}
-
-    
     /* ===== Floating Hearts ===== */
     .heart {
       position: absolute;
@@ -290,24 +236,21 @@
   </div>
 
   <!-- Music Player -->
-<div class="player" id="musicPlayer" style="display:none;">
-  <div class="player-info">
+  <div class="player" id="musicPlayer" style="display:none;">
     <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album">
     <div class="song-info">
       <div class="song-title">You Are My Valentine</div>
       <div class="song-artist">Forever Yours</div>
     </div>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="volume">
+      <label>🔊</label>
+      <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
+    </div>
+    <button id="playPauseBtn">Play</button>
   </div>
-
-  <div class="progress-bar" id="progressBar">
-    <div class="progress" id="progress"></div>
-  </div>
-
-  <div class="controls">
-    <button id="playPauseBtn">▶️</button>
-    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
-  </div>
-</div>
 
   <!-- Audio Elements -->
   <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
@@ -326,84 +269,49 @@
     const progressBar = document.getElementById('progressBar');
     const progress = document.getElementById('progress');
     const floatingContainer = document.getElementById("floatingContainer");
-    const hoverImage = document.getElementById('hoverImage');
 
     let isPlaying = false;
     let floatingInterval = null;
-    // Array of images to show when hovering "No"
-const hoverImages = [
-  "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1470093851210-93c94c1806b5?w=400&h=400&fit=crop",
-  "https://images.unsplash.com/photo-1485217988980-11786ced9454?w=400&h=400&fit=crop"
-];
 
-let hoverInterval = null;
-
-// Start changing images on mouse hover
-noBtn.addEventListener('mouseenter', () => {
-  hoverInterval = setInterval(() => {
-    const randomIndex = Math.floor(Math.random() * hoverImages.length);
-    hoverImage.src = hoverImages[randomIndex];
-  }, 300); // change image every 300ms
-});
-
-// Stop changing images when mouse leaves
-noBtn.addEventListener('mouseleave', () => {
-  clearInterval(hoverInterval);
-  hoverImage.src = "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"; // reset to original
-});
-
-    
-// Function to move button to a random position
+    // Function to move button to a random position
     function teleportButton() {
       const btnWidth = noBtn.offsetWidth;
       const btnHeight = noBtn.offsetHeight;
-      const padding = 20; // keep button inside viewport
-
-  // Random positions within the window bounds
+      const padding = 20;
       const x = Math.random() * (window.innerWidth - btnWidth - padding * 2) + padding;
       const y = Math.random() * (window.innerHeight - btnHeight - padding * 2) + padding;
-
       noBtn.style.position = 'absolute';
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
     }
 
     // Track mouse movement
-  document.addEventListener('mousemove', e => {
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
+    document.addEventListener('mousemove', e => {
+      const mouseX = e.clientX;
+      const mouseY = e.clientY;
+      const btnRect = noBtn.getBoundingClientRect();
+      const btnX = btnRect.left + btnRect.width / 2;
+      const btnY = btnRect.top + btnRect.height / 2;
+      const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+      if (distance < 100) teleportButton();
+    });
 
-    const btnRect = noBtn.getBoundingClientRect();
-    const btnX = btnRect.left + btnRect.width / 2;
-    const btnY = btnRect.top + btnRect.height / 2;
-
-    const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
-
-  // If cursor is closer than 100px, teleport the button
-    if (distance < 100) {
-      teleportButton();
-    }
-  });
-
-    // Floating images list
+    // Floating images list (replace with real images if needed)
     const images = Array.from({length:20}, (_, i) => `images/img${i+1}.png`);
 
-    /* ===== YES BUTTON ===== */
+    // YES button
     yesBtn.addEventListener('click', () => {
       questionCard.style.display = 'none';
       musicPlayer.style.display = 'block';
       musicAudio.play();
       isPlaying = true;
       playPauseBtn.textContent = 'Pause';
-
       if (!floatingInterval) {
         floatingInterval = setInterval(spawnImage, 600);
       }
     });
 
-    /* ===== PLAY/PAUSE ===== */
+    // Play/Pause button
     playPauseBtn.addEventListener('click', () => {
       if (isPlaying) {
         musicAudio.pause();
@@ -415,42 +323,36 @@ noBtn.addEventListener('mouseleave', () => {
       isPlaying = !isPlaying;
     });
 
-    /* ===== VOLUME ===== */
+    // Volume control
     volumeSlider.addEventListener('input', () => {
       musicAudio.volume = volumeSlider.value;
     });
 
-    /* ===== PROGRESS BAR ===== */
+    // Progress bar
     musicAudio.addEventListener('timeupdate', () => {
       if (musicAudio.duration > 0) {
         progress.style.width = (musicAudio.currentTime / musicAudio.duration * 100) + '%';
       }
     });
-
     progressBar.addEventListener('click', e => {
       const rect = progressBar.getBoundingClientRect();
       const pct = (e.clientX - rect.left) / rect.width;
       musicAudio.currentTime = pct * musicAudio.duration;
     });
 
-    /* ===== FLOATING IMAGES ===== */
+    // Floating images
     function spawnImage() {
       const img = document.createElement("img");
       img.src = images[Math.floor(Math.random() * images.length)];
       img.className = "floating-image";
-
       const maxLeft = window.innerWidth - 320;
       img.style.left = Math.random() * maxLeft + "px";
-
       const size = Math.random() * 140 + 180;
       img.style.width = size + "px";
-
       const tilt = Math.random() * 40 - 20;
       img.style.transform = `rotate(${tilt}deg)`;
-
       const duration = Math.random() * 4 + 6;
       img.style.animationDuration = duration + "s";
-
       floatingContainer.appendChild(img);
       setTimeout(() => img.remove(), duration * 1000);
     }
