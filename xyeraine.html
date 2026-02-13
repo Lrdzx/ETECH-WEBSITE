@@ -1,176 +1,326 @@
-
-<script>
-const noBtn = document.getElementById('noBtn');
-const yesBtn = document.getElementById('yesBtn');
-const questionCard = document.getElementById('questionCard');
-const musicPlayer = document.getElementById('musicPlayer');
-const playPauseBtn = document.getElementById('playPauseBtn');
-const musicAudio = document.getElementById('musicAudio');
-const volumeSlider = document.getElementById('volume');
-const progressBar = document.getElementById('progressBar');
-const progress = document.getElementById('progress');
-const floatingContainer = document.getElementById("floatingContainer");
-const reactionImg = document.getElementById("reactionImg");
-
-let isPlaying = false;
-let floatingInterval = null;
-
-/* ========================= */
-/* YES BUTTON (UNCHANGED)   */
-/* ========================= */
-yesBtn.addEventListener('click',()=>{
-  questionCard.style.display='none';
-  musicPlayer.style.display='block';
-  musicAudio.play();
-  isPlaying=true;
-  playPauseBtn.textContent='Pause';
-
-  if(!floatingInterval){
-    floatingInterval=setInterval(spawnImage,600);
-  }
-});
-
-/* ========================= */
-/* PLAY / PAUSE (UNCHANGED) */
-/* ========================= */
-playPauseBtn.addEventListener('click',()=>{
-  if(isPlaying){ 
-    musicAudio.pause(); 
-    playPauseBtn.textContent='Play'; 
-  }
-  else { 
-    musicAudio.play(); 
-    playPauseBtn.textContent='Pause'; 
-  }
-  isPlaying=!isPlaying;
-});
-
-/* ========================= */
-/* VOLUME (UNCHANGED)       */
-/* ========================= */
-volumeSlider.addEventListener('input',()=>{
-  musicAudio.volume=volumeSlider.value;
-});
-
-/* ========================= */
-/* PROGRESS (UNCHANGED)     */
-/* ========================= */
-musicAudio.addEventListener('timeupdate',()=>{
-  if(musicAudio.duration>0){
-    progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
-  }
-});
-
-progressBar.addEventListener('click',e=>{
-  const rect=progressBar.getBoundingClientRect();
-  const pct=(e.clientX-rect.left)/rect.width;
-  musicAudio.currentTime=pct*musicAudio.duration;
-});
-
-/* ========================= */
-/* REACTION IMAGE LOGIC     */
-/* ========================= */
-
-let dodgeCount = 0;
-let teleportSensitivity = 120; 
-
-noBtn.addEventListener("mouseenter", () => {
-  reactionImg.src = "images/sad.png";
-});
-
-noBtn.addEventListener("mouseleave", () => {
-  reactionImg.src = "images/happy.png";
-});
-
-/* ========================= */
-/* SMART TELEPORT SYSTEM     */
-/* ========================= */
-
-document.addEventListener("mousemove", (e) => {
-
-  const rect = noBtn.getBoundingClientRect();
-  const centerX = rect.left + rect.width / 2;
-  const centerY = rect.top + rect.height / 2;
-
-  const distance = Math.hypot(
-    e.clientX - centerX,
-    e.clientY - centerY
-  );
-
-  if (distance < teleportSensitivity) {
-    dodgeCount++;
-    shakeButton();
-    setTimeout(() => {
-      teleportNoButton();
-    }, 120);
-
-    teleportSensitivity += 5;
-
-    if (dodgeCount > 5) {
-      reactionImg.src = "images/angry.png";
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentine Interactive</title>
+  <style>
+    /* ===== Reset & Global ===== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
     }
-  }
-});
+    html, body {
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a18cd1, #fbc2eb);
+      background-size: 800% 800%;
+      animation: gradientBG 15s ease infinite;
+    }
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
 
-function teleportNoButton() {
+    /* ===== Overlay ===== */
+    .overlay {
+      position: absolute;
+      inset: 0;
+    }
 
-  const padding = 20;
+    /* ===== Floating Images ===== */
+    .floating-container {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .floating-image {
+      position: absolute;
+      bottom: -350px;
+      opacity: 0;
+      pointer-events: none;
+      animation: rise linear forwards;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0); opacity: 0; }
+      10% { opacity: 1; }
+      90% { opacity: 1; }
+      100% { transform: translateY(-130vh); opacity: 0; }
+    }
 
-  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
-  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+    /* ===== Card ===== */
+    .card {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(25px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 2rem;
+      text-align: center;
+      color: #fff;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      transition: transform 0.3s;
+    }
+    .card:hover { transform: scale(1.03); }
 
-  const randomX = Math.random() * maxX;
-  const randomY = Math.random() * maxY;
+    h1 { 
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+    }
+    p {
+      font-size: 1.2rem;
+      margin-bottom: 1.5rem;
+      min-height: 1.5rem;
+    }
 
-  noBtn.style.position = "fixed";
-  noBtn.style.left = randomX + "px";
-  noBtn.style.top = randomY + "px";
-}
+    /* ===== Buttons ===== */
+    .buttons {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      position: relative;
+      height: 60px;
+    }
+    button {
+      padding: 1rem 2rem;
+      border: none;
+      border-radius: 1.5rem;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      transition: all 0.2s ease;
+    }
+    button:hover {
+      transform: scale(1.1);
+      box-shadow: 0 10px 20px rgba(236,72,153,0.5);
+    }
+    #yesBtn { background: #ec4899; color: #fff; }
+    #noBtn { 
+      background: #9ca3af; 
+      color: #fff; 
+      position: absolute; 
+    }
 
-/* Small Shake Animation */
-function shakeButton(){
-  noBtn.style.transition = "transform 0.1s";
-  noBtn.style.transform = "translateX(-5px)";
-  setTimeout(()=>{
-    noBtn.style.transform = "translateX(5px)";
-  },50);
-  setTimeout(()=>{
-    noBtn.style.transform = "translateX(0px)";
-  },100);
-}
+    /* ===== Spotify Card ===== */
+    .spotify-card {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      background: rgba(0,0,0,0.5);
+      border-radius: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+    }
+    .spotify-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 1rem;
+      object-fit: cover;
+    }
+    .song-info { text-align: left; }
+    .song-title { font-weight: bold; }
+    .song-artist { font-size: 0.9rem; opacity: 0.8; }
 
-/* ========================= */
-/* FLOATING IMAGES (UNCHANGED) */
-/* ========================= */
+    /* ===== Music Player ===== */
+    .player {
+      position: relative;
+      z-index: 1;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(25px);
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.3);
+      padding: 1rem;
+      text-align: center;
+      max-width: 350px;
+      margin-top: 2rem;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+    }
+    .player img { width: 100px; height: 100px; border-radius: 1rem; }
+    .progress-bar {
+      background: rgba(255,255,255,0.2);
+      height: 8px;
+      border-radius: 4px;
+      overflow: hidden;
+      cursor: pointer;
+      margin: 0.5rem 0;
+    }
+    .progress { background: #ec4899; height: 100%; width: 0%; }
+    .volume {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      justify-content: center;
+      margin: 0.5rem 0;
+    }
 
-const images=[
-"images/img1.png","images/img2.png","images/img3.png",
-"images/img4.png","images/img5.png","images/img6.png",
-"images/img7.png","images/img8.png","images/img9.png",
-"images/img10.png","images/img11.png","images/img12.png",
-"images/img13.png","images/img14.png","images/img15.png",
-"images/img16.png","images/img17.png","images/img18.png",
-"images/img19.png","images/img20.png"
-];
+    /* ===== Floating Hearts ===== */
+    .heart {
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      transform: rotate(-45deg);
+      animation: floatUp 3s ease forwards;
+      pointer-events: none;
+    }
+    .heart::before,
+    .heart::after {
+      content: '';
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background: red;
+      border-radius: 50%;
+    }
+    .heart::before { top: -7px; left: 0; }
+    .heart::after { left: 7px; top: 0; }
+    @keyframes floatUp {
+      0% { opacity:1; transform: translateY(0) rotate(-45deg); }
+      100% { opacity:0; transform: translateY(-200px) rotate(-45deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay"></div>
+  <div class="floating-container" id="floatingContainer"></div>
 
-function spawnImage(){
-  const img=document.createElement("img");
-  img.src=images[Math.floor(Math.random()*images.length)];
-  img.className="floating-image";
+  <!-- Question Card -->
+  <div class="card" id="questionCard">
+    <div class="spotify-card">
+      <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Song">
+      <div class="song-info">
+        <div class="song-title">You Are My Valentine</div>
+        <div class="song-artist">Forever Yours</div>
+      </div>
+    </div>
+    <h1>Will you be my Valentine?</h1>
+    <p id="dynamicMessage">💕</p>
+    <div class="buttons">
+      <button id="yesBtn">Yes! 💖</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
 
-  const maxLeft=window.innerWidth-320;
-  img.style.left=Math.random()*maxLeft+"px";
+  <!-- Music Player -->
+  <div class="player" id="musicPlayer" style="display:none;">
+    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album">
+    <div class="song-info">
+      <div class="song-title">You Are My Valentine</div>
+      <div class="song-artist">Forever Yours</div>
+    </div>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <div class="volume">
+      <label>🔊</label>
+      <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
+    </div>
+    <button id="playPauseBtn">Play</button>
+  </div>
 
-  const size=Math.random()*140+180;
-  img.style.width=size+"px";
+  <!-- Audio Elements -->
+  <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
+  <audio id="yesAudio" src="https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"></audio>
+  <audio id="musicAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
-  const tilt=Math.random()*40-20;
-  img.style.transform="rotate("+tilt+"deg)";
+  <!-- Script -->
+  <script>
+    const noBtn = document.getElementById('noBtn');
+    const yesBtn = document.getElementById('yesBtn');
+    const questionCard = document.getElementById('questionCard');
+    const musicPlayer = document.getElementById('musicPlayer');
+    const playPauseBtn = document.getElementById('playPauseBtn');
+    const musicAudio = document.getElementById('musicAudio');
+    const volumeSlider = document.getElementById('volume');
+    const progressBar = document.getElementById('progressBar');
+    const progress = document.getElementById('progress');
+    const floatingContainer = document.getElementById("floatingContainer");
 
-  const duration=Math.random()*4+6;
-  img.style.animationDuration=duration+"s";
+    let isPlaying = false;
+    let floatingInterval = null;
 
-  floatingContainer.appendChild(img);
-  setTimeout(()=>img.remove(),duration*1000);
-}
-</script>
+    // Floating images list
+    const images = Array.from({length:20}, (_, i) => `images/img${i+1}.png`);
+
+    /* ===== YES BUTTON ===== */
+    yesBtn.addEventListener('click', () => {
+      questionCard.style.display = 'none';
+      musicPlayer.style.display = 'block';
+      musicAudio.play();
+      isPlaying = true;
+      playPauseBtn.textContent = 'Pause';
+
+      if (!floatingInterval) {
+        floatingInterval = setInterval(spawnImage, 600);
+      }
+    });
+
+    /* ===== PLAY/PAUSE ===== */
+    playPauseBtn.addEventListener('click', () => {
+      if (isPlaying) {
+        musicAudio.pause();
+        playPauseBtn.textContent = 'Play';
+      } else {
+        musicAudio.play();
+        playPauseBtn.textContent = 'Pause';
+      }
+      isPlaying = !isPlaying;
+    });
+
+    /* ===== VOLUME ===== */
+    volumeSlider.addEventListener('input', () => {
+      musicAudio.volume = volumeSlider.value;
+    });
+
+    /* ===== PROGRESS BAR ===== */
+    musicAudio.addEventListener('timeupdate', () => {
+      if (musicAudio.duration > 0) {
+        progress.style.width = (musicAudio.currentTime / musicAudio.duration * 100) + '%';
+      }
+    });
+
+    progressBar.addEventListener('click', e => {
+      const rect = progressBar.getBoundingClientRect();
+      const pct = (e.clientX - rect.left) / rect.width;
+      musicAudio.currentTime = pct * musicAudio.duration;
+    });
+
+    /* ===== FLOATING IMAGES ===== */
+    function spawnImage() {
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random() * images.length)];
+      img.className = "floating-image";
+
+      const maxLeft = window.innerWidth - 320;
+      img.style.left = Math.random() * maxLeft + "px";
+
+      const size = Math.random() * 140 + 180;
+      img.style.width = size + "px";
+
+      const tilt = Math.random() * 40 - 20;
+      img.style.transform = `rotate(${tilt}deg)`;
+
+      const duration = Math.random() * 4 + 6;
+      img.style.animationDuration = duration + "s";
+
+      floatingContainer.appendChild(img);
+      setTimeout(() => img.remove(), duration * 1000);
+    }
+  </script>
+</body>
+</html>
