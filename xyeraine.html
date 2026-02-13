@@ -114,7 +114,7 @@
       background: #ec4899;
       color: #fff;
     }
-    #noBtn { background: #9ca3af; color: #fff; position: static; }
+    #noBtn { background: #9ca3af; color: #fff;}
 
     /* ===== Spotify Card ===== */
     .valentine-gif {
@@ -428,43 +428,36 @@ noBtn.style.top = `${noBtnY}px`;
 
 // Mouse move detection
 document.addEventListener('mousemove', e => {
+  const btnRect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
   const mouseY = e.clientY;
-
-  const btnRect = noBtn.getBoundingClientRect();
   const btnCenterX = btnRect.left + btnRect.width / 2;
   const btnCenterY = btnRect.top + btnRect.height / 2;
-
   const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
 
   if (distance < 100) {
-    // Direction away from mouse
+    // Switch to absolute only when moving
+    noBtn.style.position = 'absolute';
+
+    // Calculate dodge direction
     let dx = btnCenterX - mouseX;
     let dy = btnCenterY - mouseY;
+    const mag = Math.hypot(dx, dy) || 1; // prevent division by zero
+    dx = (dx / mag) * 100; // move 100px away
+    dy = (dy / mag) * 100;
 
-    // Normalize vector
-    const mag = Math.hypot(dx, dy);
-    if (mag > 0) {
-      dx = (dx / mag) * moveDistance;
-      dy = (dy / mag) * moveDistance;
-    }
+    // New position
+    let newX = btnRect.left + dx;
+    let newY = btnRect.top + dy;
 
-    // Update position
-    noBtnX += dx;
-    noBtnY += dy;
+    // Keep inside viewport
+    newX = Math.max(20, Math.min(newX, window.innerWidth - btnRect.width - 20));
+    newY = Math.max(20, Math.min(newY, window.innerHeight - btnRect.height - 20));
 
-    // Keep button inside viewport
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
-    noBtnX = Math.max(padding, Math.min(noBtnX, window.innerWidth - btnWidth - padding));
-    noBtnY = Math.max(padding, Math.min(noBtnY, window.innerHeight - btnHeight - padding));
-
-    // Apply new position
-    noBtn.style.left = `${noBtnX}px`;
-    noBtn.style.top = `${noBtnY}px`;
+    noBtn.style.left = `${newX}px`;
+    noBtn.style.top = `${newY}px`;
   }
 });
-
 // Keep button inside viewport on window resize
 window.addEventListener('resize', () => {
   const btnWidth = noBtn.offsetWidth;
