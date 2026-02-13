@@ -349,29 +349,36 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPlaying = false;
   let floatingInterval = null;
 
-  // ===== Center Yes and No buttons horizontally =====
+  // ===== Make Yes and No absolute =====
   yesBtn.style.position = 'absolute';
   noBtn.style.position = 'absolute';
   yesBtn.style.zIndex = 20;
   noBtn.style.zIndex = 20;
 
-  function centerButtons() {
+  // ===== Position buttons below the card =====
+  function positionButtonsBelowCard() {
+    const cardRect = questionCard.getBoundingClientRect();
+    const gapBetweenButtons = 20;
+
     const yesWidth = yesBtn.offsetWidth;
     const noWidth = noBtn.offsetWidth;
-    const gap = 20; // gap between buttons
-    const totalWidth = yesWidth + noWidth + gap;
-    const centerX = (window.innerWidth - totalWidth) / 2;
-    const centerY = window.innerHeight / 2;
+    const totalWidth = yesWidth + noWidth + gapBetweenButtons;
+
+    // Center horizontally relative to card
+    const centerX = cardRect.left + (cardRect.width - totalWidth) / 2;
+
+    // Vertical position slightly below card
+    const posY = cardRect.bottom + 20;
 
     yesBtn.style.left = centerX + "px";
-    yesBtn.style.top = centerY + "px";
+    yesBtn.style.top = posY + "px";
 
-    noBtn.style.left = (centerX + yesWidth + gap) + "px";
-    noBtn.style.top = centerY + "px";
+    noBtn.style.left = (centerX + yesWidth + gapBetweenButtons) + "px";
+    noBtn.style.top = posY + "px";
   }
 
-  centerButtons();
-  window.addEventListener('resize', centerButtons);
+  positionButtonsBelowCard();
+  window.addEventListener('resize', positionButtonsBelowCard);
 
   // ===== Yes Button Functionality =====
   yesBtn.addEventListener('click', () => {
@@ -397,13 +404,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const btnHeight = noBtn.offsetHeight;
 
   function generateNoPositions() {
-    noBtnPositions.length = 0; // clear
+    noBtnPositions.length = 0;
     for (let i = 0; i < 20; i++) {
       const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
       const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
       noBtnPositions.push({x, y});
     }
   }
+
   generateNoPositions();
 
   let lastIndex = -1;
@@ -418,8 +426,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener('resize', () => {
-    centerButtons();
     generateNoPositions();
+    positionButtonsBelowCard();
   });
 
   // ===== Music Player Controls =====
