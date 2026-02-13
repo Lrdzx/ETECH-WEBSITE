@@ -314,159 +314,161 @@
 
   <!-- Script -->
   <script>
-const noBtn = document.getElementById('noBtn');
+document.addEventListener("DOMContentLoaded", () => {
+  const noBtn = document.getElementById('noBtn');
+  const yesBtn = document.getElementById('yesBtn');
+  const questionCard = document.getElementById('questionCard');
+  const musicPlayer = document.getElementById('musicPlayer');
+  const playPauseBtn = document.getElementById('playPauseBtn');
+  const musicAudio = document.getElementById('musicAudio');
+  const volumeSlider = document.getElementById('volume');
+  const progressBar = document.getElementById('progressBar');
+  const progress = document.getElementById('progress');
+  const currentTimeEl = document.getElementById('currentTime');
+  const durationEl = document.getElementById('duration');
+  const floatingContainer = document.getElementById("floatingContainer");
+
+  let isPlaying = false;
+  let floatingInterval = null;
+
+  // =========================
+  // INITIAL POSITION FOR NO BUTTON
+  // =========================
   noBtn.style.position = 'absolute';
   noBtn.style.zIndex = 20; // above everything
-  noBtn.style.left = `${window.innerWidth/2 + 80}px`; // start right of Yes button
+  noBtn.style.left = `${window.innerWidth/2 + 80}px`; // right of Yes
   noBtn.style.top = `${window.innerHeight/2}px`;
-const yesBtn = document.getElementById('yesBtn');
-const questionCard = document.getElementById('questionCard');
-const musicPlayer = document.getElementById('musicPlayer');
 
-const playPauseBtn = document.getElementById('playPauseBtn');
-const musicAudio = document.getElementById('musicAudio');
-const volumeSlider = document.getElementById('volume');
-const progressBar = document.getElementById('progressBar');
-const progress = document.getElementById('progress');
-const currentTimeEl = document.getElementById('currentTime');
-const durationEl = document.getElementById('duration');
-const floatingContainer = document.getElementById("floatingContainer");
+  // =========================
+  // PLAY / PAUSE
+  // =========================
+  playPauseBtn.addEventListener('click', () => {
+    if (isPlaying) {
+      musicAudio.pause();
+      playPauseBtn.textContent = "▶";
+    } else {
+      musicAudio.play();
+      playPauseBtn.textContent = "❚❚";
+    }
+    isPlaying = !isPlaying;
+  });
 
-let isPlaying = false;
-let floatingInterval = null;
+  // =========================
+  // VOLUME
+  // =========================
+  volumeSlider.addEventListener('input', () => {
+    musicAudio.volume = volumeSlider.value;
+  });
 
-// =========================
-// PLAY / PAUSE
-// =========================
-playPauseBtn.addEventListener('click', () => {
-  if (isPlaying) {
-    musicAudio.pause();
-    playPauseBtn.textContent = "▶";
-  } else {
-    musicAudio.play();
-    playPauseBtn.textContent = "❚❚";
+  // =========================
+  // UPDATE TIME + PROGRESS
+  // =========================
+  musicAudio.addEventListener('timeupdate', () => {
+    if (musicAudio.duration) {
+      const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
+      progress.style.width = percent + "%";
+      currentTimeEl.textContent = formatTime(musicAudio.currentTime);
+      durationEl.textContent = formatTime(musicAudio.duration);
+    }
+  });
+
+  // =========================
+  // SEEK
+  // =========================
+  progressBar.addEventListener('click', (e) => {
+    const rect = progressBar.getBoundingClientRect();
+    const clickX = e.clientX - rect.left;
+    const duration = musicAudio.duration;
+    if (duration) musicAudio.currentTime = (clickX / rect.width) * duration;
+  });
+
+  // =========================
+  // FORMAT TIME
+  // =========================
+  function formatTime(seconds) {
+    const mins = Math.floor(seconds / 60);
+    const secs = Math.floor(seconds % 60).toString().padStart(2,'0');
+    return `${mins}:${secs}`;
   }
-  isPlaying = !isPlaying;
-});
 
-// =========================
-// VOLUME
-// =========================
-volumeSlider.addEventListener('input', () => {
-  musicAudio.volume = volumeSlider.value;
-});
+  // =========================
+  // YES BUTTON
+  // =========================
+  yesBtn.addEventListener('click', () => {
+    questionCard.style.display = 'none';
+    musicPlayer.style.display = 'flex';
+    musicAudio.currentTime = 0;
+    musicAudio.play().then(() => {
+      isPlaying = true;
+      playPauseBtn.textContent = "❚❚";
+    }).catch(err => console.log("Autoplay blocked:", err));
 
-// =========================
-// UPDATE TIME + PROGRESS
-// =========================
-musicAudio.addEventListener('timeupdate', () => {
-  if (musicAudio.duration) {
-    const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
-    progress.style.width = percent + "%";
-    currentTimeEl.textContent = formatTime(musicAudio.currentTime);
-    durationEl.textContent = formatTime(musicAudio.duration);
+    if (!floatingInterval) floatingInterval = setInterval(spawnImage, 600);
+  });
+
+  // =========================
+  // NO BUTTON TELEPORT
+  // =========================
+  const padding = 20;
+  const noBtnPositions = [];
+  function generatePositions() {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
+      const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
+      noBtnPositions.push({x, y});
+    }
+  }
+  generatePositions();
+  let lastIndex = -1;
+
+  noBtn.addEventListener('mouseenter', () => {
+    let index;
+    do { index = Math.floor(Math.random() * noBtnPositions.length); }
+    while(index === lastIndex);
+    lastIndex = index;
+
+    const pos = noBtnPositions[index];
+    noBtn.style.left = pos.x + "px";
+    noBtn.style.top = pos.y + "px";
+  });
+
+  window.addEventListener('resize', () => {
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    for (let pos of noBtnPositions) {
+      pos.x = Math.min(pos.x, window.innerWidth - btnWidth - padding);
+      pos.y = Math.min(pos.y, window.innerHeight - btnHeight - padding);
+    }
+  });
+
+  // =========================
+  // FLOATING IMAGES
+  // =========================
+  const images = Array.from({ length: 20 }, (_, i) => `images/img${i+1}.png`);
+
+  function spawnImage() {
+    const img = document.createElement("img");
+    img.src = images[Math.floor(Math.random() * images.length)];
+    img.className = "floating-image";
+
+    const maxLeft = window.innerWidth - 320;
+    img.style.left = Math.random() * maxLeft + "px";
+
+    const size = Math.random() * 140 + 180;
+    img.style.width = size + "px";
+
+    const tilt = Math.random() * 40 - 20;
+    img.style.transform = `rotate(${tilt}deg)`;
+
+    const duration = Math.random() * 4 + 6;
+    img.style.animationDuration = duration + "s";
+
+    floatingContainer.appendChild(img);
+    setTimeout(() => img.remove(), duration * 1000);
   }
 });
-
-// =========================
-// SEEK
-// =========================
-progressBar.addEventListener('click', (e) => {
-  const rect = progressBar.getBoundingClientRect();
-  const clickX = e.clientX - rect.left;
-  const duration = musicAudio.duration;
-  if (duration) musicAudio.currentTime = (clickX / rect.width) * duration;
-});
-
-// =========================
-// FORMAT TIME
-// =========================
-function formatTime(seconds) {
-  const mins = Math.floor(seconds / 60);
-  const secs = Math.floor(seconds % 60).toString().padStart(2,'0');
-  return `${mins}:${secs}`;
-}
-
-// =========================
-// YES BUTTON
-// =========================
-yesBtn.addEventListener('click', () => {
-  questionCard.style.display = 'none';
-  musicPlayer.style.display = 'flex';
-  musicAudio.currentTime = 0;
-  musicAudio.play().then(() => {
-    isPlaying = true;
-    playPauseBtn.textContent = "❚❚";
-  }).catch(err => console.log("Autoplay blocked:", err));
-
-  if (!floatingInterval) floatingInterval = setInterval(spawnImage, 600);
-});
-
-// =========================
-// NO BUTTON TELEPORT
-// =========================
-const padding = 20;
-const noBtnPositions = [];
-function generatePositions() {
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
-  for (let i = 0; i < 20; i++) {
-    const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
-    const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
-    noBtnPositions.push({x, y});
-  }
-}
-generatePositions();
-let lastIndex = -1;
-
-// Teleport on hover
-noBtn.addEventListener('mouseenter', () => {
-  let index;
-  do { index = Math.floor(Math.random() * noBtnPositions.length); }
-  while(index === lastIndex);
-  lastIndex = index;
-
-  const pos = noBtnPositions[index];
-  noBtn.style.left = pos.x + "px";
-  noBtn.style.top = pos.y + "px";
-});
-
-// Keep button inside viewport on resize
-window.addEventListener('resize', () => {
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
-  for (let pos of noBtnPositions) {
-    pos.x = Math.min(pos.x, window.innerWidth - btnWidth - padding);
-    pos.y = Math.min(pos.y, window.innerHeight - btnHeight - padding);
-  }
-});
-
-// =========================
-// FLOATING IMAGES
-// =========================
-const images = Array.from({ length: 20 }, (_, i) => `images/img${i+1}.png`);
-
-function spawnImage() {
-  const img = document.createElement("img");
-  img.src = images[Math.floor(Math.random() * images.length)];
-  img.className = "floating-image";
-
-  const maxLeft = window.innerWidth - 320;
-  img.style.left = Math.random() * maxLeft + "px";
-
-  const size = Math.random() * 140 + 180;
-  img.style.width = size + "px";
-
-  const tilt = Math.random() * 40 - 20;
-  img.style.transform = `rotate(${tilt}deg)`;
-
-  const duration = Math.random() * 4 + 6;
-  img.style.animationDuration = duration + "s";
-
-  floatingContainer.appendChild(img);
-  setTimeout(() => img.remove(), duration * 1000);
-}
-
 </script>
 
 </body>
