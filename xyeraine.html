@@ -315,6 +315,10 @@
   <!-- Script -->
   <script>
 const noBtn = document.getElementById('noBtn');
+  noBtn.style.position = 'absolute';
+  noBtn.style.zIndex = 20; // above everything
+  noBtn.style.left = `${window.innerWidth/2 + 80}px`; // start right of Yes button
+  noBtn.style.top = `${window.innerHeight/2}px`;
 const yesBtn = document.getElementById('yesBtn');
 const questionCard = document.getElementById('questionCard');
 const musicPlayer = document.getElementById('musicPlayer');
@@ -401,9 +405,8 @@ yesBtn.addEventListener('click', () => {
 // =========================
 // NO BUTTON TELEPORT
 // =========================
-const padding = 20; // keep button inside edges
-const noBtnPositions = []; // 20 random visible positions
-
+const padding = 20;
+const noBtnPositions = [];
 function generatePositions() {
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
@@ -413,20 +416,14 @@ function generatePositions() {
     noBtnPositions.push({x, y});
   }
 }
-
-// Initialize positions
 generatePositions();
 let lastIndex = -1;
-
-noBtn.style.position = 'absolute';
-noBtn.style.left = `${window.innerWidth/2 - noBtn.offsetWidth/2}px`;
-noBtn.style.top = `${window.innerHeight/2}px`;
 
 // Teleport on hover
 noBtn.addEventListener('mouseenter', () => {
   let index;
   do { index = Math.floor(Math.random() * noBtnPositions.length); }
-  while(index === lastIndex); // avoid same spot twice
+  while(index === lastIndex);
   lastIndex = index;
 
   const pos = noBtnPositions[index];
