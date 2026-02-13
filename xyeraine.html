@@ -418,12 +418,12 @@
   /* =========================
      NO BUTTON TELEPORT
   ==========================*/
-  function teleportButton() {
+  // Fixed teleportButton function
+function teleportButton() {
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
   const padding = 20; // space from edges
 
-  // Make sure button stays fully inside the viewport
   const maxX = window.innerWidth - btnWidth - padding;
   const maxY = window.innerHeight - btnHeight - padding;
 
@@ -435,19 +435,31 @@
   noBtn.style.top = `${y}px`;
 }
 
-  document.addEventListener('mousemove', e => {
-    const mouseX = e.clientX;
-    const mouseY = e.clientY;
+// Mouse detection to trigger teleport
+document.addEventListener('mousemove', e => {
+  const mouseX = e.clientX;
+  const mouseY = e.clientY;
 
-    const btnRect = noBtn.getBoundingClientRect();
-    const btnX = btnRect.left + btnRect.width / 2;
-    const btnY = btnRect.top + btnRect.height / 2;
+  const btnRect = noBtn.getBoundingClientRect();
+  const btnX = btnRect.left + btnRect.width / 2;
+  const btnY = btnRect.top + btnRect.height / 2;
 
-    const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+  const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
 
-    if (distance < 100) teleportButton();
-  });
+  if (distance < 100) teleportButton();
+});
 
+// Keep button inside viewport on resize
+window.addEventListener('resize', () => {
+  const btnRect = noBtn.getBoundingClientRect();
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+  const maxX = window.innerWidth - btnWidth - 20;
+  const maxY = window.innerHeight - btnHeight - 20;
+
+  noBtn.style.left = Math.min(btnRect.left, maxX) + 'px';
+  noBtn.style.top = Math.min(btnRect.top, maxY) + 'px';
+});
   /* =========================
      FLOATING IMAGES
   ==========================*/
