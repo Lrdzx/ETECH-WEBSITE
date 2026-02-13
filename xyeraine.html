@@ -116,44 +116,17 @@
     }
 
     /* ===== Spotify Card ===== */
-    .spotify-card {
-      display: flex;
-      flex-direction: column; /* stack image on top, text below */
-      align-items: center;
-      gap: 0.75rem;
-      background: #1e1e1e; /* dark card background */
-      border-radius: 1.5rem;
-      padding: 1rem;
-      width: 100%; /* make it stretch full width of card container */
-      max-width: 350px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-      color: #fff;
-      text-align: center;
-    }
-
-    .spotify-card img {
-      width: 100%;
-      height: auto;
-      border-radius: 1.5rem;
-      object-fit: cover;
-    }
-
-    .song-info {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.2rem;
-    }
-
-    .song-title {
-      font-weight: bold;
-      font-size: 1.2rem;
-    }
-
-    .song-artist {
-      font-size: 0.95rem;
-      opacity: 0.8;
-    }
+    <!-- Image Card -->
+<div class="card" id="questionCard">
+  <img id="hoverImage" src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" 
+       alt="Hover Image" style="width:100%; border-radius:1rem; margin-bottom:1rem;">
+  <h1>Will you be my Valentine?</h1>
+  <p id="dynamicMessage">💕</p>
+  <div class="buttons">
+    <button id="yesBtn">Yes! 💖</button>
+    <button id="noBtn">No</button>
+  </div>
+</div>
 
     /* ===== Music Player ===== */
     .player {
@@ -269,9 +242,33 @@
     const progressBar = document.getElementById('progressBar');
     const progress = document.getElementById('progress');
     const floatingContainer = document.getElementById("floatingContainer");
+    const hoverImage = document.getElementById('hoverImage');
 
     let isPlaying = false;
     let floatingInterval = null;
+    // Array of images to show when hovering "No"
+const hoverImages = [
+  "https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1492724441997-5dc865305da7?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1470093851210-93c94c1806b5?w=400&h=400&fit=crop",
+  "https://images.unsplash.com/photo-1485217988980-11786ced9454?w=400&h=400&fit=crop"
+];
+
+let hoverInterval = null;
+
+// Start changing images on mouse hover
+noBtn.addEventListener('mouseenter', () => {
+  hoverInterval = setInterval(() => {
+    const randomIndex = Math.floor(Math.random() * hoverImages.length);
+    hoverImage.src = hoverImages[randomIndex];
+  }, 300); // change image every 300ms
+});
+
+// Stop changing images when mouse leaves
+noBtn.addEventListener('mouseleave', () => {
+  clearInterval(hoverInterval);
+  hoverImage.src = "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop"; // reset to original
+});
 
     
 // Function to move button to a random position
