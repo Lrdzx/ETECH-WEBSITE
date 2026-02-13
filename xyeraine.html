@@ -332,11 +332,12 @@ document.addEventListener("DOMContentLoaded", () => {
   let floatingInterval = null;
 
   // =========================
-  // INITIAL POSITION FOR NO BUTTON
+  // MOVE NO BUTTON OUT OF FLEX TO BODY
   // =========================
+  document.body.appendChild(noBtn); // now it's a direct child of body
   noBtn.style.position = 'absolute';
-  noBtn.style.zIndex = 20; // above everything
-  noBtn.style.left = `${window.innerWidth/2 + 80}px`; // right of Yes
+  noBtn.style.zIndex = 20;
+  noBtn.style.left = `${window.innerWidth/2 + 80}px`;
   noBtn.style.top = `${window.innerHeight/2}px`;
 
   // =========================
@@ -469,6 +470,7 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => img.remove(), duration * 1000);
   }
 });
+
 </script>
 
 </body>
