@@ -349,17 +349,29 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPlaying = false;
   let floatingInterval = null;
 
-  // ===== Initial Positioning =====
-  const cardRect = questionCard.getBoundingClientRect();
+  // ===== Center Yes and No buttons horizontally =====
   yesBtn.style.position = 'absolute';
-  yesBtn.style.zIndex = 20;
-  yesBtn.style.left = cardRect.left + "px";
-  yesBtn.style.top = cardRect.bottom + 20 + "px"; // below card
-
   noBtn.style.position = 'absolute';
+  yesBtn.style.zIndex = 20;
   noBtn.style.zIndex = 20;
-  noBtn.style.left = (cardRect.left + yesBtn.offsetWidth + 10) + "px"; // next to Yes
-  noBtn.style.top = yesBtn.style.top;
+
+  function centerButtons() {
+    const yesWidth = yesBtn.offsetWidth;
+    const noWidth = noBtn.offsetWidth;
+    const gap = 20; // gap between buttons
+    const totalWidth = yesWidth + noWidth + gap;
+    const centerX = (window.innerWidth - totalWidth) / 2;
+    const centerY = window.innerHeight / 2;
+
+    yesBtn.style.left = centerX + "px";
+    yesBtn.style.top = centerY + "px";
+
+    noBtn.style.left = (centerX + yesWidth + gap) + "px";
+    noBtn.style.top = centerY + "px";
+  }
+
+  centerButtons();
+  window.addEventListener('resize', centerButtons);
 
   // ===== Yes Button Functionality =====
   yesBtn.addEventListener('click', () => {
@@ -383,13 +395,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const noBtnPositions = [];
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
-  for (let i = 0; i < 20; i++) {
-    const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
-    const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
-    noBtnPositions.push({x, y});
-  }
-  let lastIndex = -1;
 
+  function generateNoPositions() {
+    noBtnPositions.length = 0; // clear
+    for (let i = 0; i < 20; i++) {
+      const x = Math.random() * (window.innerWidth - btnWidth - padding*2) + padding;
+      const y = Math.random() * (window.innerHeight - btnHeight - padding*2) + padding;
+      noBtnPositions.push({x, y});
+    }
+  }
+  generateNoPositions();
+
+  let lastIndex = -1;
   noBtn.addEventListener('mouseenter', () => {
     let index;
     do { index = Math.floor(Math.random() * noBtnPositions.length); }
@@ -401,10 +418,8 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   window.addEventListener('resize', () => {
-    for (let pos of noBtnPositions) {
-      pos.x = Math.min(pos.x, window.innerWidth - btnWidth - padding);
-      pos.y = Math.min(pos.y, window.innerHeight - btnHeight - padding);
-    }
+    centerButtons();
+    generateNoPositions();
   });
 
   // ===== Music Player Controls =====
