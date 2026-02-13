@@ -273,6 +273,39 @@
     let isPlaying = false;
     let floatingInterval = null;
 
+    
+// Function to move button to a random position
+    function teleportButton() {
+      const btnWidth = noBtn.offsetWidth;
+      const btnHeight = noBtn.offsetHeight;
+      const padding = 20; // keep button inside viewport
+
+  // Random positions within the window bounds
+      const x = Math.random() * (window.innerWidth - btnWidth - padding * 2) + padding;
+      const y = Math.random() * (window.innerHeight - btnHeight - padding * 2) + padding;
+
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    // Track mouse movement
+  document.addEventListener('mousemove', e => {
+    const mouseX = e.clientX;
+    const mouseY = e.clientY;
+
+    const btnRect = noBtn.getBoundingClientRect();
+    const btnX = btnRect.left + btnRect.width / 2;
+    const btnY = btnRect.top + btnRect.height / 2;
+
+    const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+
+  // If cursor is closer than 100px, teleport the button
+    if (distance < 100) {
+      teleportButton();
+    }
+  });
+
     // Floating images list
     const images = Array.from({length:20}, (_, i) => `images/img${i+1}.png`);
 
