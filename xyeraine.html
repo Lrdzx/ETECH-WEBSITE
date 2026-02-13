@@ -419,17 +419,21 @@
      NO BUTTON TELEPORT
   ==========================*/
   function teleportButton() {
-    const btnWidth = noBtn.offsetWidth;
-    const btnHeight = noBtn.offsetHeight;
-    const padding = 20;
+  const btnWidth = noBtn.offsetWidth;
+  const btnHeight = noBtn.offsetHeight;
+  const padding = 20; // space from edges
 
-    const x = Math.random() * (window.innerWidth - btnWidth - padding * 2) + padding;
-    const y = Math.random() * (window.innerHeight - btnHeight - padding * 2) + padding;
+  // Make sure button stays fully inside the viewport
+  const maxX = window.innerWidth - btnWidth - padding;
+  const maxY = window.innerHeight - btnHeight - padding;
 
-    noBtn.style.position = 'absolute';
-    noBtn.style.left = `${x}px`;
-    noBtn.style.top = `${y}px`;
-  }
+  const x = Math.random() * (maxX - padding) + padding;
+  const y = Math.random() * (maxY - padding) + padding;
+
+  noBtn.style.position = 'absolute';
+  noBtn.style.left = `${x}px`;
+  noBtn.style.top = `${y}px`;
+}
 
   document.addEventListener('mousemove', e => {
     const mouseX = e.clientX;
