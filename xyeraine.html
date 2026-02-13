@@ -160,6 +160,7 @@ button:hover { transform: scale(1.1); box-shadow:0 10px 20px rgba(236,72,153,0.5
 <audio id="musicAudio" src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" loop></audio>
 
 <script>
+<script>
 const noBtn = document.getElementById('noBtn');
 const yesBtn = document.getElementById('yesBtn');
 const questionCard = document.getElementById('questionCard');
@@ -170,11 +171,14 @@ const volumeSlider = document.getElementById('volume');
 const progressBar = document.getElementById('progressBar');
 const progress = document.getElementById('progress');
 const floatingContainer = document.getElementById("floatingContainer");
+const reactionImg = document.getElementById("reactionImg");
 
-let isPlaying=false;
-let floatingInterval=null;
+let isPlaying = false;
+let floatingInterval = null;
 
-/* YES BUTTON */
+/* ========================= */
+/* YES BUTTON (UNCHANGED)   */
+/* ========================= */
 yesBtn.addEventListener('click',()=>{
   questionCard.style.display='none';
   musicPlayer.style.display='block';
@@ -182,23 +186,36 @@ yesBtn.addEventListener('click',()=>{
   isPlaying=true;
   playPauseBtn.textContent='Pause';
 
-  /* START FLOATING IMAGES ONLY AFTER YES */
   if(!floatingInterval){
     floatingInterval=setInterval(spawnImage,600);
   }
 });
 
-/* PLAY/PAUSE */
+/* ========================= */
+/* PLAY / PAUSE (UNCHANGED) */
+/* ========================= */
 playPauseBtn.addEventListener('click',()=>{
-  if(isPlaying){ musicAudio.pause(); playPauseBtn.textContent='Play'; }
-  else { musicAudio.play(); playPauseBtn.textContent='Pause'; }
+  if(isPlaying){ 
+    musicAudio.pause(); 
+    playPauseBtn.textContent='Play'; 
+  }
+  else { 
+    musicAudio.play(); 
+    playPauseBtn.textContent='Pause'; 
+  }
   isPlaying=!isPlaying;
 });
 
-/* VOLUME */
-volumeSlider.addEventListener('input',()=>{ musicAudio.volume=volumeSlider.value; });
+/* ========================= */
+/* VOLUME (UNCHANGED)       */
+/* ========================= */
+volumeSlider.addEventListener('input',()=>{
+  musicAudio.volume=volumeSlider.value;
+});
 
-/* PROGRESS */
+/* ========================= */
+/* PROGRESS (UNCHANGED)     */
+/* ========================= */
 musicAudio.addEventListener('timeupdate',()=>{
   if(musicAudio.duration>0){
     progress.style.width=(musicAudio.currentTime/musicAudio.duration*100)+'%';
@@ -211,7 +228,82 @@ progressBar.addEventListener('click',e=>{
   musicAudio.currentTime=pct*musicAudio.duration;
 });
 
-/* FLOATING IMAGES */
+/* ========================= */
+/* REACTION IMAGE LOGIC     */
+/* ========================= */
+
+let dodgeCount = 0;
+let teleportSensitivity = 120; 
+
+noBtn.addEventListener("mouseenter", () => {
+  reactionImg.src = "images/sad.png";
+});
+
+noBtn.addEventListener("mouseleave", () => {
+  reactionImg.src = "images/happy.png";
+});
+
+/* ========================= */
+/* SMART TELEPORT SYSTEM     */
+/* ========================= */
+
+document.addEventListener("mousemove", (e) => {
+
+  const rect = noBtn.getBoundingClientRect();
+  const centerX = rect.left + rect.width / 2;
+  const centerY = rect.top + rect.height / 2;
+
+  const distance = Math.hypot(
+    e.clientX - centerX,
+    e.clientY - centerY
+  );
+
+  if (distance < teleportSensitivity) {
+    dodgeCount++;
+    shakeButton();
+    setTimeout(() => {
+      teleportNoButton();
+    }, 120);
+
+    teleportSensitivity += 5;
+
+    if (dodgeCount > 5) {
+      reactionImg.src = "images/angry.png";
+    }
+  }
+});
+
+function teleportNoButton() {
+
+  const padding = 20;
+
+  const maxX = window.innerWidth - noBtn.offsetWidth - padding;
+  const maxY = window.innerHeight - noBtn.offsetHeight - padding;
+
+  const randomX = Math.random() * maxX;
+  const randomY = Math.random() * maxY;
+
+  noBtn.style.position = "fixed";
+  noBtn.style.left = randomX + "px";
+  noBtn.style.top = randomY + "px";
+}
+
+/* Small Shake Animation */
+function shakeButton(){
+  noBtn.style.transition = "transform 0.1s";
+  noBtn.style.transform = "translateX(-5px)";
+  setTimeout(()=>{
+    noBtn.style.transform = "translateX(5px)";
+  },50);
+  setTimeout(()=>{
+    noBtn.style.transform = "translateX(0px)";
+  },100);
+}
+
+/* ========================= */
+/* FLOATING IMAGES (UNCHANGED) */
+/* ========================= */
+
 const images=[
 "images/img1.png","images/img2.png","images/img3.png",
 "images/img4.png","images/img5.png","images/img6.png",
@@ -243,6 +335,3 @@ function spawnImage(){
   setTimeout(()=>img.remove(),duration*1000);
 }
 </script>
-
-</body>
-</html>
