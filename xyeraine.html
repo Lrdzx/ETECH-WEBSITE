@@ -506,7 +506,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ===== Floating Images =====
-  const images = Array.from({ length: 20 }, (_, i) => `images/r${i+1}.png`);
+  const images = Array.from({ length: 20 }, (_, i) => `r${i+1}.png`);
   function spawnImage() {
     const img = document.createElement("img");
     img.src = images[Math.floor(Math.random() * images.length)];
