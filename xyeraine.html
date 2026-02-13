@@ -121,32 +121,13 @@
     }
 
     /* ===== Spotify Card ===== */
-    .spotify-card {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      background: rgba(0,0,0,0.5);
-      border-radius: 1.5rem;
-      padding: 1rem;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.3);
-    }
-    .spotify-card img {
-      width: 80px;
-      height: 80px;
-      border-radius: 1rem;
-      object-fit: cover;
-    }
-    .song-info {
-      text-align: left;
-    }
-    .song-title {
-      font-weight: bold;
-    }
-    .song-artist {
-      font-size: 0.9rem;
-      opacity: 0.8;
-    }
+    .valentine-gif {
+  width: 200px;      /* adjust as needed */
+  height: 200px;
+  border-radius: 1rem;
+  object-fit: cover;
+  margin-bottom: 1rem; /* spacing above the question */
+}
 
     /* ===== Music Player ===== */
 .player {
@@ -284,13 +265,9 @@
 
   <!-- Question Card -->
   <div class="card" id="questionCard">
-    <div class="spotify-card">
-      <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Song">
-      <div class="song-info">
-        <div class="song-title">You Are My Valentine</div>
-        <div class="song-artist">Forever Yours</div>
-      </div>
-    </div>
+    <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" 
+     alt="Valentine GIF" 
+     class="valentine-gif">
     <h1>Will you be my Valentine?</h1>
     <p id="dynamicMessage">💕</p>
     <div class="buttons">
