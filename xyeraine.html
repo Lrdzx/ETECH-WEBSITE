@@ -314,87 +314,87 @@
 
   <!-- Script -->
   <script>
-  const noBtn = document.getElementById('noBtn');
-  const yesBtn = document.getElementById('yesBtn');
-  const questionCard = document.getElementById('questionCard');
-  const musicPlayer = document.getElementById('musicPlayer');
+const noBtn = document.getElementById('noBtn');
+const yesBtn = document.getElementById('yesBtn');
+const questionCard = document.getElementById('questionCard');
+const musicPlayer = document.getElementById('musicPlayer');
 
-  const playPauseBtn = document.getElementById('playPauseBtn');
-  const musicAudio = document.getElementById('musicAudio');
-  const volumeSlider = document.getElementById('volume');
-  const progressBar = document.getElementById('progressBar');
-  const progress = document.getElementById('progress');
-  const currentTimeEl = document.getElementById('currentTime');
-  const durationEl = document.getElementById('duration');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const musicAudio = document.getElementById('musicAudio');
+const volumeSlider = document.getElementById('volume');
+const progressBar = document.getElementById('progressBar');
+const progress = document.getElementById('progress');
+const currentTimeEl = document.getElementById('currentTime');
+const durationEl = document.getElementById('duration');
 
-  const floatingContainer = document.getElementById("floatingContainer");
+const floatingContainer = document.getElementById("floatingContainer");
 
-  let isPlaying = false;
-  let floatingInterval = null;
+let isPlaying = false;
+let floatingInterval = null;
 
-  /* =========================
-     PLAY / PAUSE
-  ==========================*/
-  playPauseBtn.addEventListener('click', () => {
-    if (isPlaying) {
-      musicAudio.pause();
-      playPauseBtn.textContent = "▶";
-    } else {
-      musicAudio.play();
-      playPauseBtn.textContent = "❚❚";
-    }
-    isPlaying = !isPlaying;
-  });
-
-  /* =========================
-     VOLUME
-  ==========================*/
-  volumeSlider.addEventListener('input', () => {
-    musicAudio.volume = volumeSlider.value;
-  });
-
-  /* =========================
-     UPDATE TIME + PROGRESS
-  ==========================*/
-  musicAudio.addEventListener('timeupdate', () => {
-    if (musicAudio.duration) {
-      const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
-      progress.style.width = percent + "%";
-
-      currentTimeEl.textContent = formatTime(musicAudio.currentTime);
-      durationEl.textContent = formatTime(musicAudio.duration);
-    }
-  });
-
-  /* =========================
-     SEEK
-  ==========================*/
-  progressBar.addEventListener('click', (e) => {
-    const rect = progressBar.getBoundingClientRect();
-    const clickX = e.clientX - rect.left;
-    const width = rect.width;
-    const duration = musicAudio.duration;
-
-    if (duration) {
-      musicAudio.currentTime = (clickX / width) * duration;
-    }
-  });
-
-  /* =========================
-     FORMAT TIME
-  ==========================*/
-  function formatTime(seconds) {
-    const mins = Math.floor(seconds / 60);
-    const secs = Math.floor(seconds % 60)
-      .toString()
-      .padStart(2, '0');
-    return `${mins}:${secs}`;
+/* =========================
+   PLAY / PAUSE
+=========================*/
+playPauseBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    musicAudio.pause();
+    playPauseBtn.textContent = "▶";
+  } else {
+    musicAudio.play();
+    playPauseBtn.textContent = "❚❚";
   }
+  isPlaying = !isPlaying;
+});
 
-  /* =========================
-     YES BUTTON
-  ==========================*/
-  yesBtn.addEventListener('click', () => {
+/* =========================
+   VOLUME
+=========================*/
+volumeSlider.addEventListener('input', () => {
+  musicAudio.volume = volumeSlider.value;
+});
+
+/* =========================
+   UPDATE TIME + PROGRESS
+=========================*/
+musicAudio.addEventListener('timeupdate', () => {
+  if (musicAudio.duration) {
+    const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
+    progress.style.width = percent + "%";
+
+    currentTimeEl.textContent = formatTime(musicAudio.currentTime);
+    durationEl.textContent = formatTime(musicAudio.duration);
+  }
+});
+
+/* =========================
+   SEEK
+=========================*/
+progressBar.addEventListener('click', (e) => {
+  const rect = progressBar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const width = rect.width;
+  const duration = musicAudio.duration;
+
+  if (duration) {
+    musicAudio.currentTime = (clickX / width) * duration;
+  }
+});
+
+/* =========================
+   FORMAT TIME
+=========================*/
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, '0');
+  return `${mins}:${secs}`;
+}
+
+/* =========================
+   YES BUTTON
+=========================*/
+yesBtn.addEventListener('click', () => {
   questionCard.style.display = 'none';
   musicPlayer.style.display = 'flex';
 
@@ -411,22 +411,14 @@
     floatingInterval = setInterval(spawnImage, 600);
   }
 });
+
 /* =========================
    NO BUTTON DODGE
-==========================*/
+=========================*/
+const moveDistance = 100; // how far the button moves
+const padding = 20;       // distance from edges
+let isAbsolute = false;   // tracks if button switched to absolute
 
-// Initial position and movement
-let noBtnX = window.innerWidth / 2;
-let noBtnY = window.innerHeight / 2;
-const moveDistance = 100; // how far it moves when cursor gets close
-const padding = 20;       // distance from screen edges
-
-// Set initial button position
-noBtn.style.position = 'absolute';
-noBtn.style.left = `${noBtnX}px`;
-noBtn.style.top = `${noBtnY}px`;
-
-// Mouse move detection
 document.addEventListener('mousemove', e => {
   const btnRect = noBtn.getBoundingClientRect();
   const mouseX = e.clientX;
@@ -436,63 +428,74 @@ document.addEventListener('mousemove', e => {
   const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
 
   if (distance < 100) {
-    // Switch to absolute only when moving
-    noBtn.style.position = 'absolute';
+    // Switch to absolute positioning when needed
+    if (!isAbsolute) {
+      noBtn.style.position = 'absolute';
+      noBtn.style.left = `${btnRect.left}px`;
+      noBtn.style.top = `${btnRect.top}px`;
+      isAbsolute = true;
+    }
 
-    // Calculate dodge direction
+    // Calculate dodge direction away from cursor
     let dx = btnCenterX - mouseX;
     let dy = btnCenterY - mouseY;
-    const mag = Math.hypot(dx, dy) || 1; // prevent division by zero
-    dx = (dx / mag) * 100; // move 100px away
-    dy = (dy / mag) * 100;
+    const mag = Math.hypot(dx, dy) || 1; // prevent divide by zero
+    dx = (dx / mag) * moveDistance;
+    dy = (dy / mag) * moveDistance;
 
-    // New position
+    // New button position
     let newX = btnRect.left + dx;
     let newY = btnRect.top + dy;
 
     // Keep inside viewport
-    newX = Math.max(20, Math.min(newX, window.innerWidth - btnRect.width - 20));
-    newY = Math.max(20, Math.min(newY, window.innerHeight - btnRect.height - 20));
+    newX = Math.max(padding, Math.min(newX, window.innerWidth - btnRect.width - padding));
+    newY = Math.max(padding, Math.min(newY, window.innerHeight - btnRect.height - padding));
 
     noBtn.style.left = `${newX}px`;
     noBtn.style.top = `${newY}px`;
   }
 });
-// Keep button inside viewport on window resize
+
+/* =========================
+   Keep inside viewport on resize
+=========================*/
 window.addEventListener('resize', () => {
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
-  noBtnX = Math.min(noBtnX, window.innerWidth - btnWidth - padding);
-  noBtnY = Math.min(noBtnY, window.innerHeight - btnHeight - padding);
-  noBtn.style.left = `${noBtnX}px`;
-  noBtn.style.top = `${noBtnY}px`;
-});
-  /* =========================
-     FLOATING IMAGES
-  ==========================*/
-  const images = Array.from({ length: 20 }, (_, i) => `images/img${i + 1}.png`);
-
-  function spawnImage() {
-    const img = document.createElement("img");
-    img.src = images[Math.floor(Math.random() * images.length)];
-    img.className = "floating-image";
-
-    const maxLeft = window.innerWidth - 320;
-    img.style.left = Math.random() * maxLeft + "px";
-
-    const size = Math.random() * 140 + 180;
-    img.style.width = size + "px";
-
-    const tilt = Math.random() * 40 - 20;
-    img.style.transform = `rotate(${tilt}deg)`;
-
-    const duration = Math.random() * 4 + 6;
-    img.style.animationDuration = duration + "s";
-
-    floatingContainer.appendChild(img);
-
-    setTimeout(() => img.remove(), duration * 1000);
+  if (isAbsolute) {
+    const btnRect = noBtn.getBoundingClientRect();
+    const newX = Math.min(btnRect.left, window.innerWidth - btnRect.width - padding);
+    const newY = Math.min(btnRect.top, window.innerHeight - btnRect.height - padding);
+    noBtn.style.left = `${newX}px`;
+    noBtn.style.top = `${newY}px`;
   }
+});
+
+/* =========================
+   FLOATING IMAGES
+=========================*/
+const images = Array.from({ length: 20 }, (_, i) => `images/img${i + 1}.png`);
+
+function spawnImage() {
+  const img = document.createElement("img");
+  img.src = images[Math.floor(Math.random() * images.length)];
+  img.className = "floating-image";
+
+  const maxLeft = window.innerWidth - 320;
+  img.style.left = Math.random() * maxLeft + "px";
+
+  const size = Math.random() * 140 + 180;
+  img.style.width = size + "px";
+
+  const tilt = Math.random() * 40 - 20;
+  img.style.transform = `rotate(${tilt}deg)`;
+
+  const duration = Math.random() * 4 + 6;
+  img.style.animationDuration = duration + "s";
+
+  floatingContainer.appendChild(img);
+
+  setTimeout(() => img.remove(), duration * 1000);
+}
 </script>
+
 </body>
 </html>
