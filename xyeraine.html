@@ -129,36 +129,117 @@
 </div>
 
     /* ===== Music Player ===== */
-    .player { 
-      position: relative;
-      z-index: 1; 
-      background: rgba(255,255,255,0.15); 
-      backdrop-filter: blur(25px); 
-      border-radius: 2rem; 
-      border: 1px solid rgba(255,255,255,0.3); 
-      padding: 1rem; 
-      text-align: center; 
-      max-width: 350px; 
-      margin-top: 2rem; 
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
-    } 
-    .player img { width: 100px; height: 100px; border-radius: 1rem; }
-    .progress-bar { 
-      background: rgba(255,255,255,0.2); 
-      height: 8px; 
-      border-radius: 4px; 
-      overflow: hidden; 
-      cursor: pointer; 
-      margin: 0.5rem 0; 
-    } .progress { background: #ec4899; height: 100%; width: 0%; } 
-    .volume { 
-      display: flex; 
-      align-items: 
-      center; 
-      gap: 0.5rem; 
-      justify-content: center; 
-      margin: 0.5rem 0; 
-    }
+    /* ===== Spotify-Style Music Player ===== */
+.player {
+  position: relative;
+  z-index: 1;
+  background: #1e1e1e; /* dark background */
+  border-radius: 1rem;
+  padding: 1rem 1.5rem;
+  color: #fff;
+  max-width: 360px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.7);
+  font-family: 'Poppins', sans-serif;
+}
+
+.player-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.player-info img {
+  width: 70px;
+  height: 70px;
+  border-radius: 8px;
+  object-fit: cover;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+.song-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.song-title {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.song-artist {
+  font-size: 0.85rem;
+  color: #b3b3b3;
+  margin-top: 2px;
+}
+
+.progress-bar {
+  background: #404040;
+  height: 6px;
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-bottom: 1rem;
+}
+
+.progress {
+  background: #1db954; /* Spotify green */
+  height: 100%;
+  width: 0%;
+  transition: width 0.2s linear;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.controls button {
+  background: #1db954;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  font-size: 1rem;
+  color: #fff;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.5);
+  transition: transform 0.2s;
+}
+
+.controls button:hover {
+  transform: scale(1.1);
+}
+
+.controls input[type="range"] {
+  -webkit-appearance: none;
+  width: 150px;
+  height: 4px;
+  background: #404040;
+  border-radius: 2px;
+  cursor: pointer;
+}
+
+.controls input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1db954;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
+.controls input[type="range"]::-moz-range-thumb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #1db954;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+}
+
     
     /* ===== Floating Hearts ===== */
     .heart {
