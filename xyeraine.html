@@ -38,13 +38,14 @@
     }
 
     /* ===== Floating Images ===== */
-    .floating-container {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
+    .floating-image {
+      position: absolute;
+      bottom: -350px;
+      opacity: 0;
       pointer-events: none;
-      z-index: 0;
-    }
+      animation: rise linear forwards;
+    } 
+    
     .floating-container {
       position: fixed;
       inset: 0;
