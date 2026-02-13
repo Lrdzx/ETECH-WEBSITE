@@ -45,12 +45,12 @@
       pointer-events: none;
       z-index: 0;
     }
-    .floating-image {
-      position: absolute;
-      bottom: -350px;
-      opacity: 0;
+    .floating-container {
+      position: fixed;
+      inset: 0;
+      overflow: hidden;
       pointer-events: none;
-      animation: rise linear forwards;
+      z-index: 0;
     }
     @keyframes rise {
       0% { transform: translateY(0); opacity: 0; }
@@ -62,7 +62,7 @@
     /* ===== Card ===== */
     .card {
       position: relative;
-      z-index: 1;
+      z-index: 10;
       background: rgba(255,255,255,0.15);
       backdrop-filter: blur(25px);
       border-radius: 2rem;
@@ -151,7 +151,9 @@
 .player {
   background: #121212;
   color: white;
-  width: 320px;
+  width: 90vw;
+  max-width: 320px;
+  box-sizing: border-box;   /* 🔥 THIS FIXES OVERFLOW */
   border-radius: 20px;
   padding: 20px;
   text-align: center;
@@ -159,6 +161,8 @@
   display: flex;
   flex-direction: column;
   gap: 15px;
+  position: relative;
+  z-index: 10;              /* 🔥 keeps it above floating images */
 }
 
 .player-header {
@@ -419,18 +423,22 @@
      YES BUTTON
   ==========================*/
   yesBtn.addEventListener('click', () => {
-    questionCard.style.display = 'none';
-    musicPlayer.style.display = 'block';
+  questionCard.style.display = 'none';
+  musicPlayer.style.display = 'flex';
 
-    musicAudio.play();
+  musicAudio.currentTime = 0;
+
+  musicAudio.play().then(() => {
     isPlaying = true;
     playPauseBtn.textContent = "❚❚";
-
-    if (!floatingInterval) {
-      floatingInterval = setInterval(spawnImage, 600);
-    }
+  }).catch(err => {
+    console.log("Autoplay blocked:", err);
   });
 
+  if (!floatingInterval) {
+    floatingInterval = setInterval(spawnImage, 600);
+  }
+});
   /* =========================
      NO BUTTON TELEPORT
   ==========================*/
