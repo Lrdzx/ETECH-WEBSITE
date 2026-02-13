@@ -149,90 +149,103 @@
 
     /* ===== Music Player ===== */
 .player {
-    background: #1e1e1e;
-    color: #fff;
-    width: 300px;
-    border-radius: 1.5rem;
-    padding: 1rem;
-    text-align: center;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
-    font-family: 'Poppins', sans-serif;
-  }
+  background: #121212;
+  color: white;
+  width: 320px;
+  border-radius: 20px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-  .player-header {
-    font-size: 0.9rem;
-    text-transform: uppercase;
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
-  }
+.player-header {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
 
-  .album-art {
-    width: 100%;
-    border-radius: 1rem;
-    margin-bottom: 1rem;
-  }
+.album-art {
+  width: 100%;
+  border-radius: 15px;
+}
 
-  .song-info .song-title {
-    font-weight: bold;
-    font-size: 1.1rem;
-  }
+.song-title {
+  font-weight: bold;
+  font-size: 1.1rem;
+}
 
-  .song-info .song-artist {
-    font-size: 0.9rem;
-    opacity: 0.7;
-    margin-bottom: 0.8rem;
-  }
+.song-artist {
+  font-size: 0.9rem;
+  opacity: 0.6;
+}
 
-  .progress-bar {
-    background: rgba(255,255,255,0.1);
-    height: 5px;
-    border-radius: 5px;
-    overflow: hidden;
-    cursor: pointer;
-    margin-bottom: 0.3rem;
-  }
-  .progress {
-    background: #1db954;
-    height: 100%;
-    width: 0%;
-  }
+.progress-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.75rem;
+}
 
-  .time-info {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.75rem;
-    opacity: 0.7;
-    margin-bottom: 1rem;
-  }
+.progress-bar {
+  flex: 1;
+  height: 5px;
+  background: #333;
+  border-radius: 5px;
+  overflow: hidden;
+  cursor: pointer;
+}
 
-  .controls {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin-bottom: 0.8rem;
-    font-size: 1.2rem;
-  }
+.progress {
+  background: #1db954;
+  height: 100%;
+  width: 0%;
+}
 
-  .controls button {
-    background: none;
-    border: none;
-    color: #fff;
-    cursor: pointer;
-    transition: transform 0.2s;
-  }
-  .controls button:hover {
-    transform: scale(1.2);
-  }
+.controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
 
-  .volume {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    justify-content: center;
-  }
-  .volume input[type="range"] {
-    width: 60%;
-  }
+.controls button {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.controls button:hover {
+  transform: scale(1.2);
+}
+
+.play-btn {
+  background: white;
+  color: black;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.volume {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+.volume input {
+  flex: 1;
+}
     /* ===== Floating Hearts ===== */
     .heart {
       position: absolute;
@@ -284,27 +297,36 @@
   <!-- Music Player -->
   <div class="player" id="musicPlayer" style="display:none;">
   <div class="player-header">Now Playing</div>
-  <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album" class="album-art">
+
+  <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" 
+       alt="Album" 
+       class="album-art">
+
   <div class="song-info">
     <div class="song-title">Fast Food Pop</div>
     <div class="song-artist">Restaurant</div>
   </div>
-  <div class="progress-bar" id="progressBar">
-    <div class="progress" id="progress"></div>
-  </div>
-  <div class="time-info">
+
+  <div class="progress-container">
     <span id="currentTime">0:00</span>
-    <span id="duration">2:34</span>
+    <div class="progress-bar" id="progressBar">
+      <div class="progress" id="progress"></div>
+    </div>
+    <span id="duration">0:00</span>
   </div>
+
   <div class="controls">
     <button id="shuffleBtn">🔀</button>
-    <button id="prevBtn">⏮️</button>
-    <button id="playPauseBtn">▶️</button>
-    <button id="nextBtn">⏭️</button>
+    <button id="prevBtn">⏮</button>
+
+    <button id="playPauseBtn" class="play-btn">▶</button>
+
+    <button id="nextBtn">⏭</button>
     <button id="repeatBtn">🔁</button>
   </div>
+
   <div class="volume">
-    <span>🔊</span>
+    🔊
     <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
   </div>
 </div>
@@ -325,10 +347,61 @@
     const volumeSlider = document.getElementById('volume');
     const progressBar = document.getElementById('progressBar');
     const progress = document.getElementById('progress');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
     const floatingContainer = document.getElementById("floatingContainer");
 
     let isPlaying = false;
     let floatingInterval = null;
+
+    let isPlaying = false;
+
+/* PLAY / PAUSE */
+playPauseBtn.addEventListener('click', () => {
+  if (isPlaying) {
+    musicAudio.pause();
+    playPauseBtn.textContent = "▶";
+  } else {
+    musicAudio.play();
+    playPauseBtn.textContent = "❚❚";
+  }
+  isPlaying = !isPlaying;
+});
+
+/* VOLUME */
+volumeSlider.addEventListener('input', () => {
+  musicAudio.volume = volumeSlider.value;
+});
+
+/* UPDATE TIME + PROGRESS */
+musicAudio.addEventListener('timeupdate', () => {
+  if (musicAudio.duration) {
+    const percent = (musicAudio.currentTime / musicAudio.duration) * 100;
+    progress.style.width = percent + "%";
+
+    currentTimeEl.textContent = formatTime(musicAudio.currentTime);
+    durationEl.textContent = formatTime(musicAudio.duration);
+  }
+});
+
+/* SEEK */
+progressBar.addEventListener('click', (e) => {
+  const rect = progressBar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const width = rect.width;
+  const duration = musicAudio.duration;
+
+  musicAudio.currentTime = (clickX / width) * duration;
+});
+
+/* FORMAT TIME */
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60)
+    .toString()
+    .padStart(2, '0');
+  return `${mins}:${secs}`;
+}
 
     // Function to move button to a random position
     function teleportButton() {
@@ -366,35 +439,6 @@
       if (!floatingInterval) {
         floatingInterval = setInterval(spawnImage, 600);
       }
-    });
-
-    // Play/Pause button
-    playPauseBtn.addEventListener('click', () => {
-      if (isPlaying) {
-        musicAudio.pause();
-        playPauseBtn.textContent = 'Play';
-      } else {
-        musicAudio.play();
-        playPauseBtn.textContent = 'Pause';
-      }
-      isPlaying = !isPlaying;
-    });
-
-    // Volume control
-    volumeSlider.addEventListener('input', () => {
-      musicAudio.volume = volumeSlider.value;
-    });
-
-    // Progress bar
-    musicAudio.addEventListener('timeupdate', () => {
-      if (musicAudio.duration > 0) {
-        progress.style.width = (musicAudio.currentTime / musicAudio.duration * 100) + '%';
-      }
-    });
-    progressBar.addEventListener('click', e => {
-      const rect = progressBar.getBoundingClientRect();
-      const pct = (e.clientX - rect.left) / rect.width;
-      musicAudio.currentTime = pct * musicAudio.duration;
     });
 
     // Floating images
