@@ -115,10 +115,19 @@
       color: #fff;
     }
     #noBtn {
-      background: #9ca3af;
-      color: #fff;
-      position: static;
-    }
+  background: #9ca3af;
+  color: #fff;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  padding: 1rem 2rem;
+  border-radius: 1.5rem;
+  font-size: 1.2rem;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
 
     /* ===== Spotify Card ===== */
     .valentine-gif {
@@ -422,15 +431,14 @@
 function teleportButton() {
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
-  const padding = 20; // space from edges
+  const padding = 20;
 
   const maxX = window.innerWidth - btnWidth - padding;
   const maxY = window.innerHeight - btnHeight - padding;
 
-  const x = Math.random() * (maxX - padding) + padding;
-  const y = Math.random() * (maxY - padding) + padding;
+  const x = Math.random() * (Math.max(maxX - padding, 0)) + padding;
+  const y = Math.random() * (Math.max(maxY - padding, 0)) + padding;
 
-  noBtn.style.position = 'absolute';
   noBtn.style.left = `${x}px`;
   noBtn.style.top = `${y}px`;
 }
