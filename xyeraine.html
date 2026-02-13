@@ -148,45 +148,91 @@
     }
 
     /* ===== Music Player ===== */
-    .player {
-      position: relative;
-      z-index: 1;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(25px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 1rem;
-      text-align: center;
-      max-width: 350px;
-      margin-top: 2rem;
-      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    }
-    .player img {
-      width: 100px;
-      height: 100px;
-      border-radius: 1rem;
-    }
-    .progress-bar {
-      background: rgba(255,255,255,0.2);
-      height: 8px;
-      border-radius: 4px;
-      overflow: hidden;
-      cursor: pointer;
-      margin: 0.5rem 0;
-    }
-    .progress {
-      background: #ec4899;
-      height: 100%;
-      width: 0%;
-    }
-    .volume {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      justify-content: center;
-      margin: 0.5rem 0;
-    }
+.player {
+    background: #1e1e1e;
+    color: #fff;
+    width: 300px;
+    border-radius: 1.5rem;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    font-family: 'Poppins', sans-serif;
+  }
 
+  .player-header {
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+  }
+
+  .album-art {
+    width: 100%;
+    border-radius: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .song-info .song-title {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+
+  .song-info .song-artist {
+    font-size: 0.9rem;
+    opacity: 0.7;
+    margin-bottom: 0.8rem;
+  }
+
+  .progress-bar {
+    background: rgba(255,255,255,0.1);
+    height: 5px;
+    border-radius: 5px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 0.3rem;
+  }
+  .progress {
+    background: #1db954;
+    height: 100%;
+    width: 0%;
+  }
+
+  .time-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin-bottom: 1rem;
+  }
+
+  .controls {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 0.8rem;
+    font-size: 1.2rem;
+  }
+
+  .controls button {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.2s;
+  }
+  .controls button:hover {
+    transform: scale(1.2);
+  }
+
+  .volume {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+  .volume input[type="range"] {
+    width: 60%;
+  }
     /* ===== Floating Hearts ===== */
     .heart {
       position: absolute;
@@ -237,20 +283,31 @@
 
   <!-- Music Player -->
   <div class="player" id="musicPlayer" style="display:none;">
-    <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album">
-    <div class="song-info">
-      <div class="song-title">You Are My Valentine</div>
-      <div class="song-artist">Forever Yours</div>
-    </div>
-    <div class="progress-bar" id="progressBar">
-      <div class="progress" id="progress"></div>
-    </div>
-    <div class="volume">
-      <label>🔊</label>
-      <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
-    </div>
-    <button id="playPauseBtn">Play</button>
+  <div class="player-header">Now Playing</div>
+  <img src="https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=400&h=400&fit=crop" alt="Album" class="album-art">
+  <div class="song-info">
+    <div class="song-title">Fast Food Pop</div>
+    <div class="song-artist">Restaurant</div>
   </div>
+  <div class="progress-bar" id="progressBar">
+    <div class="progress" id="progress"></div>
+  </div>
+  <div class="time-info">
+    <span id="currentTime">0:00</span>
+    <span id="duration">2:34</span>
+  </div>
+  <div class="controls">
+    <button id="shuffleBtn">🔀</button>
+    <button id="prevBtn">⏮️</button>
+    <button id="playPauseBtn">▶️</button>
+    <button id="nextBtn">⏭️</button>
+    <button id="repeatBtn">🔁</button>
+  </div>
+  <div class="volume">
+    <span>🔊</span>
+    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
+  </div>
+</div>
 
   <!-- Audio Elements -->
   <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
