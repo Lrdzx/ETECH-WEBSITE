@@ -17,16 +17,21 @@
       width: 100%;
       overflow: hidden;
     }
-    body {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  /* Replace gradient with GIF */
-  background-image: url('background.gif');
-  background-size: cover;      /* Make it cover the screen */
-  background-repeat: no-repeat;
-  background-position: center;
-}
+    /* ===== Fullscreen GIF background ===== */
+  .background-gif {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: -1;
+  }
+     body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 
     @keyframes gradientBG {
       0% { background-position: 0% 50%; }
