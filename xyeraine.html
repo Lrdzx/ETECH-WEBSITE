@@ -114,20 +114,7 @@
       background: #ec4899;
       color: #fff;
     }
-    #noBtn {
-  background: #9ca3af;
-  color: #fff;
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  padding: 1rem 2rem;
-  border-radius: 1.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-}
-
+    #noBtn { background: #9ca3af; color: #fff; position: static; }
 
     /* ===== Spotify Card ===== */
     .valentine-gif {
@@ -424,49 +411,68 @@
     floatingInterval = setInterval(spawnImage, 600);
   }
 });
-  /* =========================
-     NO BUTTON TELEPORT
-  ==========================*/
-  // Fixed teleportButton function
-function teleportButton() {
-  const btnWidth = noBtn.offsetWidth;
-  const btnHeight = noBtn.offsetHeight;
-  const padding = 20;
+/* =========================
+   NO BUTTON DODGE
+==========================*/
 
-  const maxX = window.innerWidth - btnWidth - padding;
-  const maxY = window.innerHeight - btnHeight - padding;
+// Initial position and movement
+let noBtnX = window.innerWidth / 2;
+let noBtnY = window.innerHeight / 2;
+const moveDistance = 100; // how far it moves when cursor gets close
+const padding = 20;       // distance from screen edges
 
-  const x = Math.random() * (Math.max(maxX - padding, 0)) + padding;
-  const y = Math.random() * (Math.max(maxY - padding, 0)) + padding;
+// Set initial button position
+noBtn.style.position = 'absolute';
+noBtn.style.left = `${noBtnX}px`;
+noBtn.style.top = `${noBtnY}px`;
 
-  noBtn.style.left = `${x}px`;
-  noBtn.style.top = `${y}px`;
-}
-
-// Mouse detection to trigger teleport
+// Mouse move detection
 document.addEventListener('mousemove', e => {
   const mouseX = e.clientX;
   const mouseY = e.clientY;
 
   const btnRect = noBtn.getBoundingClientRect();
-  const btnX = btnRect.left + btnRect.width / 2;
-  const btnY = btnRect.top + btnRect.height / 2;
+  const btnCenterX = btnRect.left + btnRect.width / 2;
+  const btnCenterY = btnRect.top + btnRect.height / 2;
 
-  const distance = Math.hypot(mouseX - btnX, mouseY - btnY);
+  const distance = Math.hypot(mouseX - btnCenterX, mouseY - btnCenterY);
 
-  if (distance < 100) teleportButton();
+  if (distance < 100) {
+    // Direction away from mouse
+    let dx = btnCenterX - mouseX;
+    let dy = btnCenterY - mouseY;
+
+    // Normalize vector
+    const mag = Math.hypot(dx, dy);
+    if (mag > 0) {
+      dx = (dx / mag) * moveDistance;
+      dy = (dy / mag) * moveDistance;
+    }
+
+    // Update position
+    noBtnX += dx;
+    noBtnY += dy;
+
+    // Keep button inside viewport
+    const btnWidth = noBtn.offsetWidth;
+    const btnHeight = noBtn.offsetHeight;
+    noBtnX = Math.max(padding, Math.min(noBtnX, window.innerWidth - btnWidth - padding));
+    noBtnY = Math.max(padding, Math.min(noBtnY, window.innerHeight - btnHeight - padding));
+
+    // Apply new position
+    noBtn.style.left = `${noBtnX}px`;
+    noBtn.style.top = `${noBtnY}px`;
+  }
 });
 
-// Keep button inside viewport on resize
+// Keep button inside viewport on window resize
 window.addEventListener('resize', () => {
-  const btnRect = noBtn.getBoundingClientRect();
   const btnWidth = noBtn.offsetWidth;
   const btnHeight = noBtn.offsetHeight;
-  const maxX = window.innerWidth - btnWidth - 20;
-  const maxY = window.innerHeight - btnHeight - 20;
-
-  noBtn.style.left = Math.min(btnRect.left, maxX) + 'px';
-  noBtn.style.top = Math.min(btnRect.top, maxY) + 'px';
+  noBtnX = Math.min(noBtnX, window.innerWidth - btnWidth - padding);
+  noBtnY = Math.min(noBtnY, window.innerHeight - btnHeight - padding);
+  noBtn.style.left = `${noBtnX}px`;
+  noBtn.style.top = `${noBtnY}px`;
 });
   /* =========================
      FLOATING IMAGES
