@@ -1,347 +1,85 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Valentine Interactive</title>
-  <style>
-    /* ===== Reset & Global ===== */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: 'Poppins', sans-serif;
-    }
-    html, body {
-      height: 100%;
-      width: 100%;
-      overflow: hidden;
-    }
-    /* ===== Fullscreen GIF background ===== */
-  .background-gif {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    z-index: -1;
-  }
-     body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-    @keyframes gradientBG {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
-
-    /* ===== Overlay ===== */
-    .overlay {
-      position: absolute;
-      inset: 0;
-    }
-
-    /* ===== Floating Images ===== */
-    .floating-image {
-  position: absolute;
-  bottom: -350px;
-  opacity: 0;
-  pointer-events: none;
-  animation: rise linear forwards;
-
-  border-radius: 20px;   /* 👈 curved corners */
-}
-
-    
-    .floating-container {
-      position: fixed;
-      inset: 0;
-      overflow: hidden;
-      pointer-events: none;
-      z-index: 0;
-    }
-    @keyframes rise {
-      0% { transform: translateY(0); opacity: 0; }
-      10% { opacity: 1; }
-      90% { opacity: 1; }
-      100% { transform: translateY(-130vh); opacity: 0; }
-    }
-
-    /* ===== Card ===== */
-    .card {
-      position: relative;
-      z-index: 10;
-      background: rgba(255,255,255,0.15);
-      backdrop-filter: blur(25px);
-      border-radius: 2rem;
-      border: 1px solid rgba(255,255,255,0.3);
-      padding: 2rem;
-      text-align: center;
-      color: #fff;
-      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
-      transition: transform 0.3s;
-    }
-    .card:hover {
-      transform: scale(1.03);
-    }
-    h1 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.3);
-    }
-    p {
-      font-size: 1.2rem;
-      margin-bottom: 1.5rem;
-      min-height: 1.5rem;
-    }
-
-    /* ===== Buttons ===== */
-    .buttons {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      position: relative;
-      height: 60px;
-    }
-    button {
-      padding: 1rem 2rem;
-      border: none;
-      border-radius: 1.5rem;
-      font-size: 1.2rem;
-      font-weight: bold;
-      cursor: pointer;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-      transition: all 0.2s ease;
-    }
-    button:hover {
-      transform: scale(1.1);
-      box-shadow: 0 10px 20px rgba(236,72,153,0.5);
-    }
-    #yesBtn, #noBtn {
-  position: absolute;
-  z-index: 20;
-  padding: 1rem 2rem;
-  border: none;
-  border-radius: 1.5rem;
-  font-size: 1.2rem;
-  font-weight: bold;
-  cursor: pointer;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-  transition: all 0.2s ease;
-}
-#yesBtn {
-  background: #ec4899;
-  color: #fff;
-}
-#noBtn {
-  background: #9ca3af;
-  color: #fff;
-}
-#yesBtn:hover, #noBtn:hover {
-  transform: scale(1.1);
-}
-    /* ===== Spotify Card ===== */
-    .valentine-gif {
-  width: 200px;      /* adjust as needed */
-  height: 200px;
-  border-radius: 1rem;
-  object-fit: cover;
-  margin-bottom: 1rem; /* spacing above the question */
-}
-
-    /* ===== Music Player ===== */
-.player {
-  background: #121212;
-  color: white;
-  width: 90vw;
-  max-width: 320px;
-  box-sizing: border-box;   /* 🔥 THIS FIXES OVERFLOW */
-  border-radius: 20px;
-  padding: 20px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  position: relative;
-  z-index: 10;              /* 🔥 keeps it above floating images */
-}
-
-.player-header {
-  font-size: 0.8rem;
-  text-transform: uppercase;
-  opacity: 0.6;
-}
-
-.album-art {
-  width: 100%;
-  border-radius: 15px;
-}
-
-.song-title {
-  font-weight: bold;
-  font-size: 1.1rem;
-}
-
-.song-artist {
-  font-size: 0.9rem;
-  opacity: 0.6;
-}
-
-.progress-container {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 0.75rem;
-}
-
-.progress-bar {
-  flex: 1;
-  height: 5px;
-  background: #333;
-  border-radius: 5px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.progress {
-  background: #1db954;
-  height: 100%;
-  width: 0%;
-}
-
-.controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 20px;
-}
-
-.controls button {
-  background: none;
-  border: none;
-  color: white;
-  font-size: 18px;
-  cursor: pointer;
-  transition: transform 0.2s;
-}
-
-.controls button:hover {
-  transform: scale(1.2);
-}
-
-.play-btn {
-  background: white;
-  color: black;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  font-size: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.volume {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-}
-
-.volume input {
-  flex: 1;
-}
-    /* ===== Floating Hearts ===== */
-    .heart {
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: red;
-      transform: rotate(-45deg);
-      animation: floatUp 3s ease forwards;
-      pointer-events: none;
-    }
-    .heart::before,
-    .heart::after {
-      content: '';
-      position: absolute;
-      width: 15px;
-      height: 15px;
-      background: red;
-      border-radius: 50%;
-    }
-    .heart::before { top: -7px; left: 0; }
-    .heart::after { left: 7px; top: 0; }
-    @keyframes floatUp {
-      0% { opacity:1; transform: translateY(0) rotate(-45deg); }
-      100% { opacity:0; transform: translateY(-200px) rotate(-45deg); }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Interactive</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif}
+html,body{height:100%;width:100%;overflow:hidden}
+.background-gif{position:fixed;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:-1}
+body{display:flex;justify-content:center;align-items:center}
+.overlay{position:absolute;inset:0}
+.floating-image{position:absolute;bottom:-350px;opacity:0;pointer-events:none;animation:rise linear forwards;border-radius:20px}
+.floating-container{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0}
+@keyframes rise{0%{transform:translateY(0);opacity:0}10%{opacity:1}90%{opacity:1}100%{transform:translateY(-130vh);opacity:0}}
+.card{position:relative;z-index:10;background:rgba(255,255,255,0.15);backdrop-filter:blur(25px);border-radius:2rem;border:1px solid rgba(255,255,255,0.3);padding:2rem;text-align:center;color:#fff;box-shadow:0 20px 40px rgba(0,0,0,0.3);transition:transform .3s}
+.card:hover{transform:scale(1.03)}
+h1{font-size:2.5rem;margin-bottom:.5rem;text-shadow:0 2px 10px rgba(0,0,0,0.3)}
+p{font-size:1.2rem;margin-bottom:1.5rem;min-height:1.5rem}
+button{padding:1rem 2rem;border:none;border-radius:1.5rem;font-size:1.2rem;font-weight:bold;cursor:pointer;box-shadow:0 5px 15px rgba(0,0,0,0.3);transition:all .2s ease}
+button:hover{transform:scale(1.1);box-shadow:0 10px 20px rgba(236,72,153,.5)}
+#yesBtn,#noBtn{position:absolute;z-index:20}
+#yesBtn{background:#ec4899;color:#fff}
+#noBtn{background:#9ca3af;color:#fff}
+.valentine-gif{width:200px;height:200px;border-radius:1rem;object-fit:cover;margin-bottom:1rem}
+.player{background:#121212;color:#fff;width:90vw;max-width:320px;box-sizing:border-box;border-radius:20px;padding:20px;text-align:center;box-shadow:0 20px 50px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:15px;position:relative;z-index:10}
+.player-header{font-size:.8rem;text-transform:uppercase;opacity:.6}
+.album-art{width:100%;border-radius:15px}
+.song-title{font-weight:bold;font-size:1.1rem}
+.song-artist{font-size:.9rem;opacity:.6}
+.progress-container{display:flex;align-items:center;gap:8px;font-size:.75rem}
+.progress-bar{flex:1;height:5px;background:#333;border-radius:5px;overflow:hidden;cursor:pointer}
+.progress{background:#1db954;height:100%;width:0%}
+.controls{display:flex;justify-content:center;align-items:center;gap:20px}
+.controls button{background:none;border:none;color:white;font-size:18px;cursor:pointer;transition:transform .2s}
+.controls button:hover{transform:scale(1.2)}
+.play-btn{background:white;color:black;width:50px;height:50px;border-radius:50%;font-size:20px;display:flex;justify-content:center;align-items:center}
+.volume{display:flex;align-items:center;gap:10px;font-size:.9rem}
+.volume input{flex:1}
+</style>
 </head>
 <body>
-  <div class="overlay"></div>
-  <div class="floating-container" id="floatingContainer"></div>
 
-  <!-- Question Card -->
-  <!-- Remove Yes from the card's button container -->
+<div class="overlay"></div>
+<div class="floating-container" id="floatingContainer"></div>
+
 <div class="card" id="questionCard">
-  <img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" 
-       alt="Valentine GIF" 
-       class="valentine-gif">
-  <h1>Will you be my Valentine?</h1>
+<img src="https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif" class="valentine-gif">
+<h1>Will you be my Valentine?</h1>
 </div>
 
-<!-- Yes and No buttons will be outside -->
 <button id="yesBtn">Yessss!</button>
 <button id="noBtn">Nuh uh</button>
 
-  <!-- Music Player -->
-  <div class="player" id="musicPlayer" style="display:none;">
-  <div class="player-header">Now Playing</div>
-
-  <img src="IMG_20260213_214708_409.jpg" 
-       alt="Album" 
-       class="album-art">
-
-  <div class="song-info">
-    <div class="song-title">I Love You So Much!</div>
-    <div class="song-artist">PandaUwU</div>
-  </div>
-
-  <div class="progress-container">
-    <span id="currentTime">0:00</span>
-    <div class="progress-bar" id="progressBar">
-      <div class="progress" id="progress"></div>
-    </div>
-    <span id="duration">0:00</span>
-  </div>
-
-  <div class="controls">
-  <button id="prevBtn">⏮</button>
-
-  <button id="playPauseBtn" class="play-btn">▶</button>
-
-  <button id="nextBtn">⏭</button>
+<div class="player" id="musicPlayer" style="display:none;">
+<div class="player-header">Now Playing</div>
+<img src="IMG_20260213_214708_409.jpg" class="album-art">
+<div class="song-info">
+<div class="song-title">I Love You So Much!</div>
+<div class="song-artist">PandaUwU</div>
+</div>
+<div class="progress-container">
+<span id="currentTime">0:00</span>
+<div class="progress-bar" id="progressBar">
+<div class="progress" id="progress"></div>
+</div>
+<span id="duration">0:00</span>
+</div>
+<div class="controls">
+<button id="prevBtn">⏮</button>
+<button id="playPauseBtn" class="play-btn">▶</button>
+<button id="nextBtn">⏭</button>
+</div>
+<div class="volume">
+🔊
+<input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
+</div>
 </div>
 
-  <div class="volume">
-    🔊
-    <input type="range" min="0" max="1" step="0.01" id="volume" value="0.7">
-  </div>
-</div>
+<audio id="musicAudio" src="New_West_-_Those_Eyes_(mp3.pm).mp3" loop></audio>
+<img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExa25icDUxdHJmM3Q1ZHp3aXluY2l3NjZvZzgxeTJzbnRna3RhdjI2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lXOI5Bj5bndSw/giphy.gif" class="background-gif"/>
 
-  <!-- Audio Elements -->
-  <audio id="teleportAudio" src="https://www.myinstants.com/media/sounds/vine-boom.mp3"></audio>
-  <audio id="yesAudio" src="https://www.myinstants.com/media/sounds/mlg-airhorn.mp3"></audio>
-  <audio id="musicAudio" src="New_West_-_Those_Eyes_(mp3.pm).mp3" loop></audio>
-  <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExa25icDUxdHJmM3Q1ZHp3aXluY2l3NjZvZzgxeTJzbnRna3RhdjI2MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/lXOI5Bj5bndSw/giphy.gif" class="background-gif" />
-
-  <!-- Script -->
   <script>
 document.addEventListener("DOMContentLoaded", () => {
   const yesBtn = document.getElementById('yesBtn');
@@ -361,7 +99,6 @@ document.addEventListener("DOMContentLoaded", () => {
   let isPlaying = false;
   let floatingInterval = null;
 
-  // ===== GIFs and meme sounds =====
   const defaultGif = "https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3cmtlN2E5YXNkenRjbGw0NDlvOG1vbTcwdmNwY2NzNjg0MjBiOWg1MyZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/U3TwCOuG8pipyr00nF/giphy.gif";
   const hoverGifs = [
     "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExejc0Z2cxY2ptdmlhYTZ4YnozMWlkZWI3ajhrYmwzcG0zZGNhajFoaSZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/gyLFXmO7GIZ4Q/giphy.gif",
@@ -371,16 +108,14 @@ document.addEventListener("DOMContentLoaded", () => {
     "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExeTQyM28zaWNmdHp1MWl1MmF6ajNjY3ZzdjlzempzbTBta3d5ZXI4biZlcD12MV9zdGlja2Vyc19zZWFyY2gmY3Q9cw/Xr9TlAqw3S7VPOrftK/giphy.gif"
   ];
 
-  const noMemeAudio = new Audio("https://www.myinstants.com/media/sounds/shocked-sound-effect.mp3"); // No button sound
-  const yesMemeAudio = new Audio("https://www.myinstants.com/media/kids-saying-yay-sound-effect_xryiS4g.mp3");   // Yes button sound
+  const noMemeAudio = new Audio("https://www.myinstants.com/media/sounds/shocked-sound-effect.mp3");
+  const yesMemeAudio = new Audio("https://www.myinstants.com/media/kids-saying-yay-sound-effect_xryiS4g.mp3");
 
-  // ===== Make buttons absolute =====
   yesBtn.style.position = 'absolute';
   noBtn.style.position = 'absolute';
   yesBtn.style.zIndex = 20;
   noBtn.style.zIndex = 20;
 
-  // ===== Position buttons below card =====
   function positionButtonsBelowCard() {
     const cardRect = questionCard.getBoundingClientRect();
     const gapBetweenButtons = 20;
@@ -395,12 +130,11 @@ document.addEventListener("DOMContentLoaded", () => {
     noBtn.style.left = (centerX + yesWidth + gapBetweenButtons) + "px";
     noBtn.style.top = posY + "px";
   }
+
   positionButtonsBelowCard();
   window.addEventListener('resize', positionButtonsBelowCard);
 
-  // ===== Yes Button Functionality =====
   yesBtn.addEventListener('click', () => {
-    // Play Yes meme sound
     yesMemeAudio.currentTime = 0;
     yesMemeAudio.play().catch(() => {});
 
@@ -409,9 +143,10 @@ document.addEventListener("DOMContentLoaded", () => {
     noBtn.style.display = 'none';
     musicPlayer.style.display = 'flex';
     musicAudio.currentTime = 0;
-    musicAudio.play().then(() => { 
-      isPlaying = true; 
-      playPauseBtn.textContent = "❚❚"; 
+
+    musicAudio.play().then(() => {
+      isPlaying = true;
+      playPauseBtn.textContent = "❚❚";
     }).catch(err => console.log("Autoplay blocked:", err));
 
     if (!floatingInterval) {
@@ -419,7 +154,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 
-  // ===== No Button Teleport =====
   const padding = 20;
   let noBtnPositions = [];
   const btnWidth = noBtn.offsetWidth;
@@ -433,24 +167,26 @@ document.addEventListener("DOMContentLoaded", () => {
       noBtnPositions.push({x, y});
     }
   }
+
   generateNoPositions();
 
   let lastIndex = -1;
   noBtn.addEventListener('mouseenter', () => {
     let index;
-    do { index = Math.floor(Math.random() * noBtnPositions.length); }
-    while(index === lastIndex);
+    do {
+      index = Math.floor(Math.random() * noBtnPositions.length);
+    } while(index === lastIndex);
+
     lastIndex = index;
     const pos = noBtnPositions[index];
+
     noBtn.style.left = pos.x + "px";
     noBtn.style.top = pos.y + "px";
 
-    // Play No meme sound
     noMemeAudio.currentTime = 0;
     noMemeAudio.play().catch(() => {});
   });
 
-  // ===== GIF change when mouse near No =====
   document.addEventListener('mousemove', (e) => {
     const noRect = noBtn.getBoundingClientRect();
     const noCenterX = noRect.left + noRect.width / 2;
@@ -469,7 +205,6 @@ document.addEventListener("DOMContentLoaded", () => {
     positionButtonsBelowCard();
   });
 
-  // ===== Music Player Controls =====
   playPauseBtn.addEventListener('click', () => {
     if (isPlaying) {
       musicAudio.pause();
@@ -507,8 +242,8 @@ document.addEventListener("DOMContentLoaded", () => {
     return `${mins}:${secs}`;
   }
 
-  // ===== Floating Images =====
   const images = Array.from({ length: 20 }, (_, i) => `r${i+1}.jpg`);
+
   function spawnImage() {
     const img = document.createElement("img");
     img.src = images[Math.floor(Math.random() * images.length)];
@@ -530,8 +265,6 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => img.remove(), duration * 1000);
   }
 });
-
 </script>
-
 </body>
 </html>
